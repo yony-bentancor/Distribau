@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <title>Página en construcción</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- Tipografía moderna -->
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+        <!-- AOS Animate on Scroll -->
+        <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+
+        <style>
+
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                scroll-behavior: smooth;
+            }
+
+            input,
+            textarea {
+                width: 100%;
+                padding: 12px;
+                margin: 10px 0;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                font-size: 14px;
+            }
+            button {
+                background: #7b1fa2;
+                color: white;
+                border: none;
+                padding: 12px;
+                width: 100%;
+                border-radius: 8px;
+                cursor: pointer;
+                font-size: 16px;
+                transition: background 0.3s ease;
+            }
+            button:hover {
+                background: #6a1b9a;
+            }
+            .footer {
+                margin-top: 25px;
+                display: flex;
+                justify-content: center;
+                gap: 20px;
+                font-size: 18px;
+            }
+            .footer a {
+                text-decoration: none;
+                color: #7b1fa2;
+                transition: color 0.3s ease;
+            }
+            .footer a:hover {
+                color: #4a148c;
+            }
+            body {
+                font-family: 'Poppins', sans-serif;
+                background-color: white;
+                color: #333;
+            }
+
+            .container {
+                max-width: 1200px;
+                margin: auto;
+                padding: 0 15px;
+            }
+
+            .cabezal {
+                position: sticky;
+                top: 0;
+                z-index: 1000;
+                background-color: white;
+                padding: 10px 0;
+                text-align: center;
+                border-bottom: 1px solid #eee;
+            }
+
+            #logo img {
+                max-width: 200px;
+                height: auto;
+            }
+
+            /* Barra de navegación */
+            .navbar {
+                display: flex;
+                justify-content: center;
+                background-color: white;
+                padding: 10px;
+                gap: 20px;
+                flex-wrap: wrap;
+                font-weight: 600;
+                transition: all 0.3s ease;
+            }
+
+            .navbar a {
+                color: #222;
+                text-decoration: none;
+                font-size: 16px;
+                position: relative;
+            }
+
+            .navbar a::after {
+                content: '';
+                display: block;
+                width: 0;
+                height: 2px;
+                background-color: #000;
+                transition: width 0.3s ease;
+                position: absolute;
+                bottom: -4px;
+                left: 0;
+            }
+
+            .navbar a:hover::after {
+                width: 100%;
+            }
+
+            /* Secciones */
+            section {
+                padding: 60px 20px;
+                text-align: center;
+            }
+
+            .content-box {
+                width: 100%;
+                max-width: 800px;
+                height: 300px;
+                margin: 0 auto;
+                background-color: #f5f5f5;
+                border: 2px dashed #ccc;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                font-size: 20px;
+                color: #777;
+                border-radius: 12px;
+                padding: 20px;
+            }
+            .content-box1 {
+                width: 50%;
+                max-width: 400px;
+                height: 160px;
+                margin: 0 auto;
+                background-color: #f5f5f5;
+                border: 2px dashed #ccc;
+                display: flex;
+                flex-direction: column;
+                align-items: left;
+                justify-content: left;
+                font-size: 14px;
+                color: #777;
+                border-radius: 12px;
+                padding: 20px;
+            }
+
+            /* Imagen de fondo para la primera sección */
+            #quienes-somos .content-box {
+                background-image: url("img/fondo1.jpg");
+                background-size: cover;
+                background-position: center;
+                color: white;
+                text-shadow: 1px 1px 4px rgba(0,0,0,0.7);
+                border: none;
+            }
+
+            /* Botón volver al inicio */
+            .volver-btn {
+                display: inline-block;
+                margin-top: 20px;
+                padding: 6px 12px;
+                background-color: #e0e0e0;
+                color: #333;
+                text-decoration: none;
+                border-radius: 5px;
+                font-size: 13px;
+                transition: background-color 0.3s ease;
+            }
+
+            .volver-btn:hover {
+                background-color: #ccc;
+            }
+
+            /* Menú hamburguesa */
+            .menu-toggle {
+                display: none;
+                flex-direction: column;
+                cursor: pointer;
+                padding: 10px;
+            }
+
+            .menu-toggle span {
+                height: 3px;
+                width: 25px;
+                background: #000;
+                margin: 4px 0;
+                transition: all 0.3s ease;
+            }
+
+            @media (max-width: 768px) {
+                .navbar {
+                    display: none;
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 10px;
+                }
+
+                .navbar.active {
+                    display: flex;
+                }
+
+                .menu-toggle {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    margin: 10px auto;
+                }
+
+                section {
+                    padding: 40px 15px;
+                }
+
+                .content-box {
+                    height: 250px;
+                    font-size: 18px;
+                }
+            }
+        </style>
+    </head>
+    <body id="top">
+        <div class="container">
+            <!-- Logo sticky -->
+            <div class="cabezal" id="logo">
+                <img src="img/logo.jpg" alt="Logo de la empresa">
+            </div>
+
+            <!-- Botón menú móvil -->
+            <div class="menu-toggle" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <!-- Menú de navegación -->
+            <div class="navbar">
+                <a href="#quienes-somos">Quienes Somos</a>
+                <a href="#que-hacemos">Qué Hacemos</a>
+                <a href="#como-lo-hacemos">Cómo lo Hacemos</a>
+                <a href="#que-servicios-brindamos">Servicios</a>
+            </div>
+
+            <!-- Secciones -->
+            <section id="quienes-somos" data-aos="fade-up">
+                <div class="content-box">
+
+                    <a href="#top" class="volver-btn">↑ Inicio</a>
+                </div>
+            </section>
+
+            <section id="que-hacemos" data-aos="fade-up">
+                <div class="content-box">
+                Contenido Qué Hacemos
+                <a href="#top" class="volver-btn">↑ Inicio</a>
+                </div>
+            </section>
+
+            <section id="como-lo-hacemos" data-aos="fade-up">
+                <div class="content-box">
+                Contenido Cómo lo Hacemos
+                <a href="#top" class="volver-btn">↑ Inicio</a>
+                </div>
+            </section>
+
+            <section id="que-servicios-brindamos" data-aos="fade-up">
+                <div class="content-box">
+                    <div class="content-box1">
+                        <form action="#" method="POST">
+                            <input type="text" name="nombre" placeholder="Nombre" required>
+                            <input type="tel" name="telefono" placeholder="Teléfono" required>
+                            <input type="email" name="email" placeholder="Email" required>
+                            <textarea name="nota" placeholder="Escribe tu mensaje" rows="4" required></textarea>
+                            <button type="submit">Enviar</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+            <div class="footer">
+                <a href="https://wa.me/tu_numero" target="_blank">📱 WhatsApp</a>
+                <a href="https://instagram.com/tu_instagram" target="_blank">📸 Instagram</a>
+                <a href="https://linkedin.com/in/tu_perfil" target="_blank">🔗 LinkedIn</a>
+            </div>
+        </div>
+
+        <!-- AOS y toggle menú -->
+        <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+        <script>
+            AOS.init();
+
+            function toggleMenu() {
+                const navbar = document.querySelector('.navbar');
+                navbar
+                    .classList
+                    .toggle('active');
+            }
+        </script>
+    </body>
+</html>
