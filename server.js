@@ -4,9 +4,9 @@ const session = require("express-session");
 const bodyParser = require("body-parser");
 const path = require("path");
 const dotenv = require("dotenv");
-const authRoutes = require("./routes/auth");
+const authRoutes = require("routes/auth");
 
-dotenv.config(); // Carga MONGO_URI desde .env
+dotenv.config();
 
 const app = express();
 
@@ -22,6 +22,11 @@ app.use(
   session({ secret: "secreto123", resave: false, saveUninitialized: false })
 );
 app.use(express.static(path.join(__dirname, "public")));
+
+// Ruta raíz (index)
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "public/index.html"));
+});
 
 // Rutas
 app.use("/", authRoutes);
