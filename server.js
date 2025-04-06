@@ -5,6 +5,11 @@ const bodyParser = require("body-parser");
 const path = require("path");
 const dotenv = require("dotenv");
 const authRoutes = require("./routes/auth");
+const requireAuth = require("./middlewares/auth");
+
+app.get("/admin", requireAuth, (req, res) => {
+  res.sendFile(path.join(__dirname, "views/admin.html"));
+});
 
 dotenv.config();
 
@@ -27,9 +32,15 @@ app.use(express.static(path.join(__dirname, "public")));
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public/index.html"));
 });
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 // Rutas
 app.use("/", authRoutes);
+
+app.get("/admin", requireAuth, (req, res) => {
+  res.sendFile(path.join(__dirname, "views/admin.html"));
+});
 
 // Rutas protegidas
 app.get("/admin", (req, res) => {

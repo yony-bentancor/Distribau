@@ -1,33 +1,38 @@
+// routes/auth.js
 const express = require("express");
 const router = express.Router();
+const User = require("../models/User"); // Asegurate que la ruta esté bien
 const bcrypt = require("bcryptjs");
-const User = require("../models/User");
 
 router.post("/login", async (req, res) => {
   const { username, password } = req.body;
 
   try {
+    // Buscar el usuario en la base
     const user = await User.findOne({ username });
-    if (!user) return res.send("Usuario no encontrado");
 
+    if (!user) {
+      return res.status(401).send("Usuario no encontrado");
+    }
+
+    // Comparar la contraseña
     const match = await bcrypt.compare(password, user.password);
-    if (!match) return res.send("Contraseña incorrecta");
+    if (!match) {
+      return res.status(401).send("Contraseña incorrecta");
+    }
 
-    req.session.user = {
-      id: user._id,
-      username: user.username,
-      role: user.role,
-    };
+    // Guardar sesión (si estás usando express-session)
+    req.session.user = user;
 
-    // Redirigir según el rol
-    if (user.role === "admin") {
-      res.redirect("/admin");
+    // Redireccionar a /admin o /user
+    if (username === "ADMINISTRADOR") {
+      return res.redirect("/admin");
     } else {
-      res.redirect("/user");
+      return res.redirect("/user");
     }
   } catch (err) {
     console.error("Error en login:", err);
-    res.status(500).send("Error del servidor");
+    return res.status(500).send("Error interno del servidor");
   }
 });
 
