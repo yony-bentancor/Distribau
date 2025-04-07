@@ -8,7 +8,10 @@ const authRoutes = require("./routes/auth");
 const requireAuth = require("./middlewares/auth");
 const componentesRoutes = require("./routes/componentes");
 const stockRoutes = require("./routes/stock");
-const tecnicoRoutes = require("./routes/tecnico");
+const tecnicoRoutes = require("./routes/user");
+const session = require("express-session");
+const path = require("path");
+const userRoutes = require("./routes/user");
 
 dotenv.config(); // Cargar variables de entorno
 
@@ -27,6 +30,18 @@ app.use(
   session({ secret: "secreto123", resave: false, saveUninitialized: false })
 );
 app.use(express.static(path.join(__dirname, "public")));
+
+app.use(
+  session({
+    secret: "clave-secreta",
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
+app.use("/", userRoutes);
 
 // Ruta raíz (index.html)
 app.get("/", (req, res) => {
