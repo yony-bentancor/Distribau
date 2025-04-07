@@ -28,7 +28,7 @@ router.post("/login", async (req, res) => {
     };
 
     // Redirigir según el usuario
-    if (user.username === "admin") {
+    if (user.username === "ADMINISTRADOR") {
       return res.redirect("/admin");
     } else {
       return res.redirect("/user");
