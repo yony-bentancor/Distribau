@@ -8,6 +8,7 @@ const authRoutes = require("./routes/auth");
 const requireAuth = require("./middlewares/auth");
 const componentesRoutes = require("./routes/componentes");
 const stockRoutes = require("./routes/stock");
+const tecnicoRoutes = require("./routes/tecnico");
 
 dotenv.config(); // Cargar variables de entorno
 
@@ -45,6 +46,7 @@ app.get("/user", requireAuth, (req, res) => {
   res.sendFile(path.join(__dirname, "views/user.html"));
 });
 app.use("/", componentesRoutes);
+app.use("/tecnico", tecnicoRoutes);
 
 // Iniciar servidor
 const PORT = process.env.PORT || 3000;
