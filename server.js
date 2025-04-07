@@ -7,6 +7,7 @@ const dotenv = require("dotenv");
 const authRoutes = require("./routes/auth");
 const requireAuth = require("./middlewares/auth");
 const componentesRoutes = require("./routes/componentes");
+const stockRoutes = require("./routes/stock");
 
 dotenv.config(); // Cargar variables de entorno
 
@@ -33,6 +34,7 @@ app.get("/", (req, res) => {
 
 // Rutas públicas y de login
 app.use("/", authRoutes);
+app.use("/", stockRoutes);
 
 // Rutas protegidas
 app.get("/admin", requireAuth, (req, res) => {
