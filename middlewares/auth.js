@@ -1,7 +1,7 @@
 // middlewares/auth.js
-module.exports = function (req, res, next) {
+module.exports = (req, res, next) => {
   if (!req.session.user) {
-    return res.redirect("/login.html");
+    return res.redirect("/login.html"); // o "/"
   }
   next();
 };

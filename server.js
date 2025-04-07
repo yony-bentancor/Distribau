@@ -7,13 +7,9 @@ const dotenv = require("dotenv");
 const authRoutes = require("./routes/auth");
 const requireAuth = require("./middlewares/auth");
 
-app.get("/admin", requireAuth, (req, res) => {
-  res.sendFile(path.join(__dirname, "views/admin.html"));
-});
+dotenv.config(); // Cargar variables de entorno
 
-dotenv.config();
-
-const app = express();
+const app = express(); // Declarar app al principio
 
 // Conexión a MongoDB Atlas
 mongoose
@@ -23,34 +19,29 @@ mongoose
 
 // Middlewares
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.use(
   session({ secret: "secreto123", resave: false, saveUninitialized: false })
 );
 app.use(express.static(path.join(__dirname, "public")));
 
-// Ruta raíz (index)
+// Ruta raíz (index.html)
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public/index.html"));
 });
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
 
-// Rutas
+// Rutas públicas y de login
 app.use("/", authRoutes);
 
+// Rutas protegidas
 app.get("/admin", requireAuth, (req, res) => {
   res.sendFile(path.join(__dirname, "views/admin.html"));
 });
 
-// Rutas protegidas
-app.get("/admin", (req, res) => {
-  res.sendFile(path.join(__dirname, "views/admin.html"));
-});
-
-app.get("/user", (req, res) => {
+app.get("/user", requireAuth, (req, res) => {
   res.sendFile(path.join(__dirname, "views/user.html"));
 });
 
 // Iniciar servidor
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Servidor en puerto ${PORT}`));
+app.listen(PORT, () => console.log(`✅ Servidor en puerto ${PORT}`));
