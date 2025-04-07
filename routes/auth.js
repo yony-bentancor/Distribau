@@ -31,7 +31,7 @@ router.post("/login", async (req, res) => {
     if (user.username === "ADMINISTRADOR") {
       return res.redirect("/admin");
     } else {
-      return res.redirect(`/tecnico/${user._id}/bodega`);
+      return res.redirect("/user");
     }
   } catch (err) {
     console.error("Error en login:", err);
