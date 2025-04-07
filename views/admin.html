@@ -77,7 +77,8 @@
   <h2>Crear nuevo componente</h2>
   <form action="/componentes" method="POST">
     <input type="text" name="nombre" placeholder="Nombre del componente" required>
-    <input type="number" name="puntaje" placeholder="Puntaje" required>
+<input type="number" name="puntaje" placeholder="Puntaje" step="0.01" required>
+
     <button type="submit">Guardar</button>
   </form>
 
