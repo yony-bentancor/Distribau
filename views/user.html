@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>TECNICO | Componentes y Stock</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: "Segoe UI", sans-serif;
+      padding: 1rem;
+      margin: 0;
+      background: #f0f2f5;
+      color: #333;
+    }
+    h2, h3 { text-align: center; margin-top: 1rem; }
+    .container {
+      max-width: 700px;
+      margin: auto;
+      padding: 1rem;
+    }
+    form {
+      background: #fff;
+      padding: 1rem;
+      border-radius: 10px;
+      margin-bottom: 2rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    input, select, button {
+      width: 100%;
+      padding: 0.7rem;
+      margin-bottom: 1rem;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      background-color: #0066cc;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover { background-color: #004c99; }
+    table {
+      width: 100%;
+      background: white;
+      border-collapse: collapse;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    th, td {
+      padding: 0.8rem;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    th { background-color: #f7f7f7; }
+    td button {
+      margin-right: 5px;
+      padding: 5px 10px;
+      font-size: 0.9rem;
+      border-radius: 4px;
+    }
+    td button:first-child {
+      background-color: #ffc107;
+      color: black;
+      border: none;
+    }
+    td button:last-child {
+      background-color: #dc3545;
+      color: white;
+      border: none;
+    }
+    #alerta {
+      display: none;
+      margin: 1rem auto;
+      padding: 1rem;
+      max-width: 400px;
+      text-align: center;
+      font-weight: bold;
+      border-radius: 5px;
+    }
+    @media (max-width: 600px) {
+      table, thead, tbody, th, td, tr { display: block; }
+      th { display: none; }
+      td {
+        position: relative;
+        padding-left: 50%;
+        margin-bottom: 1rem;
+      }
+      td::before {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        font-weight: bold;
+      }
+      td:nth-child(1)::before { content: "Nombre"; }
+      td:nth-child(2)::before { content: "Puntaje"; }
+      td:nth-child(3)::before { content: "Cantidad"; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h2>Componentes en Bodega</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Puntaje</th>
+        <th>Cantidad</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% componentes.forEach(c => { %>
+        <tr>
+          <td><%= c.componente.nombre %></td>
+          <td><%= c.componente.puntaje %></td>
+          <td><%= c.cantidad %></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>
+</body>
+</html>
