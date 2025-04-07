@@ -3,8 +3,6 @@ const bcrypt = require("bcryptjs");
 const User = require("./models/User"); // Asegurate que exista ese archivo
 
 // Tu string de conexión a Mongo Atlas
-const MONGO_URI =
-  "mongodb+srv://proyectodulce:Distribau2025@cluster0.bi9aze0.mongodb.net/distribau?retryWrites=true&w=majority&appName=Cluster0";
 
 mongoose
   .connect(MONGO_URI)
