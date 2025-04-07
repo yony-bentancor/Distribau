@@ -3,6 +3,7 @@ const bcrypt = require("bcryptjs");
 const User = require("./models/User"); // Asegurate que exista ese archivo
 
 // Tu string de conexión a Mongo Atlas
+require("dotenv").config(); // Importante para que funcione MONGO_URI
 
 mongoose
   .connect(MONGO_URI)
@@ -13,9 +14,9 @@ mongoose
   .catch((err) => console.error("Error de conexión:", err));
 
 async function crearUsuario() {
-  const hash = await bcrypt.hash("CABRERA", 10); // Contraseña encriptada
+  const hash = await bcrypt.hash("CAMILO", 10); // Contraseña encriptada
   const user = new User({
-    username: "CABRERA",
+    username: "CAMILO",
     password: hash,
   });
 
