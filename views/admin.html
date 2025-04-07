@@ -1,101 +1,258 @@
-<!-- public/crear-componente.html -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>ADMINISTRADOR</title>
+  <title>Administrador | Crear componente</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
   <style>
+    * { box-sizing: border-box; }
+
     body {
-      font-family: sans-serif;
-      padding: 2rem;
-      background: #f3f3f3;
+      font-family: "Segoe UI", sans-serif;
+      padding: 1rem;
+      margin: 0;
+      background: #f0f2f5;
+      color: #333;
     }
-    form {
-      background: white;
-      padding: 1.5rem;
-      border-radius: 10px;
-      max-width: 400px;
+
+    h2 {
+      text-align: center;
+      margin-top: 1rem;
+    }
+
+    .container {
+      max-width: 700px;
       margin: auto;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      padding: 1rem;
     }
+
+    form {
+      background: #fff;
+      padding: 1rem;
+      border-radius: 10px;
+      margin-bottom: 2rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
     input, button {
-      display: block;
       width: 100%;
+      padding: 0.7rem;
       margin-bottom: 1rem;
-      padding: 0.5rem;
       font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      background-color: #0066cc;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #004c99;
+    }
+
+    table {
+      width: 100%;
+      background: white;
+      border-collapse: collapse;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    th, td {
+      padding: 0.8rem;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #f7f7f7;
+    }
+
+    td button {
+      margin-right: 5px;
+      padding: 5px 10px;
+      font-size: 0.9rem;
+      border-radius: 4px;
+    }
+
+    td button:first-child {
+      background-color: #ffc107;
+      color: black;
+      border: none;
+    }
+
+    td button:last-child {
+      background-color: #dc3545;
+      color: white;
+      border: none;
+    }
+
+    #alerta {
+      display: none;
+      margin: 1rem auto;
+      padding: 1rem;
+      max-width: 400px;
+      text-align: center;
+      font-weight: bold;
+      border-radius: 5px;
+    }
+
+    @media (max-width: 600px) {
+      table, thead, tbody, th, td, tr {
+        display: block;
+      }
+
+      th {
+        display: none;
+      }
+
+      td {
+        position: relative;
+        padding-left: 50%;
+        margin-bottom: 1rem;
+      }
+
+      td::before {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        font-weight: bold;
+      }
+
+      td:nth-child(1)::before { content: "Nombre"; }
+      td:nth-child(2)::before { content: "Puntaje"; }
+      td:nth-child(3)::before { content: "Acciones"; }
     }
   </style>
+
   <script>
-  async function cargarComponentes() {
-    const res = await fetch("/componentes");
-    const componentes = await res.json();
+    async function cargarComponentes() {
+      const res = await fetch("/componentes");
+      const componentes = await res.json();
 
-    const tbody = document.querySelector("#tabla-componentes tbody");
-    tbody.innerHTML = "";
+      const tbody = document.querySelector("#tabla-componentes tbody");
+      tbody.innerHTML = "";
 
-    componentes.forEach((c) => {
-      const fila = document.createElement("tr");
-      fila.innerHTML = `
-        <td>${c.nombre}</td>
-        <td>${c.puntaje}</td>
-        <td>
-          <button onclick="editarComponente('${c._id}', '${c.nombre}', ${c.puntaje})">Editar</button>
-          <button onclick="eliminarComponente('${c._id}')">Eliminar</button>
-        </td>
-      `;
-      tbody.appendChild(fila);
-    });
-  }
-
-  async function eliminarComponente(id) {
-    if (confirm("¿Eliminar este componente?")) {
-      await fetch(`/componentes/${id}`, { method: "DELETE" });
-      cargarComponentes();
+      componentes.forEach((c) => {
+        const fila = document.createElement("tr");
+        fila.innerHTML = `
+          <td>${c.nombre}</td>
+          <td>${c.puntaje}</td>
+          <td>
+            <button onclick="editarComponente('${c._id}', '${c.nombre}', ${c.puntaje})">Editar</button>
+            <button onclick="eliminarComponente('${c._id}')">Eliminar</button>
+          </td>
+        `;
+        tbody.appendChild(fila);
+      });
     }
-  }
 
-function editarComponente(id, nombre, puntaje) {
-  const nuevoNombre = prompt("Nuevo nombre:", nombre);
-  const nuevoPuntaje = prompt("Nuevo puntaje:", puntaje);
+    async function eliminarComponente(id) {
+      if (confirm("¿Eliminar este componente?")) {
+        await fetch(`/componentes/${id}`, { method: "DELETE" });
+        mostrarAlerta("🗑️ Componente eliminado");
+        cargarComponentes();
+      }
+    }
 
-  if (nuevoNombre && nuevoPuntaje) {
-    fetch(`/componentes/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        nombre: nuevoNombre,
-        puntaje: parseFloat(nuevoPuntaje) // ✅ ahora acepta decimales
-      }),
-    }).then(() => cargarComponentes());
-  }
-}
+    function editarComponente(id, nombre, puntaje) {
+      const nuevoNombre = prompt("Nuevo nombre:", nombre);
+      const nuevoPuntaje = prompt("Nuevo puntaje:", puntaje);
 
-  // Cargar al abrir la página
-  window.onload = cargarComponentes;
-</script>
+      const puntajeFloat = parseFloat(nuevoPuntaje);
+      if (!isNaN(puntajeFloat) && nuevoNombre) {
+        fetch(`/componentes/${id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ nombre: nuevoNombre, puntaje: puntajeFloat }),
+        }).then(() => {
+          mostrarAlerta("✅ Componente actualizado correctamente");
+          cargarComponentes();
+        });
+      } else {
+        mostrarAlerta("❌ Datos inválidos", "error");
+      }
+    }
+
+    function mostrarAlerta(mensaje, tipo = "success") {
+      const alerta = document.getElementById("alerta");
+      alerta.innerText = mensaje;
+      alerta.style.display = "block";
+      alerta.style.backgroundColor = tipo === "success" ? "#d4edda" : "#f8d7da";
+      alerta.style.color = tipo === "success" ? "#155724" : "#721c24";
+      alerta.style.border = tipo === "success"
+        ? "1px solid #c3e6cb"
+        : "1px solid #f5c6cb";
+
+      setTimeout(() => {
+        alerta.style.display = "none";
+      }, 3000);
+    }
+
+    window.onload = () => {
+      cargarComponentes();
+
+      document.getElementById("form-componente").addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const nombre = this.nombre.value.trim();
+        const puntaje = parseFloat(this.puntaje.value);
+
+        if (!nombre || isNaN(puntaje)) {
+          mostrarAlerta("❌ Datos inválidos", "error");
+          return;
+        }
+
+        try {
+          const res = await fetch("/componentes", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: new URLSearchParams({ nombre, puntaje }),
+          });
+
+          if (res.ok) {
+            mostrarAlerta("✅ Componente creado correctamente");
+            this.reset();
+            cargarComponentes();
+          } else {
+            const mensaje = await res.text();
+            mostrarAlerta("⚠️ " + mensaje, "error");
+          }
+        } catch (err) {
+          console.error(err);
+          mostrarAlerta("❌ Error al crear componente", "error");
+        }
+      });
+    };
+  </script>
 </head>
 <body>
-  <h2>Crear nuevo componente</h2>
-  <form action="/componentes" method="POST">
-    <input type="text" name="nombre" placeholder="Nombre del componente" required>
-<input type="number" name="puntaje" placeholder="Puntaje" step="0.01" required>
+  <div class="container">
+    <h2>Crear nuevo componente</h2>
+    <div id="alerta"></div>
 
-    <button type="submit">Guardar</button>
-  </form>
+    <form id="form-componente">
+      <input type="text" name="nombre" placeholder="Nombre del componente" required>
+      <input type="number" name="puntaje" step="0.01" placeholder="Puntaje" required>
+      <button type="submit">Guardar</button>
+    </form>
 
-  <h2>Listado de componentes</h2>
-<table id="tabla-componentes" border="1" style="width:100%; margin-top:1rem;">
-  <thead>
-    <tr>
-      <th>Nombre</th>
-      <th>Puntaje</th>
-      <th>Acciones</th>
-    </tr>
-  </thead>
-  <tbody></tbody>
-</table>
-
+    <h2>Listado de componentes</h2>
+    <table id="tabla-componentes">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Puntaje</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
 </body>
 </html>
