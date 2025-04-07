@@ -17,9 +17,9 @@ mongoose
   .catch((err) => console.error("Error de conexión:", err));
 
 async function crearUsuario() {
-  const hash = await bcrypt.hash("ISMAEL", 10); // Contraseña encriptada
+  const hash = await bcrypt.hash("GUSTAVO", 10); // Contraseña encriptada
   const user = new User({
-    username: "ISMAEL",
+    username: "GUSTAVO",
     password: hash,
   });
 
