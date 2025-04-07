@@ -6,6 +6,7 @@ const path = require("path");
 const dotenv = require("dotenv");
 const authRoutes = require("./routes/auth");
 const requireAuth = require("./middlewares/auth");
+const componentesRoutes = require("./routes/componentes");
 
 dotenv.config(); // Cargar variables de entorno
 
@@ -41,6 +42,7 @@ app.get("/admin", requireAuth, (req, res) => {
 app.get("/user", requireAuth, (req, res) => {
   res.sendFile(path.join(__dirname, "views/user.html"));
 });
+app.use("/", componentesRoutes);
 
 // Iniciar servidor
 const PORT = process.env.PORT || 3000;

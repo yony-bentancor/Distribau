@@ -1,0 +1,97 @@
+<!-- public/crear-componente.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>ADMINISTRADOR</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 2rem;
+      background: #f3f3f3;
+    }
+    form {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 10px;
+      max-width: 400px;
+      margin: auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    input, button {
+      display: block;
+      width: 100%;
+      margin-bottom: 1rem;
+      padding: 0.5rem;
+      font-size: 1rem;
+    }
+  </style>
+  <script>
+  async function cargarComponentes() {
+    const res = await fetch("/componentes");
+    const componentes = await res.json();
+
+    const tbody = document.querySelector("#tabla-componentes tbody");
+    tbody.innerHTML = "";
+
+    componentes.forEach((c) => {
+      const fila = document.createElement("tr");
+      fila.innerHTML = `
+        <td>${c.nombre}</td>
+        <td>${c.puntaje}</td>
+        <td>
+          <button onclick="editarComponente('${c._id}', '${c.nombre}', ${c.puntaje})">Editar</button>
+          <button onclick="eliminarComponente('${c._id}')">Eliminar</button>
+        </td>
+      `;
+      tbody.appendChild(fila);
+    });
+  }
+
+  async function eliminarComponente(id) {
+    if (confirm("¿Eliminar este componente?")) {
+      await fetch(`/componentes/${id}`, { method: "DELETE" });
+      cargarComponentes();
+    }
+  }
+
+  function editarComponente(id, nombre, puntaje) {
+    const nuevoNombre = prompt("Nuevo nombre:", nombre);
+    const nuevoPuntaje = prompt("Nuevo puntaje:", puntaje);
+
+    if (nuevoNombre && nuevoPuntaje) {
+      fetch(`/componentes/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ nombre: nuevoNombre, puntaje: parseInt(nuevoPuntaje) }),
+      }).then(() => cargarComponentes());
+    }
+  }
+
+  // Cargar al abrir la página
+  window.onload = cargarComponentes;
+</script>
+</head>
+<body>
+  <h2>Crear nuevo componente</h2>
+  <form action="/componentes" method="POST">
+    <input type="text" name="nombre" placeholder="Nombre del componente" required>
+    <input type="number" name="puntaje" placeholder="Puntaje" required>
+    <button type="submit">Guardar</button>
+  </form>
+
+  <h2>Listado de componentes</h2>
+<table id="tabla-componentes" border="1" style="width:100%; margin-top:1rem;">
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Puntaje</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+</body>
+</html>
