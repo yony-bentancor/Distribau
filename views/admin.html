@@ -56,18 +56,21 @@
     }
   }
 
-  function editarComponente(id, nombre, puntaje) {
-    const nuevoNombre = prompt("Nuevo nombre:", nombre);
-    const nuevoPuntaje = prompt("Nuevo puntaje:", puntaje);
+function editarComponente(id, nombre, puntaje) {
+  const nuevoNombre = prompt("Nuevo nombre:", nombre);
+  const nuevoPuntaje = prompt("Nuevo puntaje:", puntaje);
 
-    if (nuevoNombre && nuevoPuntaje) {
-      fetch(`/componentes/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ nombre: nuevoNombre, puntaje: parseInt(nuevoPuntaje) }),
-      }).then(() => cargarComponentes());
-    }
+  if (nuevoNombre && nuevoPuntaje) {
+    fetch(`/componentes/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        nombre: nuevoNombre,
+        puntaje: parseFloat(nuevoPuntaje) // ✅ ahora acepta decimales
+      }),
+    }).then(() => cargarComponentes());
   }
+}
 
   // Cargar al abrir la página
   window.onload = cargarComponentes;
