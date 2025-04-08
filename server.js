@@ -10,6 +10,7 @@ const requireAuth = require("./middlewares/auth");
 const componentesRoutes = require("./routes/componentes");
 const stockRoutes = require("./routes/stock");
 const userRoutes = require("./routes/user"); // ESTE es el que carga la vista del técnico
+const movimientosRoutes = require("./routes/movimientos");
 
 dotenv.config();
 
@@ -40,6 +41,7 @@ app.set("views", path.join(__dirname, "views"));
 
 // Rutas
 app.use("/", authRoutes);
+app.use("/", movimientosRoutes);
 app.use("/", stockRoutes);
 app.use("/", userRoutes);
 app.use("/", componentesRoutes);

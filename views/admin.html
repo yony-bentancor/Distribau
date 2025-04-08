@@ -121,16 +121,29 @@
     <tbody></tbody>
   </table>
 
-  <h2>Transferencia de stock a técnicos</h2>
-  <form id="form-transferencia">
-    <select id="tecnico" name="tecnico" required></select>
-    <select id="componente" name="componente" required></select>
-    <input type="number" name="cantidad" id="cantidad" min="1" required>
-    <button type="submit">Transferir stock</button>
-  </form>
+<h2>Transferencia de stock</h2>
+<form id="form-transferencia-multiple">
+  <label>Origen</label>
+  <select id="origen" required>
+    <option value="bodega_central">Bodega Central</option>
+    <!-- técnicos se cargan dinámicamente -->
+  </select>
 
-  <h3>Bodegas por técnico</h3>
-  <div id="bodegas-tecnicos"></div>
+  <label>Destino</label>
+  <select id="destino" required>
+    <!-- técnicos se cargan dinámicamente -->
+  </select>
+
+  <div id="componentes-transferencia">
+    <!-- aquí van los campos dinámicos -->
+  </div>
+
+  <button type="button" onclick="agregarLineaComponente()">➕ Agregar Componente</button>
+  <br><br>
+  <textarea id="comentario" placeholder="Comentario (opcional)" rows="2" style="width:100%"></textarea>
+  <button type="submit">Transferir</button>
+</form>
+
 </div>
 
 <script>
@@ -145,55 +158,54 @@
   }
 
   async function cargarComponentes() {
-  const res = await fetch("/componentes");
-  const componentes = await res.json();
+    const res = await fetch("/componentes");
+    const componentes = await res.json();
 
-  const tbody = document.querySelector("#tabla-componentes tbody");
-  tbody.innerHTML = "";
+    const tbody = document.querySelector("#tabla-componentes tbody");
+    tbody.innerHTML = "";
 
-  componentes.forEach((c) => {
-    const fila = document.createElement("tr");
-    fila.innerHTML = `
-      <td>${c.nombre}</td>
-      <td>${c.puntaje}</td>
-      <td>
-        <input type="number" step="1" min="0" id="stock-${c._id}" value="${c.stock || 0}" style="width:80px;"> 
-        <button onclick="guardarStockCentral('${c._id}')">💾</button>
-      </td>
-      <td>
-        <button onclick="editarComponente('${c._id}', '${c.nombre}', ${c.puntaje})">Editar</button>
-        <button onclick="eliminarComponente('${c._id}')">Eliminar</button>
-      </td>
-    `;
-    tbody.appendChild(fila);
-  });
-}
-async function guardarStockCentral(id) {
-  const input = document.getElementById(`stock-${id}`);
-  const nuevoStock = parseInt(input.value);
-
-  if (isNaN(nuevoStock) || nuevoStock < 0) {
-    mostrarAlerta("❌ Stock inválido", "error");
-    return;
+    componentes.forEach((c) => {
+      const fila = document.createElement("tr");
+      fila.innerHTML = `
+        <td>${c.nombre}</td>
+        <td>${c.puntaje}</td>
+        <td>
+          <input type="number" step="1" min="0" id="stock-${c._id}" value="${c.stock || 0}" style="width:80px;"> 
+          <button onclick="guardarStockCentral('${c._id}')">💾</button>
+        </td>
+        <td>
+          <button onclick="editarComponente('${c._id}', '${c.nombre}', ${c.puntaje})">Editar</button>
+          <button onclick="eliminarComponente('${c._id}')">Eliminar</button>
+        </td>
+      `;
+      tbody.appendChild(fila);
+    });
   }
 
-  const res = await fetch(`/actualizar-stock-central/${id}`, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ stock: nuevoStock })
-  });
+  async function guardarStockCentral(id) {
+    const input = document.getElementById(`stock-${id}`);
+    const nuevoStock = parseInt(input.value);
 
-  if (res.ok) {
-    mostrarAlerta("✅ Stock central actualizado");
-    cargarTecnicosYComponentes();
-    cargarBodegasUsuarios();
-  } else {
-    const msg = await res.text();
-    mostrarAlerta("⚠️ " + msg, "error");
+    if (isNaN(nuevoStock) || nuevoStock < 0) {
+      mostrarAlerta("❌ Stock inválido", "error");
+      return;
+    }
+
+    const res = await fetch(`/actualizar-stock-central/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ stock: nuevoStock })
+    });
+
+    if (res.ok) {
+      mostrarAlerta("✅ Stock central actualizado");
+      cargarTecnicosParaTransferencia();
+      cargarBodegasUsuarios();
+    } else {
+      const msg = await res.text();
+      mostrarAlerta("⚠️ " + msg, "error");
+    }
   }
-}
-
-
 
   async function eliminarComponente(id) {
     if (confirm("¿Eliminar este componente?")) {
@@ -219,35 +231,6 @@ async function guardarStockCentral(id) {
     } else {
       mostrarAlerta("❌ Datos inválidos", "error");
     }
-  }
-
-  async function cargarTecnicosYComponentes() {
-    const [tecnicosRes, componentesRes] = await Promise.all([
-      fetch("/usuarios-tecnicos"),
-      fetch("/componentes")
-    ]);
-    const tecnicos = await tecnicosRes.json();
-    const componentes = await componentesRes.json();
-
-    const tecnicoSelect = document.getElementById("tecnico");
-    const componenteSelect = document.getElementById("componente");
-
-    tecnicoSelect.innerHTML = "";
-    componenteSelect.innerHTML = "";
-
-    tecnicos.forEach((t) => {
-      const option = document.createElement("option");
-      option.value = t._id;
-      option.textContent = t.username;
-      tecnicoSelect.appendChild(option);
-    });
-
-    componentes.forEach((c) => {
-      const option = document.createElement("option");
-      option.value = c._id;
-      option.textContent = `${c.nombre} (Stock: ${c.stock})`;
-      componenteSelect.appendChild(option);
-    });
   }
 
   async function cargarBodegasUsuarios() {
@@ -286,30 +269,95 @@ async function guardarStockCentral(id) {
       mostrarAlerta("✅ Componente creado correctamente");
       this.reset();
       cargarComponentes();
-      cargarTecnicosYComponentes();
+      cargarTecnicosParaTransferencia();
     } else {
       const msg = await res.text();
       mostrarAlerta("⚠️ " + msg, "error");
     }
   });
 
-  document.getElementById("form-transferencia").addEventListener("submit", async function (e) {
+  // ---------------- NUEVO SISTEMA DE TRANSFERENCIA MÚLTIPLE ----------------
+
+  let todosLosComponentes = [];
+
+  async function cargarTecnicosParaTransferencia() {
+    const res = await fetch("/usuarios-tecnicos");
+    const tecnicos = await res.json();
+
+    const origen = document.getElementById("origen");
+    const destino = document.getElementById("destino");
+
+    origen.innerHTML = `<option value="bodega_central">Bodega Central</option>`;
+    destino.innerHTML = "";
+
+    tecnicos.forEach((t) => {
+      const opt = new Option(t.username, t._id);
+      origen.appendChild(opt.cloneNode(true));
+      destino.appendChild(opt);
+    });
+  }
+
+  async function agregarLineaComponente() {
+    if (todosLosComponentes.length === 0) {
+      const res = await fetch("/componentes");
+      todosLosComponentes = await res.json();
+    }
+
+    const div = document.createElement("div");
+    div.innerHTML = `
+      <select class="select-componente" required>
+        ${todosLosComponentes.map(c => `<option value="${c._id}">${c.nombre}</option>`).join("")}
+      </select>
+      <input type="number" min="1" class="cantidad-componente" placeholder="Cantidad" required style="width:100px;">
+      <button type="button" onclick="this.parentNode.remove()">❌</button>
+    `;
+    document.getElementById("componentes-transferencia").appendChild(div);
+  }
+
+  document.getElementById("form-transferencia-multiple").addEventListener("submit", async function (e) {
     e.preventDefault();
-    const userId = this.tecnico.value;
-    const componenteId = this.componente.value;
-    const cantidad = parseInt(this.cantidad.value);
-    if (!userId || !componenteId || isNaN(cantidad) || cantidad <= 0) return mostrarAlerta("❌ Datos inválidos", "error");
-    const res = await fetch("/transferir-stock", {
+
+    const origenValor = document.getElementById("origen").value;
+    const destinoValor = document.getElementById("destino").value;
+    const comentario = document.getElementById("comentario").value;
+
+    if (origenValor === destinoValor) {
+      return mostrarAlerta("❌ Origen y destino no pueden ser iguales", "error");
+    }
+
+    const origen = origenValor === "bodega_central" ? { tipo: "bodega", id: null } : { tipo: "usuario", id: origenValor };
+    const destino = destinoValor === "bodega_central" ? { tipo: "bodega", id: null } : { tipo: "usuario", id: destinoValor };
+
+    const selects = document.querySelectorAll(".select-componente");
+    const cantidades = document.querySelectorAll(".cantidad-componente");
+
+    const componentes = [];
+    for (let i = 0; i < selects.length; i++) {
+      const componenteId = selects[i].value;
+      const cantidad = parseInt(cantidades[i].value);
+      if (!componenteId || isNaN(cantidad) || cantidad <= 0) {
+        return mostrarAlerta("❌ Datos inválidos en la selección de componentes", "error");
+      }
+      componentes.push({ componenteId, cantidad });
+    }
+
+    if (componentes.length === 0) {
+      return mostrarAlerta("❌ Debes agregar al menos un componente", "error");
+    }
+
+    const res = await fetch("/transferir", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId, componenteId, cantidad })
+      body: JSON.stringify({ origen, destino, componentes, comentario })
     });
+
     if (res.ok) {
-      mostrarAlerta("📦 Stock transferido correctamente");
+      mostrarAlerta("✅ Transferencia realizada con éxito");
       cargarComponentes();
-      cargarTecnicosYComponentes();
+      cargarTecnicosParaTransferencia();
       cargarBodegasUsuarios();
       this.reset();
+      document.getElementById("componentes-transferencia").innerHTML = "";
     } else {
       const msg = await res.text();
       mostrarAlerta("⚠️ " + msg, "error");
@@ -318,9 +366,10 @@ async function guardarStockCentral(id) {
 
   window.onload = () => {
     cargarComponentes();
-    cargarTecnicosYComponentes();
+    cargarTecnicosParaTransferencia();
     cargarBodegasUsuarios();
   };
 </script>
+
 </body>
 </html>
