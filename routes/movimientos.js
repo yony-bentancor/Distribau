@@ -16,6 +16,51 @@ router.post("/transferir", async (req, res) => {
       return res.status(400).send("Datos incompletos o inválidos");
     }
 
+    router.get("/historial", async (req, res) => {
+      const movimientos = await Movimiento.find()
+        .sort({ fecha: -1 })
+        .populate("componentes.componente")
+        .populate("origen.id")
+        .populate("destino.id");
+
+      // Añadir nombres legibles
+      const parseados = movimientos.map((m) => ({
+        ...m.toObject(),
+        origenNombre:
+          m.origen.tipo === "usuario"
+            ? m.origen.id?.username
+            : "Bodega Central",
+        destinoNombre:
+          m.destino.tipo === "usuario"
+            ? m.destino.id?.username
+            : "Bodega Central",
+      }));
+
+      res.render("movimientos", { movimientos: parseados });
+    });
+
+    router.get("/historial", async (req, res) => {
+      const movimientos = await Movimiento.find()
+        .sort({ fecha: -1 })
+        .populate("componentes.componente")
+        .populate("origen.id")
+        .populate("destino.id");
+
+      const parseados = movimientos.map((m) => ({
+        ...m.toObject(),
+        origenNombre:
+          m.origen.tipo === "usuario"
+            ? m.origen.id?.username
+            : "Bodega Central",
+        destinoNombre:
+          m.destino.tipo === "usuario"
+            ? m.destino.id?.username
+            : "Bodega Central",
+      }));
+
+      res.render("movimientos", { movimientos: parseados });
+    });
+
     // Determinar si el origen y destino son usuarios o bodega
     const esBodega = (entidad) => entidad.tipo === "bodega";
     const obtenerBodega = async (usuarioId) =>

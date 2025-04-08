@@ -108,13 +108,14 @@
     <input type="number" name="puntaje" step="0.01" placeholder="Puntaje" required>
     <button type="submit">Guardar</button>
   </form>
+<a href="/historial" target="_blank" style="display:block;margin-top:2rem;text-align:center;">📖 Ver historial de movimientos</a>
 
   <h2>Listado de componentes</h2>
   <table id="tabla-componentes">
     <thead>
     <tr>
       <th>Nombre</th>
-      <th>Puntaje</th>
+    
       <th>STOCK EN BODEGA</th>
     </tr>
     </thead>
@@ -169,7 +170,7 @@
       const fila = document.createElement("tr");
       fila.innerHTML = `
         <td>${c.nombre}</td>
-        <td>${c.puntaje}</td>
+   
         <td>
           <input type="number" step="1" min="0" id="stock-${c._id}" value="${c.stock || 0}" style="width:80px;"> 
           <button onclick="guardarStockCentral('${c._id}')">💾</button>
@@ -288,8 +289,9 @@
     const origen = document.getElementById("origen");
     const destino = document.getElementById("destino");
 
-    origen.innerHTML = `<option value="bodega_central">Bodega Central</option>`;
-    destino.innerHTML = "";
+   origen.innerHTML = `<option value="bodega_central">Bodega Central</option>`;
+  destino.innerHTML = `<option value="bodega_central">Bodega Central</option>`; // <-- agregá esta línea
+
 
     tecnicos.forEach((t) => {
       const opt = new Option(t.username, t._id);
@@ -307,7 +309,8 @@
     const div = document.createElement("div");
     div.innerHTML = `
       <select class="select-componente" required>
-        ${todosLosComponentes.map(c => `<option value="${c._id}">${c.nombre}</option>`).join("")}
+        ${todosLosComponentes.map(c => `<option value="${c._id}">${c.nombre}(Stock: ${c.stock ?? 0})</option>`).join("")}   
+      
       </select>
       <input type="number" min="1" class="cantidad-componente" placeholder="Cantidad" required style="width:100px;">
       <button type="button" onclick="this.parentNode.remove()">❌</button>

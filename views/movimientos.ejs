@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Historial de Movimientos</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body { font-family: Arial, sans-serif; background: #f4f4f4; padding: 2rem; }
+    table { width: 100%; border-collapse: collapse; background: white; }
+    th, td { padding: 0.8rem; border: 1px solid #ccc; text-align: left; }
+    th { background: #eee; }
+    h2 { text-align: center; margin-bottom: 2rem; }
+    ul { margin: 0; padding-left: 1rem; }
+  </style>
+</head>
+<body>
+  <h2>📋 Historial de Movimientos</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Fecha</th>
+        <th>Origen</th>
+        <th>Destino</th>
+        <th>Componentes</th>
+        <th>Comentario</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% movimientos.forEach(m => { %>
+        <tr>
+          <td><%= new Date(m.fecha).toLocaleString() %></td>
+          <td><%= m.origen.tipo === 'bodega' ? 'Bodega Central' : m.origenNombre %></td>
+          <td><%= m.destino.tipo === 'bodega' ? 'Bodega Central' : m.destinoNombre %></td>
+          <td>
+            <ul>
+              <% m.componentes.forEach(c => { %>
+                <li><%= c.componente.nombre %> (x<%= c.cantidad %>)</li>
+              <% }) %>
+            </ul>
+          </td>
+          <td><%= m.comentario || '' %></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</body>
+</html>
