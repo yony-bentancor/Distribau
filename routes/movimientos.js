@@ -8,6 +8,7 @@ const User = require("../models/User");
 
 // POST /transferir
 router.post("/transferir", async (req, res) => {
+  console.log("📥 BODY RECIBIDO:", JSON.stringify(req.body, null, 2));
   try {
     const { origen, destino, componentes, comentario } = req.body;
 
