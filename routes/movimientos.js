@@ -54,7 +54,7 @@ router.post("/transferir", async (req, res) => {
             : "Bodega Central",
       }));
 
-      const tecnicos = await User.find(); // para el combo
+      const tecnicos = await User.find();
       const componentes = await Componente.find();
 
       res.render("movimientos", {
