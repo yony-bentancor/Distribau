@@ -5,6 +5,7 @@ const BodegaUsuario = require("../models/BodegaUsuario");
 const Componente = require("../models/Componente");
 const Movimiento = require("../models/Movimiento");
 const User = require("../models/User");
+const ExcelJS = require("exceljs");
 
 // POST /transferir
 router.post("/transferir", async (req, res) => {
@@ -17,13 +18,30 @@ router.post("/transferir", async (req, res) => {
     }
 
     router.get("/historial", async (req, res) => {
-      const movimientos = await Movimiento.find()
+      const { tecnico, componente, desde, hasta } = req.query;
+
+      const filtro = {};
+
+      if (desde || hasta) {
+        filtro.fecha = {};
+        if (desde) filtro.fecha.$gte = new Date(desde);
+        if (hasta) filtro.fecha.$lte = new Date(hasta + "T23:59:59");
+      }
+
+      if (tecnico) {
+        filtro.$or = [{ "origen.id": tecnico }, { "destino.id": tecnico }];
+      }
+
+      if (componente) {
+        filtro["componentes.componente"] = componente;
+      }
+
+      const movimientos = await Movimiento.find(filtro)
         .sort({ fecha: -1 })
         .populate("componentes.componente")
         .populate("origen.id")
         .populate("destino.id");
 
-      // Añadir nombres legibles
       const parseados = movimientos.map((m) => ({
         ...m.toObject(),
         origenNombre:
@@ -36,29 +54,86 @@ router.post("/transferir", async (req, res) => {
             : "Bodega Central",
       }));
 
-      res.render("movimientos", { movimientos: parseados });
+      const tecnicos = await User.find(); // para el combo
+      const componentes = await Componente.find();
+
+      res.render("movimientos", {
+        movimientos: parseados,
+        tecnicos,
+        componentes,
+        tecnicoSeleccionado: tecnico,
+        componenteSeleccionado: componente,
+        desde,
+        hasta,
+      });
     });
 
-    router.get("/historial", async (req, res) => {
-      const movimientos = await Movimiento.find()
+    router.get("/exportar-excel", async (req, res) => {
+      const { tecnico, componente, desde, hasta } = req.query;
+
+      const filtro = {};
+
+      if (desde || hasta) {
+        filtro.fecha = {};
+        if (desde) filtro.fecha.$gte = new Date(desde);
+        if (hasta) filtro.fecha.$lte = new Date(hasta + "T23:59:59");
+      }
+
+      if (tecnico) {
+        filtro.$or = [{ "origen.id": tecnico }, { "destino.id": tecnico }];
+      }
+
+      if (componente) {
+        filtro["componentes.componente"] = componente;
+      }
+
+      const movimientos = await Movimiento.find(filtro)
         .sort({ fecha: -1 })
         .populate("componentes.componente")
         .populate("origen.id")
         .populate("destino.id");
 
-      const parseados = movimientos.map((m) => ({
-        ...m.toObject(),
-        origenNombre:
-          m.origen.tipo === "usuario"
-            ? m.origen.id?.username
-            : "Bodega Central",
-        destinoNombre:
-          m.destino.tipo === "usuario"
-            ? m.destino.id?.username
-            : "Bodega Central",
-      }));
+      // Crear archivo Excel
+      const workbook = new ExcelJS.Workbook();
+      const worksheet = workbook.addWorksheet("Historial de movimientos");
 
-      res.render("movimientos", { movimientos: parseados });
+      worksheet.columns = [
+        { header: "Fecha", key: "fecha", width: 22 },
+        { header: "Origen", key: "origen", width: 20 },
+        { header: "Destino", key: "destino", width: 20 },
+        { header: "Componentes", key: "componentes", width: 40 },
+        { header: "Comentario", key: "comentario", width: 30 },
+      ];
+
+      movimientos.forEach((m) => {
+        worksheet.addRow({
+          fecha: new Date(m.fecha).toLocaleString(),
+          origen:
+            m.origen.tipo === "bodega"
+              ? "Bodega Central"
+              : m.origen.id?.username,
+          destino:
+            m.destino.tipo === "bodega"
+              ? "Bodega Central"
+              : m.destino.id?.username,
+          componentes: m.componentes
+            .map((c) => `${c.componente?.nombre} (x${c.cantidad})`)
+            .join(", "),
+          comentario: m.comentario || "",
+        });
+      });
+
+      res.setHeader(
+        "Content-Disposition",
+        "attachment; filename=historial_movimientos.xlsx"
+      );
+      res.setHeader(
+        "Content-Type",
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      );
+
+      await workbook.xlsx.write(res);
+      res.end();
     });
 
     // Determinar si el origen y destino son usuarios o bodega

@@ -122,6 +122,10 @@
     <tbody></tbody>
   </table>
 
+  <h3>Bodegas por técnico</h3>
+<div id="bodegas-tecnicos"></div>
+
+
 <h2>Transferencia de stock</h2>
 <form id="form-transferencia-multiple">
 
@@ -235,48 +239,38 @@
     }
   }
 
-  async function cargarBodegasUsuarios() {
-    const res = await fetch("/bodegas-usuarios");
-    const bodegas = await res.json();
-    const contenedor = document.getElementById("bodegas-tecnicos");
-    contenedor.innerHTML = "";
-    bodegas.forEach((b) => {
-      const div = document.createElement("div");
-      div.style.marginBottom = "1rem";
-      div.style.background = "#fff";
-      div.style.padding = "1rem";
-      div.style.borderRadius = "10px";
-      div.style.boxShadow = "0 2px 6px rgba(0,0,0,0.05)";
-      let html = `<strong>${b.usuario.username}</strong><ul>`;
+async function cargarBodegasUsuarios() {
+  const res = await fetch("/bodegas-usuarios");
+  const bodegas = await res.json();
+  const contenedor = document.getElementById("bodegas-tecnicos");
+  contenedor.innerHTML = "";
+
+  bodegas.forEach((b) => {
+    const div = document.createElement("div");
+    div.style.marginBottom = "1.5rem";
+    div.style.background = "#fff";
+    div.style.padding = "1rem";
+    div.style.borderRadius = "10px";
+    div.style.boxShadow = "0 2px 6px rgba(0,0,0,0.05)";
+    div.style.borderLeft = "6px solid #0066cc";
+
+    let html = `<h4>👷 ${b.usuario.username}</h4>`;
+    if (b.componentes.length === 0) {
+      html += "<p style='color:#999;'>Sin componentes</p>";
+    } else {
+      html += "<ul>";
       b.componentes.forEach((c) => {
-        html += `<li>${c.componente.nombre}: ${c.cantidad}</li>`;
+        html += `<li>${c.componente.nombre}: <strong>${c.cantidad}</strong></li>`;
       });
       html += "</ul>";
-      div.innerHTML = html;
-      contenedor.appendChild(div);
-    });
-  }
-
-  document.getElementById("form-componente").addEventListener("submit", async function (e) {
-    e.preventDefault();
-    const nombre = this.nombre.value.trim();
-    const puntaje = parseFloat(this.puntaje.value);
-    if (!nombre || isNaN(puntaje)) return mostrarAlerta("❌ Datos inválidos", "error");
-    const res = await fetch("/componentes", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams({ nombre, puntaje }),
-    });
-    if (res.ok) {
-      mostrarAlerta("✅ Componente creado correctamente");
-      this.reset();
-      cargarComponentes();
-      cargarTecnicosParaTransferencia();
-    } else {
-      const msg = await res.text();
-      mostrarAlerta("⚠️ " + msg, "error");
     }
+
+    div.innerHTML = html;
+    contenedor.appendChild(div);
   });
+}
+
+
 
   // ---------------- NUEVO SISTEMA DE TRANSFERENCIA MÚLTIPLE ----------------
 

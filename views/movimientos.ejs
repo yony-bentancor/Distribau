@@ -15,6 +15,35 @@
 </head>
 <body>
   <h2>📋 Historial de Movimientos</h2>
+  <h2>📋 Historial de Movimientos</h2>
+
+<form method="GET" style="margin-bottom: 2rem;">
+  <label for="tecnico">Técnico:</label>
+  <select name="tecnico" id="tecnico">
+    <option value="">-- Todos --</option>
+    <% tecnicos.forEach(t => { %>
+      <option value="<%= t._id %>" <%= tecnicoSeleccionado == t._id ? 'selected' : '' %>><%= t.username %></option>
+    <% }) %>
+  </select>
+
+  <label for="componente">Componente:</label>
+  <select name="componente" id="componente">
+    <option value="">-- Todos --</option>
+    <% componentes.forEach(c => { %>
+      <option value="<%= c._id %>" <%= componenteSeleccionado == c._id ? 'selected' : '' %>><%= c.nombre %></option>
+    <% }) %>
+  </select>
+
+  <label for="desde">Desde:</label>
+  <input type="date" name="desde" id="desde" value="<%= desde || '' %>">
+
+  <label for="hasta">Hasta:</label>
+  <input type="date" name="hasta" id="hasta" value="<%= hasta || '' %>">
+
+  <button type="submit">🔍 Filtrar</button>
+</form>
+<a href="/exportar-excel?<%= `tecnico=${tecnicoSeleccionado || ""}&componente=${componenteSeleccionado || ""}&desde=${desde || ""}&hasta=${hasta || ""}` %>" style="display:inline-block;margin-bottom:1rem;padding:0.5rem 1rem;background:#28a745;color:#fff;text-decoration:none;border-radius:5px;">⬇️ Exportar a Excel</a>
+
   <table>
     <thead>
       <tr>
