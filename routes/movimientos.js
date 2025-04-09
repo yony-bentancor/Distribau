@@ -5,6 +5,11 @@ const Componente = require("../models/Componente");
 const Movimiento = require("../models/Movimiento");
 const User = require("../models/User");
 const ExcelJS = require("exceljs");
+const twilio = require("twilio");
+const client = twilio(
+  process.env.TWILIO_ACCOUNT_SID,
+  process.env.TWILIO_AUTH_TOKEN
+);
 
 // ------------------- RUTA GET /historial -------------------
 router.get("/historial", async (req, res) => {
@@ -212,6 +217,38 @@ router.post("/transferir", async (req, res) => {
     });
 
     await nuevoMovimiento.save();
+
+    const twilio = require("twilio");
+    const client = twilio(
+      process.env.TWILIO_ACCOUNT_SID,
+      process.env.TWILIO_AUTH_TOKEN
+    );
+
+    if (destino.tipo === "usuario") {
+      const tecnico = await User.findById(destino.id);
+      const componentesDetalle = componentes.map(async (c) => {
+        const comp = await Componente.findById(c.componenteId);
+        return `- ${comp.nombre} (x${c.cantidad})`;
+      });
+
+      const lista = (await Promise.all(componentesDetalle)).join("\n");
+
+      const mensaje = `📦 ¡Hola ${
+        tecnico.username
+      }!\nSe te asignaron los siguientes componentes:\n\n${lista}\n\n${
+        comentario ? "📝 Comentario: " + comentario : ""
+      }`;
+
+      if (tecnico.whatsapp) {
+        await client.messages.create({
+          from: process.env.TWILIO_WHATSAPP_FROM,
+          to: `whatsapp:${tecnico.whatsapp}`,
+          body: mensaje,
+        });
+
+        console.log("✅ WhatsApp enviado a", tecnico.username);
+      }
+    }
 
     res.status(200).send("Transferencia y registro completados ✅");
   } catch (err) {
