@@ -22,6 +22,7 @@ router.get("/user", async (req, res) => {
     const bodega = await BodegaUsuario.findOne({ usuario: userId }).populate(
       "componentes.componente"
     );
+    const stockCentral = await Componente.find(); // trae toda la bodega central
 
     if (!bodega) {
       console.log("📭 Bodega vacía");
@@ -32,6 +33,7 @@ router.get("/user", async (req, res) => {
 
     res.render("user", {
       componentes: bodega.componentes,
+      stockCentral: stockCentral || [],
     });
   } catch (err) {
     console.error("❌ Error en /user:", err);
