@@ -26,7 +26,10 @@ router.get("/user", async (req, res) => {
 
     if (!bodega) {
       console.log("📭 Bodega vacía");
-      return res.render("user", { componentes: [] });
+      return res.render("user", {
+        componentes: [],
+        stockCentral: stockCentral || [],
+      });
     }
 
     console.log("📦 Componentes encontrados:", bodega.componentes.length);
