@@ -24,6 +24,8 @@ router.get("/user", async (req, res) => {
       "componentes.componente"
     );
     const stockCentral = await Componente.find(); // trae toda la bodega central
+    console.log("✅ Bodega Central cargada:");
+    console.log(stockCentral);
 
     if (!bodega) {
       console.log("📭 Bodega vacía");
