@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const BodegaUsuario = require("../models/BodegaUsuario");
+const Componente = require("../models/Componente");
 
 router.get("/user", async (req, res) => {
   if (!req.session.user) {
