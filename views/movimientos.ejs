@@ -93,7 +93,7 @@
       const confirmar = confirm("⚠️ ¿Estás seguro de que querés borrar TODO el historial?");
       if (!confirmar) return;
   
-      const res = await fetch("/movimientos", {
+      const res = await fetch("/historial", {
         method: "DELETE"
       });
   
