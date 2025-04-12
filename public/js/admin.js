@@ -1,4 +1,4 @@
-// admin.js
+// admin.js actualizado
 
 function mostrarAlerta(mensaje, tipo = "success") {
   const alerta = document.getElementById("alerta");
@@ -17,47 +17,25 @@ async function cargarComponentes() {
   const tbody = document.querySelector("#tabla-componentes tbody");
   tbody.innerHTML = "";
 
+  // Obtener stock central desde backend
+  const stockRes = await fetch("/bodega-central");
+  const stockCentral = await stockRes.json();
+
   componentes.forEach((c) => {
+    const enStock = stockCentral.find((s) => s.componente._id === c._id);
+    const cantidad = enStock ? enStock.cantidad : 0;
+
     const fila = document.createElement("tr");
     fila.innerHTML = `
-        <td>${c.nombre}</td>
-        <td>
-          <input type="number" step="1" min="0" id="stock-${c._id}" value="${
-      c.stock || 0
-    }" style="width:80px;">
-          <button onclick="guardarStockCentral('${c._id}')"></button>
-        </td>
-        <td>
-          <button onclick="editarComponente('${c._id}', '${c.nombre}', ${
-      c.puntaje
-    })"></button>
-          <button onclick="eliminarComponente('${c._id}')"></button>
-        </td>
-      `;
+      <td>${c.nombre}</td>
+      <td>${cantidad}</td>
+      <td>
+        <button onclick="editarComponente('${c._id}', '${c.nombre}', ${c.puntosInstalacion}, ${c.puntosConexion})">✏️</button>
+        <button onclick="eliminarComponente('${c._id}')">🗑️</button>
+      </td>
+    `;
     tbody.appendChild(fila);
   });
-}
-
-async function guardarStockCentral(id) {
-  const input = document.getElementById(`stock-${id}`);
-  const nuevoStock = parseInt(input.value);
-  if (isNaN(nuevoStock) || nuevoStock < 0) {
-    mostrarAlerta("❌ Stock inválido", "error");
-    return;
-  }
-  const res = await fetch(`/actualizar-stock-central/${id}`, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ stock: nuevoStock }),
-  });
-  if (res.ok) {
-    mostrarAlerta("✅ Stock central actualizado");
-    cargarTecnicosParaTransferencia();
-    cargarBodegasUsuarios();
-  } else {
-    const msg = await res.text();
-    mostrarAlerta("⚠️ " + msg, "error");
-  }
 }
 
 async function eliminarComponente(id) {
@@ -68,15 +46,22 @@ async function eliminarComponente(id) {
   }
 }
 
-function editarComponente(id, nombre, puntaje) {
+function editarComponente(id, nombre, puntosInstalacion, puntosConexion) {
   const nuevoNombre = prompt("Nuevo nombre:", nombre);
-  const nuevoPuntaje = prompt("Nuevo puntaje:", puntaje);
-  const puntajeFloat = parseFloat(nuevoPuntaje);
-  if (!isNaN(puntajeFloat) && nuevoNombre) {
+  const nuevoPI = prompt("Nuevo puntaje instalación:", puntosInstalacion);
+  const nuevoPC = prompt("Nuevo puntaje conexión:", puntosConexion);
+  const piFloat = parseFloat(nuevoPI);
+  const pcFloat = parseFloat(nuevoPC);
+
+  if (!isNaN(piFloat) && !isNaN(pcFloat) && nuevoNombre) {
     fetch(`/componentes/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ nombre: nuevoNombre, puntaje: puntajeFloat }),
+      body: JSON.stringify({
+        nombre: nuevoNombre,
+        puntosInstalacion: piFloat,
+        puntosConexion: pcFloat,
+      }),
     }).then(() => {
       mostrarAlerta("✅ Componente actualizado correctamente");
       cargarComponentes();
@@ -133,12 +118,7 @@ async function agregarLineaComponente() {
   div.innerHTML = `
       <select class="select-componente" required>
         ${todosLosComponentes
-          .map(
-            (c) =>
-              `<option value="${c._id}">${c.nombre} (Stock: ${
-                c.stock ?? 0
-              })</option>`
-          )
+          .map((c) => `<option value="${c._id}">${c.nombre}</option>`)
           .join("")}
       </select>
       <input type="number" min="1" class="cantidad-componente" placeholder="Cantidad" required>
@@ -147,61 +127,84 @@ async function agregarLineaComponente() {
   document.getElementById("componentes-transferencia").appendChild(div);
 }
 
-document
-  .getElementById("form-transferencia-multiple")
-  .addEventListener("submit", async function (e) {
-    e.preventDefault();
-    const origenValor = document.getElementById("origen").value;
-    const destinoValor = document.getElementById("destino").value;
-    const comentario = document.getElementById("comentario").value;
-    if (origenValor === destinoValor) {
-      return mostrarAlerta(
-        "❌ Origen y destino no pueden ser iguales",
-        "error"
-      );
-    }
-    const origen =
-      origenValor === "bodega_central"
-        ? { tipo: "bodega", id: null }
-        : { tipo: "usuario", id: origenValor };
-    const destino =
-      destinoValor === "bodega_central"
-        ? { tipo: "bodega", id: null }
-        : { tipo: "usuario", id: destinoValor };
-    const selects = document.querySelectorAll(".select-componente");
-    const cantidades = document.querySelectorAll(".cantidad-componente");
-    const componentes = [];
-    for (let i = 0; i < selects.length; i++) {
-      const componenteId = selects[i].value;
-      const cantidad = parseInt(cantidades[i].value);
-      if (!componenteId || isNaN(cantidad) || cantidad <= 0) {
-        return mostrarAlerta(
-          "❌ Datos inválidos en la selección de componentes",
-          "error"
-        );
-      }
-      componentes.push({ componenteId, cantidad });
-    }
-    if (componentes.length === 0) {
-      return mostrarAlerta("❌ Debes agregar al menos un componente", "error");
-    }
-    const res = await fetch("/transferir", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ origen, destino, componentes, comentario }),
-    });
-    if (res.ok) {
-      mostrarAlerta("✅ Transferencia realizada con éxito");
-      cargarComponentes();
-      cargarTecnicosParaTransferencia();
-      cargarBodegasUsuarios();
-      this.reset();
-      document.getElementById("componentes-transferencia").innerHTML = "";
-    } else {
-      const msg = await res.text();
-      mostrarAlerta("⚠️ " + msg, "error");
-    }
+// Crear nuevo componente
+const formComp = document.getElementById("form-componente");
+formComp.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const datos = Object.fromEntries(new FormData(formComp));
+  const body = {
+    nombre: datos.nombre,
+    puntosInstalacion: parseFloat(datos.puntosInstalacion),
+    puntosConexion: parseFloat(datos.puntosConexion),
+  };
+  const res = await fetch("/componentes", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
   });
+  if (res.ok) {
+    mostrarAlerta("✅ Componente creado correctamente");
+    formComp.reset();
+    cargarComponentes();
+  } else {
+    mostrarAlerta("❌ Error al crear componente", "error");
+  }
+});
+
+// Envío de transferencia
+const formTrans = document.getElementById("form-transferencia-multiple");
+formTrans.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const origenId = document.getElementById("origen").value;
+  const destinoId = document.getElementById("destino").value;
+  const comentario = document.getElementById("comentario").value;
+
+  if (origenId === destinoId) {
+    return mostrarAlerta("❌ Origen y destino no pueden ser iguales", "error");
+  }
+
+  const selects = document.querySelectorAll(".select-componente");
+  const cantidades = document.querySelectorAll(".cantidad-componente");
+  const componentes = {};
+  for (let i = 0; i < selects.length; i++) {
+    const compId = selects[i].value;
+    const cantidad = parseInt(cantidades[i].value);
+    if (!compId || isNaN(cantidad) || cantidad <= 0) {
+      return mostrarAlerta("❌ Componentes inválidos", "error");
+    }
+    componentes[compId] = cantidad;
+  }
+
+  let url = "/transferencias";
+  let body;
+  if (origenId === "bodega_central") {
+    url += "/a-tecnico";
+    body = { tecnicoId: destinoId, componentes };
+  } else if (destinoId === "bodega_central") {
+    url += "/devolucion";
+    body = { tecnicoId: origenId, componentes };
+  } else {
+    url += "/entre-tecnicos";
+    body = { origenId, destinoId, componentes };
+  }
+
+  const res = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+
+  if (res.ok) {
+    mostrarAlerta("✅ Transferencia realizada correctamente");
+    formTrans.reset();
+    document.getElementById("componentes-transferencia").innerHTML = "";
+    cargarComponentes();
+    cargarBodegasUsuarios();
+  } else {
+    const msg = await res.text();
+    mostrarAlerta("⚠️ " + msg, "error");
+  }
+});
 
 window.onload = () => {
   cargarComponentes();

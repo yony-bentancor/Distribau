@@ -11,6 +11,8 @@ const componentesRoutes = require("./routes/componentes");
 const stockRoutes = require("./routes/stock");
 const userRoutes = require("./routes/user"); // ESTE es el que carga la vista del técnico
 const movimientosRoutes = require("./routes/movimientos");
+const almacenRoutes = require("./routes/almacen");
+const transferenciasRoutes = require("./routes/transferencias");
 
 dotenv.config();
 
@@ -45,6 +47,8 @@ app.use("/", movimientosRoutes);
 app.use("/", stockRoutes);
 app.use("/", userRoutes);
 app.use("/", componentesRoutes);
+app.use("/almacen", almacenRoutes);
+app.use("/transferencias", transferenciasRoutes);
 
 // Ruta pública
 app.get("/", (req, res) => {

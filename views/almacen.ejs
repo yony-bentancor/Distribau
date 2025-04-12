@@ -1,0 +1,11 @@
+<h2>📥 Formulario de ingreso desde Almacén</h2>
+<form method="POST" action="/almacen">
+  <% componentes.forEach(c => { %>
+    <div style="margin-bottom: 10px;">
+      <label><strong><%= c.nombre %></strong>:</label>
+      <input type="number" name="<%= c._id %>" min="0" value="0" />
+      <span>(Pts instalación: <%= c.puntosInstalacion %>, conexión: <%= c.puntosConexion %>)</span>
+    </div>
+  <% }) %>
+  <button type="submit">Enviar a Bodega Central</button>
+</form>
