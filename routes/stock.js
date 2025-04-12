@@ -1,4 +1,7 @@
 // GET /bodegas-usuarios - devuelve bodegas de todos los técnicos, creando si no existen
+const express = require("express");
+const router = express.Router(); // ESTA LÍNEA FALTA O ESTÁ MAL UBICADA
+
 router.get("/bodegas-usuarios", async (req, res) => {
   try {
     const tecnicos = await User.find({ username: { $ne: "admin" } }).select(
