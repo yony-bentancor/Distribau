@@ -11,6 +11,16 @@ const client = twilio(
   process.env.TWILIO_AUTH_TOKEN
 );
 
+router.delete("/", async (req, res) => {
+  try {
+    await Movimiento.deleteMany({});
+    res.status(200).send("Historial eliminado");
+  } catch (err) {
+    console.error("❌ Error al borrar historial:", err);
+    res.status(500).send("Error al eliminar movimientos");
+  }
+});
+
 // ------------------- RUTA GET /historial -------------------
 router.get("/historial", async (req, res) => {
   const { tecnico, componente, desde, hasta } = req.query;

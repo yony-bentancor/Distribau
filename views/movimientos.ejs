@@ -12,10 +12,25 @@
     h2 { text-align: center; margin-bottom: 2rem; }
     ul { margin: 0; padding-left: 1rem; }
   </style>
+  <style>
+    .btn-rojo {
+      background-color: #dc3545;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      margin: 10px 0;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+  
+    .btn-rojo:hover {
+      background-color: #c82333;
+    }
+  </style>
 </head>
 <body>
   <h2>📋 Historial de Movimientos</h2>
-  <h2>📋 Historial de Movimientos</h2>
+
 
 <form method="GET" style="margin-bottom: 2rem;">
   <label for="tecnico">Técnico:</label>
@@ -72,5 +87,25 @@
       <% }) %>
     </tbody>
   </table>
+  <button onclick="borrarHistorial()" class="btn-rojo">🧹 Borrar historial de movimientos</button>
+  <script>
+    async function borrarHistorial() {
+      const confirmar = confirm("⚠️ ¿Estás seguro de que querés borrar TODO el historial?");
+      if (!confirmar) return;
+  
+      const res = await fetch("/movimientos", {
+        method: "DELETE"
+      });
+  
+      if (res.ok) {
+        alert("🧹 Historial eliminado correctamente");
+        location.reload(); // recargar la página para mostrar la tabla vacía
+      } else {
+        const msg = await res.text();
+        alert("❌ Error al borrar historial: " + msg);
+      }
+    }
+  </script>
+  
 </body>
 </html>
