@@ -322,6 +322,8 @@
       <tr><td colspan="4" style="text-align:center;">Seleccione un filtro para ver actividades</td></tr>
     </tbody>
   </table>
+  <div id="totalPuntos" style="text-align: right; margin-top: 0.5rem; font-weight: 600;"></div>
+
 </section>
   </div>
   <!-- Dentro del <script>... -->
@@ -404,7 +406,10 @@
     }
 
     tbody.innerHTML = "";
+    let totalPuntos = 0;
+
     actividades.forEach(a => {
+      totalPuntos += a.puntajeTotal;
       tbody.innerHTML += `
         <tr>
           <td>${a.numero}</td>
@@ -416,6 +421,8 @@
           </td>
         </tr>`;
     });
+
+    document.getElementById("totalPuntos").innerText = `🔢 Total puntos: ${totalPuntos.toFixed(2)}`;
   }
   window.onload = () => {
   cargarResumen("dia"); // Esto carga el resumen del día automáticamente
