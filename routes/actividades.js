@@ -80,54 +80,54 @@ router.post("/actividades", async (req, res) => {
   }
 });
 // GET /actividades/resumen?desde=YYYY-MM-DD&hasta=YYYY-MM-DD
-router.get("/resumen", async (req, res) => {
-  const userId = req.session.user?.id;
-  const periodo = req.query.periodo || "dia";
+// GET /actividades/resumen?periodo=dia|semana|mes
+router.get("/resumen", requireAuth, async (req, res) => {
+  const userId = req.session.user.id;
+  const { periodo } = req.query;
 
-  if (!userId) return res.status(401).send("No autorizado");
+  const inicio = new Date();
+  const fin = new Date();
 
-  const hoy = new Date();
-  let inicio;
-
-  if (periodo === "dia") {
-    inicio = new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate());
-  } else if (periodo === "semana") {
-    const diaSemana = hoy.getDay();
-    inicio = new Date(hoy);
-    inicio.setDate(hoy.getDate() - diaSemana);
+  if (periodo === "semana") {
+    const dia = inicio.getDay(); // 0 (domingo) a 6 (sábado)
+    inicio.setDate(inicio.getDate() - dia);
+    inicio.setHours(0, 0, 0, 0);
+    fin.setDate(inicio.getDate() + 6);
+    fin.setHours(23, 59, 59, 999);
   } else if (periodo === "mes") {
-    inicio = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
+    inicio.setDate(1);
+    inicio.setHours(0, 0, 0, 0);
+    fin.setMonth(inicio.getMonth() + 1, 0);
+    fin.setHours(23, 59, 59, 999);
   } else {
-    return res.status(400).send("Periodo inválido");
+    // "dia"
+    inicio.setHours(0, 0, 0, 0);
+    fin.setHours(23, 59, 59, 999);
   }
 
   try {
     const actividades = await Actividad.find({
       tecnico: userId,
-      fecha: { $gte: inicio },
+      fecha: { $gte: inicio, $lte: fin },
     }).populate("componentesUsados.componente");
 
-    const resumen = actividades.map((a) => {
-      const puntosComponentes = a.componentesUsados.reduce((total, item) => {
-        const pInst = item.componente?.puntosInstalacion || 0;
-        const pCon = item.componente?.puntosConexion || 0;
-        return total + item.cantidad * (pInst + pCon);
-      }, 0);
+    const formateadas = actividades.map((a) => ({
+      numero: a.numero,
+      tipo: a.tipo,
+      puntajeTotal: a.puntajeTotal,
+      detalle: {
+        componentes: a.componentesUsados.map(
+          (c) => `${c.componente?.nombre} x${c.cantidad}`
+        ),
+        km: a.km,
+        puntosKm: parseFloat((a.km * 0.03).toFixed(2)),
+      },
+    }));
 
-      const puntosKm = a.km * 0.03;
-      const total = puntosComponentes + puntosKm;
-
-      return {
-        numero: a.numero,
-        tipo: a.tipo,
-        puntaje: total.toFixed(2),
-      };
-    });
-
-    res.json(resumen);
+    res.json(formateadas);
   } catch (err) {
-    console.error("❌ Error al obtener resumen de actividades:", err);
-    res.status(500).send("Error al obtener resumen");
+    console.error("❌ Error al cargar resumen:", err);
+    res.status(500).json([]);
   }
 });
 
