@@ -43,7 +43,7 @@ app.set("views", path.join(__dirname, "views"));
 
 // Rutas
 app.use("/", authRoutes);
-app.use("/", movimientosRoutes);
+app.use("/movimientos", movimientosRoutes);
 app.use("/", stockRoutes);
 app.use("/", userRoutes);
 app.use("/", componentesRoutes);
