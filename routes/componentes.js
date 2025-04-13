@@ -3,16 +3,48 @@ const express = require("express");
 const router = express.Router();
 const Componente = require("../models/Componente");
 
+// Crear nuevo componente
 router.post("/componentes", async (req, res) => {
-  const { nombre, puntaje } = req.body;
+  console.log("📥 Body recibido:", req.body);
 
   try {
-    const nuevoComponente = new Componente({ nombre, puntaje });
-    await nuevoComponente.save();
-    res.status(201).send("✅ Componente creado");
+    const {
+      nombre,
+      articuloComercial,
+      modelo,
+      puntosInstalacion,
+      puntosConexion,
+    } = req.body;
+
+    // Validación básica
+    if (
+      !nombre ||
+      puntosInstalacion === undefined ||
+      puntosConexion === undefined
+    ) {
+      return res.status(400).send("❌ Faltan datos requeridos");
+    }
+
+    const pi = parseFloat(puntosInstalacion);
+    const pc = parseFloat(puntosConexion);
+
+    if (isNaN(pi) || isNaN(pc)) {
+      return res.status(400).send("❌ Los puntajes deben ser números válidos");
+    }
+
+    const nuevo = new Componente({
+      nombre,
+      articuloComercial,
+      modelo,
+      puntosInstalacion: pi,
+      puntosConexion: pc,
+    });
+
+    await nuevo.save();
+    res.status(201).send("✅ Componente creado correctamente");
   } catch (err) {
     console.error("❌ Error al crear componente:", err);
-    res.status(500).send("Error al crear componente");
+    res.status(500).send("❌ Error interno al crear componente");
   }
 });
 
