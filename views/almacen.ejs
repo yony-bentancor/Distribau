@@ -1,11 +1,101 @@
-<h2>📥 Formulario de ingreso desde Almacén</h2>
-<form method="POST" action="/almacen">
-  <% componentes.forEach(c => { %>
-    <div style="margin-bottom: 10px;">
-      <label><strong><%= c.nombre %></strong>:</label>
-      <input type="number" name="<%= c._id %>" min="0" value="0" />
-      <span>(Pts instalación: <%= c.puntosInstalacion %>, conexión: <%= c.puntosConexion %>)</span>
-    </div>
-  <% }) %>
-  <button type="submit">Enviar a Bodega Central</button>
-</form>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formulario Almacén</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f5f6fa;
+      padding: 2rem;
+      margin: 0;
+      color: #333;
+    }
+    .container {
+      max-width: 700px;
+      margin: auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 2rem;
+      color: #2c3e50;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+    input[type="number"] {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .componente {
+      padding: 1rem;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      background: #fafafa;
+    }
+    .detalle {
+      font-size: 0.9rem;
+      color: #555;
+      margin-top: 0.3rem;
+    }
+    button[type="submit"] {
+      padding: 0.8rem;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    button[type="submit"]:hover {
+      background-color: #218838;
+    }
+    .volver {
+      display: block;
+      text-align: center;
+      margin-top: 2rem;
+      text-decoration: none;
+      color: #007bff;
+    }
+    .volver:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>📥 Formulario de ingreso desde Almacén</h2>
+
+    <% if (componentes.length === 0) { %>
+      <p style="text-align:center; color:#888;">No hay componentes disponibles. Agregalos desde el panel de administrador.</p>
+    <% } else { %>
+      <form method="POST" action="/almacen">
+        <% componentes.forEach(c => { %>
+          <div class="componente">
+            <label for="<%= c._id %>"><%= c.nombre %></label>
+            <input type="number" name="<%= c._id %>" id="<%= c._id %>" min="0" value="0" />
+            <div class="detalle">Pts instalación: <%= c.puntosInstalacion %>, conexión: <%= c.puntosConexion %></div>
+          </div>
+        <% }) %>
+        <button type="submit">Enviar a Bodega Central</button>
+      </form>
+    <% } %>
+
+    <a href="/admin" class="volver">⬅️ Volver al panel principal</a>
+  </div>
+</body>
+</html>
