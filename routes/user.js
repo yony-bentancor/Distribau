@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const BodegaUsuario = require("../models/BodegaUsuario");
 const Componente = require("../models/Componente");
+const BodegaCentral = require("../models/BodegaCentral");
 
 router.get("/user", async (req, res) => {
   if (!req.session.user) {
@@ -23,9 +24,15 @@ router.get("/user", async (req, res) => {
     const bodega = await BodegaUsuario.findOne({ usuario: userId }).populate(
       "componentes.componente"
     );
-    const stockCentral = await Componente.find(); // trae toda la bodega central
-    console.log("✅ Bodega Central cargada:");
-    console.log(stockCentral);
+    const bodegaCentral = await BodegaCentral.findOne().populate(
+      "componentes.componente"
+    );
+
+    const stockCentral =
+      bodegaCentral?.componentes.map((c) => ({
+        nombre: c.componente.nombre,
+        stock: c.cantidad,
+      })) || [];
 
     if (!bodega) {
       console.log("📭 Bodega vacía");
@@ -38,8 +45,8 @@ router.get("/user", async (req, res) => {
     console.log("📦 Componentes encontrados:", bodega.componentes.length);
 
     res.render("user", {
-      componentes: bodega.componentes,
-      stockCentral: stockCentral || [],
+      componentes: bodega?.componentes || [],
+      stockCentral,
     });
   } catch (err) {
     console.error("❌ Error en /user:", err);
