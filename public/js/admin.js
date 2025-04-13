@@ -22,7 +22,9 @@ async function cargarComponentes() {
   const stockCentral = await stockRes.json();
 
   componentes.forEach((c) => {
-    const enStock = stockCentral.find((s) => s.componente._id === c._id);
+    const enStock = stockCentral.find(
+      (s) => s?.componente?._id?.toString() === c._id.toString()
+    );
     const cantidad = enStock ? enStock.cantidad : 0;
 
     const fila = document.createElement("tr");
