@@ -22,7 +22,7 @@ router.delete("/", async (req, res) => {
 });
 
 // ------------------- RUTA GET /historial -------------------
-router.get("/historial", async (req, res) => {
+router.get("/", async (req, res) => {
   const { tecnico, componente, desde, hasta } = req.query;
 
   const filtro = {};
