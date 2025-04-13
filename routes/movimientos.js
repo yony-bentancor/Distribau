@@ -249,14 +249,25 @@ router.post("/transferir", async (req, res) => {
         comentario ? "📝 Comentario: " + comentario : ""
       }`;
 
-      if (tecnico.whatsapp) {
-        await client.messages.create({
-          from: process.env.TWILIO_WHATSAPP_FROM,
-          to: `whatsapp:${tecnico.whatsapp}`,
-          body: mensaje,
-        });
+      console.log("📨 Intentando enviar WhatsApp:");
+      console.log("De:", process.env.TWILIO_WHATSAPP_FROM);
+      console.log("A:", `whatsapp:${tecnico.whatsapp}`);
+      console.log("Mensaje:", mensaje);
 
-        console.log("✅ WhatsApp enviado a", tecnico.username);
+      if (tecnico.whatsapp) {
+        try {
+          const resultado = await client.messages.create({
+            from: process.env.TWILIO_WHATSAPP_FROM,
+            to: `whatsapp:${tecnico.whatsapp}`,
+            body: mensaje,
+          });
+
+          console.log("✅ WhatsApp enviado a", tecnico.username, resultado.sid);
+        } catch (err) {
+          console.error("❌ Error al enviar WhatsApp:", err.message);
+        }
+      } else {
+        console.warn("⚠️ El técnico no tiene número de WhatsApp cargado.");
       }
     }
 
