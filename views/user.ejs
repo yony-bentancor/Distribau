@@ -256,75 +256,73 @@
       </form>
     </section>
   </div>
-  <script>
-    let componentesTecnico = [];
+  <!-- Dentro del <script>... -->
+<script>
+  // Traído directamente del render del servidor
+  const componentesTecnico = <%- JSON.stringify(bodegaUsuario) %>;
 
-    async function cargarBodegas() {
-      const tecnicoRes = await fetch('/api/bodega-tecnico');
-      componentesTecnico = await tecnicoRes.json();
-      const ulT = document.getElementById("bodegaTecnico");
-      ulT.innerHTML = componentesTecnico.map(c => `<li>${c.nombre}: ${c.cantidad}</li>`).join('');
 
-      const centralRes = await fetch('/bodega-central');
-      const componentesCentral = await centralRes.json();
-      const ulC = document.getElementById("bodegaCentral");
-      ulC.innerHTML = componentesCentral.map(c => `<li>${c.componente.nombre}: ${c.cantidad}</li>`).join('');
-    }
+  function agregarComponente() {
+    const div = document.createElement("div");
+    div.classList.add("componente");
 
-    function agregarComponente() {
-      const div = document.createElement("div");
-      div.classList.add("componente");
-      div.innerHTML = `
-        <select name="componente[]">
-          ${componentesTecnico.map(c => `<option value="${c._id}">${c.nombre}</option>`).join('')}
-        </select>
-        <input type="number" name="cantidad[]" min="1" placeholder="Cantidad">
-        <button type="button" onclick="this.parentNode.remove()">❌</button>
-      `;
-      document.getElementById("componentesUsados").appendChild(div);
-    }
+    const options = componentesTecnico.map(c => `
+      <option value="${c.componente._id}">
+        ${c.componente.nombre} (x${c.cantidad})
+      </option>`).join("");
 
-    function toggleKmInput(checkbox) {
-      document.getElementById("kmInput").style.display = checkbox.checked ? 'block' : 'none';
-    }
+    div.innerHTML = `
+      <select name="componente[]" required>
+        <option value="">Seleccionar...</option>
+        ${options}
+      </select>
+      <input type="number" name="cantidad[]" min="1" placeholder="Cantidad" required>
+      <button type="button" onclick="this.parentNode.remove()">❌</button>
+    `;
 
-    document.getElementById("formActividad").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const form = e.target;
-      const data = new FormData(form);
+    document.getElementById("componentesUsados").appendChild(div);
+  }
 
-      const componentes = Array.from(form.querySelectorAll("select[name='componente[]']")).map((sel, i) => ({
-        componenteId: sel.value,
-        cantidad: parseInt(form.querySelectorAll("input[name='cantidad[]']")[i].value),
-      }));
+  function toggleKmInput(checkbox) {
+    document.getElementById("kmInput").style.display = checkbox.checked ? 'block' : 'none';
+  }
 
-      const payload = {
-        numero: data.get("numero"),
-        fecha: data.get("fecha"),
-        tipo: data.get("tipo"),
-        estado: data.get("estado"),
-        comunicarse: data.get("comunicarse") === "on",
-        km: parseFloat(data.get("km")) || 0,
-        comentario: data.get("comentario"),
-        componentesUsados: componentes,
-      };
+  document.getElementById("formActividad").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const data = new FormData(form);
 
-      const res = await fetch("/actividades", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
+    const componentes = Array.from(form.querySelectorAll("select[name='componente[]']")).map((sel, i) => ({
+      componenteId: sel.value,
+      cantidad: parseInt(form.querySelectorAll("input[name='cantidad[]']")[i].value),
+    }));
 
-      if (res.ok) {
-        alert("✅ Actividad registrada correctamente");
-        form.reset();
-        document.getElementById("componentesUsados").innerHTML = "";
-      } else {
-        alert("❌ Error al registrar actividad");
-      }
+    const payload = {
+      numero: data.get("numero"),
+      fecha: data.get("fecha"),
+      tipo: data.get("tipo"),
+      estado: data.get("estado"),
+      comunicarse: data.get("comunicarse") === "on",
+      km: parseFloat(data.get("km")) || 0,
+      comentario: data.get("comentario"),
+      componentesUsados: componentes,
+    };
+
+    const res = await fetch("/actividades", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
     });
 
-    window.onload = cargarBodegas;
-  </script>
+    if (res.ok) {
+      alert("✅ Actividad registrada correctamente");
+      form.reset();
+      document.getElementById("componentesUsados").innerHTML = "";
+    } else {
+      alert("❌ Error al registrar actividad");
+    }
+  });
+</script>
+
 </body>
 </html>

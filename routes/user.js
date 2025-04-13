@@ -47,6 +47,7 @@ router.get("/user", async (req, res) => {
     res.render("user", {
       componentes: bodega?.componentes || [],
       stockCentral,
+      bodegaUsuario: bodega.componentes,
     });
   } catch (err) {
     console.error("❌ Error en /user:", err);
