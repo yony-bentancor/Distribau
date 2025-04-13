@@ -51,15 +51,7 @@ const actividadSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  traslado: {
-    type: Boolean,
-    default: false,
-  },
   km: {
-    type: Number,
-    default: 0,
-  },
-  puntajeManual: {
     type: Number,
     default: 0,
   },

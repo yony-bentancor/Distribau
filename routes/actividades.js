@@ -1,88 +1,82 @@
-// routes/actividades.js
+// routes/actividad.js
 const express = require("express");
 const router = express.Router();
 const Actividad = require("../models/Actividad");
-const BodegaUsuario = require("../models/BodegaUsuario");
 const Componente = require("../models/Componente");
-const User = require("../models/User");
+const BodegaUsuario = require("../models/BodegaUsuario");
 
-// POST /actividades - Crear nueva actividad
-router.post("/", async (req, res) => {
+// POST /actividades - Registrar nueva actividad
+router.post("/actividades", async (req, res) => {
   try {
     const {
       numero,
       fecha,
       tipo,
+      componentesUsados,
       estado,
-      componentes,
       comunicarse,
-      traslado,
-      kilometros,
+      km,
+      comentario,
     } = req.body;
 
-    const userId = req.session.user.id; // usuario logeado
+    const tecnicoId = req.session.user.id;
 
-    if (
-      !numero ||
-      !fecha ||
-      !tipo ||
-      !estado ||
-      !componentes ||
-      !Array.isArray(componentes)
-    ) {
-      return res.status(400).send("Faltan datos obligatorios");
-    }
+    // Validar componentes y stock en bodega del técnico
+    const bodega = await BodegaUsuario.findOne({ usuario: tecnicoId });
+    if (!bodega)
+      return res.status(400).send("No se encontró la bodega del técnico");
 
-    let puntajeTraslado = traslado ? 1 : 0; // se puede ajustar según tipo
-    let puntajeKm = kilometros ? parseFloat(kilometros) * 0.03 : 0;
-    let puntajeComponentes = 0;
+    let puntajeTotal = 0;
+    const componentesValidados = [];
 
-    // Verificar y descontar stock del técnico
-    const bodega = await BodegaUsuario.findOne({ usuario: userId });
-    if (!bodega) return res.status(400).send("Bodega de usuario no encontrada");
+    for (const item of componentesUsados) {
+      const { componenteId, cantidad } = item;
+      const componente = await Componente.findById(componenteId);
+      if (!componente) return res.status(400).send("Componente no encontrado");
 
-    for (const item of componentes) {
-      const comp = await Componente.findById(item.componenteId);
-      if (!comp) return res.status(400).send("Componente inválido");
-
-      const registro = bodega.componentes.find((c) =>
-        c.componente.equals(item.componenteId)
+      const stockTecnico = bodega.componentes.find((c) =>
+        c.componente.equals(componenteId)
       );
-      if (!registro || registro.cantidad < item.cantidad) {
+      if (!stockTecnico || stockTecnico.cantidad < cantidad) {
         return res
           .status(400)
-          .send(`Stock insuficiente del componente ${comp.nombre}`);
+          .send(`Stock insuficiente de ${componente.nombre}`);
       }
 
-      registro.cantidad -= item.cantidad;
-      puntajeComponentes +=
-        (comp.puntosInstalacion + comp.puntosConexion) * item.cantidad;
+      // Calcular puntaje por componente (usamos puntosInstalacion como base)
+      puntajeTotal += cantidad * componente.puntosInstalacion;
+      componentesValidados.push({ componente: componenteId, cantidad });
+
+      // Descontar del stock
+      stockTecnico.cantidad -= cantidad;
     }
 
     await bodega.save();
 
+    // Calcular puntaje por km (si hay)
+    if (km && !isNaN(km)) {
+      puntajeTotal += km * 0.03;
+    }
+
+    // Guardar actividad
     const nuevaActividad = new Actividad({
-      usuario: userId,
       numero,
       fecha,
       tipo,
+      tecnico: tecnicoId,
+      componentesUsados: componentesValidados,
       estado,
-      comunicarse: !!comunicarse,
-      traslado: !!traslado,
-      kilometros: kilometros || 0,
-      componentes,
-      puntajeComponentes,
-      puntajeTraslado,
-      puntajeKm,
-      puntajeTotal: puntajeComponentes + puntajeTraslado + puntajeKm,
+      comunicarse,
+      km,
+      comentario,
+      puntajeTotal,
     });
 
     await nuevaActividad.save();
-
-    res.status(200).send("Actividad registrada correctamente ✅");
+    res.status(201).send("✅ Actividad registrada correctamente");
   } catch (err) {
-    console.error("❌ Error al registrar actividad:", err);
-    res.status(500).send("Error interno al guardar actividad");
+    console.error("❌ Error al guardar actividad:", err);
+    res.status(500).send("Error interno del servidor");
   }
 });
 
