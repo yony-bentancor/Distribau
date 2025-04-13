@@ -13,6 +13,7 @@ const userRoutes = require("./routes/user"); // ESTE es el que carga la vista de
 const movimientosRoutes = require("./routes/movimientos");
 const almacenRoutes = require("./routes/almacen");
 const transferenciasRoutes = require("./routes/transferencias");
+const actividadesRoutes = require("./routes/actividades");
 
 dotenv.config();
 
@@ -49,6 +50,7 @@ app.use("/", userRoutes);
 app.use("/", componentesRoutes);
 app.use("/almacen", almacenRoutes);
 app.use("/transferencias", transferenciasRoutes);
+app.use("/", actividadesRoutes);
 
 // Ruta pública
 app.get("/", (req, res) => {
