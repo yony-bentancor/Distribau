@@ -1,6 +1,7 @@
 // routes/actividad.js
 const express = require("express");
 const router = express.Router();
+const requireAuth = require("../middlewares/auth");
 const Actividad = require("../models/Actividad");
 const Componente = require("../models/Componente");
 const BodegaUsuario = require("../models/BodegaUsuario");
