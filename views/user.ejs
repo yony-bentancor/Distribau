@@ -162,6 +162,47 @@
         grid-template-columns: 1fr;
       }
     }
+
+    /* Estilo para el panel de resumen */
+.resumen-filtros {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.resumen-filtros button {
+  background-color: #6c757d;
+  border: none;
+  color: white;
+  padding: 0.4rem 0.9rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.2s ease;
+}
+
+.resumen-filtros button:hover {
+  background-color: #5a6268;
+}
+
+.tabla-resumen {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.tabla-resumen th, .tabla-resumen td {
+  padding: 0.5rem;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.tabla-resumen thead {
+  background-color: #007bff;
+  color: white;
+}
+
   </style>
 </head>
 <body>
@@ -257,6 +298,31 @@
         </div>
       </form>
     </section>
+
+    <!-- Panel de resumen de actividades -->
+<section>
+  <h2>📊 Resumen de Actividades</h2>
+
+  <div class="resumen-filtros">
+    <button onclick="cargarResumen('dia')">Hoy</button>
+    <button onclick="cargarResumen('semana')">Esta Semana</button>
+    <button onclick="cargarResumen('mes')">Este Mes</button>
+  </div>
+
+  <table class="tabla-resumen">
+    <thead>
+      <tr>
+        <th>Número</th>
+        <th>Tipo</th>
+        <th>Puntos</th>
+        <th>Detalle</th>
+      </tr>
+    </thead>
+    <tbody id="resumenCuerpo">
+      <tr><td colspan="4" style="text-align:center;">Seleccione un filtro para ver actividades</td></tr>
+    </tbody>
+  </table>
+</section>
   </div>
   <!-- Dentro del <script>... -->
 <script>
@@ -325,6 +391,34 @@
       alert("❌ Error al registrar actividad");
     }
   });
+
+ 
+  async function cargarResumen(periodo) {
+    const res = await fetch(`/actividades/resumen?periodo=${periodo}`);
+    const actividades = await res.json();
+    const tbody = document.getElementById("resumenCuerpo");
+
+    if (!actividades.length) {
+      tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;">Sin actividades registradas</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = "";
+    actividades.forEach(a => {
+      tbody.innerHTML += `
+        <tr>
+          <td>${a.numero}</td>
+          <td>${a.tipo}</td>
+          <td>${a.puntajeTotal.toFixed(2)}</td>
+          <td>
+            Componentes: ${a.detalle.componentes.join(", ")}<br>
+            Kilómetros: ${a.detalle.km} (${a.detalle.puntosKm.toFixed(2)} pts)
+          </td>
+        </tr>`;
+    });
+  }
+
+
 </script>
 
 </body>

@@ -79,5 +79,52 @@ router.post("/actividades", async (req, res) => {
     res.status(500).send("Error interno del servidor");
   }
 });
+// GET /actividades/resumen?desde=YYYY-MM-DD&hasta=YYYY-MM-DD
+router.get("/resumen", async (req, res) => {
+  if (!req.session.user) return res.status(401).send("No autorizado");
+
+  const userId = req.session.user.id;
+  const { desde, hasta } = req.query;
+
+  const filtro = {
+    tecnico: userId,
+    fecha: {
+      ...(desde && { $gte: new Date(desde) }),
+      ...(hasta && { $lte: new Date(hasta + "T23:59:59") }),
+    },
+  };
+
+  try {
+    const actividades = await Actividad.find(filtro)
+      .populate("componentesUsados.componente")
+      .sort({ fecha: -1 });
+
+    const resumen = actividades.map((act) => {
+      const puntosComponentes = act.componentesUsados.reduce((total, item) => {
+        const puntos =
+          (item.componente?.puntosInstalacion || 0) * item.cantidad;
+        return total + puntos;
+      }, 0);
+
+      const puntosKm = (act.km || 0) * 0.03;
+
+      const puntajeTotal = puntosComponentes + puntosKm;
+
+      return {
+        numero: act.numero,
+        fecha: act.fecha,
+        tipo: act.tipo,
+        puntosComponentes,
+        puntosKm,
+        total: puntajeTotal.toFixed(2),
+      };
+    });
+
+    res.json(resumen);
+  } catch (err) {
+    console.error("❌ Error al obtener resumen de actividades:", err);
+    res.status(500).send("Error al obtener actividades");
+  }
+});
 
 module.exports = router;
