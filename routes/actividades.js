@@ -81,49 +81,53 @@ router.post("/actividades", async (req, res) => {
 });
 // GET /actividades/resumen?desde=YYYY-MM-DD&hasta=YYYY-MM-DD
 router.get("/resumen", async (req, res) => {
-  if (!req.session.user) return res.status(401).send("No autorizado");
+  const userId = req.session.user?.id;
+  const periodo = req.query.periodo || "dia";
 
-  const userId = req.session.user.id;
-  const { desde, hasta } = req.query;
+  if (!userId) return res.status(401).send("No autorizado");
 
-  const filtro = {
-    tecnico: userId,
-    fecha: {
-      ...(desde && { $gte: new Date(desde) }),
-      ...(hasta && { $lte: new Date(hasta + "T23:59:59") }),
-    },
-  };
+  const hoy = new Date();
+  let inicio;
+
+  if (periodo === "dia") {
+    inicio = new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate());
+  } else if (periodo === "semana") {
+    const diaSemana = hoy.getDay();
+    inicio = new Date(hoy);
+    inicio.setDate(hoy.getDate() - diaSemana);
+  } else if (periodo === "mes") {
+    inicio = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
+  } else {
+    return res.status(400).send("Periodo inválido");
+  }
 
   try {
-    const actividades = await Actividad.find(filtro)
-      .populate("componentesUsados.componente")
-      .sort({ fecha: -1 });
+    const actividades = await Actividad.find({
+      tecnico: userId,
+      fecha: { $gte: inicio },
+    }).populate("componentesUsados.componente");
 
-    const resumen = actividades.map((act) => {
-      const puntosComponentes = act.componentesUsados.reduce((total, item) => {
-        const puntos =
-          (item.componente?.puntosInstalacion || 0) * item.cantidad;
-        return total + puntos;
+    const resumen = actividades.map((a) => {
+      const puntosComponentes = a.componentesUsados.reduce((total, item) => {
+        const pInst = item.componente?.puntosInstalacion || 0;
+        const pCon = item.componente?.puntosConexion || 0;
+        return total + item.cantidad * (pInst + pCon);
       }, 0);
 
-      const puntosKm = (act.km || 0) * 0.03;
-
-      const puntajeTotal = puntosComponentes + puntosKm;
+      const puntosKm = a.km * 0.03;
+      const total = puntosComponentes + puntosKm;
 
       return {
-        numero: act.numero,
-        fecha: act.fecha,
-        tipo: act.tipo,
-        puntosComponentes,
-        puntosKm,
-        total: puntajeTotal.toFixed(2),
+        numero: a.numero,
+        tipo: a.tipo,
+        puntaje: total.toFixed(2),
       };
     });
 
     res.json(resumen);
   } catch (err) {
     console.error("❌ Error al obtener resumen de actividades:", err);
-    res.status(500).send("Error al obtener actividades");
+    res.status(500).send("Error al obtener resumen");
   }
 });
 

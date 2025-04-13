@@ -51,6 +51,7 @@ app.use("/", componentesRoutes);
 app.use("/almacen", almacenRoutes);
 app.use("/transferencias", transferenciasRoutes);
 app.use("/", actividadesRoutes);
+app.use("/actividades", actividadesRouter);
 
 // Ruta pública
 app.get("/", (req, res) => {
