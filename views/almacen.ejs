@@ -8,111 +8,139 @@
     body {
       font-family: 'Segoe UI', sans-serif;
       background: #f5f6fa;
-      padding: 2rem;
       margin: 0;
+      padding: 2rem;
       color: #333;
     }
     .container {
-      max-width: 700px;
+      max-width: 1000px;
       margin: auto;
       background: white;
-      padding: 2rem;
+      padding: 1rem;
       border-radius: 10px;
       box-shadow: 0 4px 8px rgba(0,0,0,0.05);
     }
     h2 {
       text-align: center;
-      margin-bottom: 2rem;
+      margin-bottom: 1rem;
       color: #2c3e50;
     }
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
+    .filtro {
+      text-align: center;
+      margin-bottom: 1rem;
     }
-    label {
-      font-weight: bold;
-      display: block;
-      margin-bottom: 0.3rem;
+    input[type="search"] {
+      padding: 0.6rem;
+      width: 60%;
+      max-width: 400px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+    form {
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+      font-size: 0.95rem;
+    }
+    th, td {
+      padding: 0.6rem;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+    th {
+      background: #f0f0f0;
     }
     input[type="number"] {
-      width: 100%;
-      padding: 0.5rem;
+      width: 80px;
+      padding: 0.4rem;
       border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-    .componente {
-      padding: 1rem;
-      border: 1px solid #eee;
-      border-radius: 8px;
-      background: #fafafa;
-    }
-    .detalle {
-      font-size: 0.9rem;
-      color: #555;
-      margin-top: 0.3rem;
+      border-radius: 4px;
     }
     button[type="submit"] {
-      padding: 0.8rem;
+      margin-top: 1.5rem;
+      padding: 0.8rem 1.2rem;
       background-color: #28a745;
       color: white;
       border: none;
       border-radius: 6px;
       font-size: 1rem;
       cursor: pointer;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
     }
     button[type="submit"]:hover {
       background-color: #218838;
     }
-    .volver {
-      display: block;
-      text-align: center;
-      margin-top: 2rem;
-      text-decoration: none;
-      color: #007bff;
-    }
-    .volver:hover {
-      text-decoration: underline;
-    }
-
+    .volver,
     .btn-historial {
-  display: block;
-  text-align: center;
-  margin-top: 1.5rem;
-  padding: 0.8rem;
-  background-color: #007bff;
-  color: white;
-  text-decoration: none;
-  border-radius: 6px;
-}
-.btn-historial:hover {
-  background-color: #0056b3;
-}
-
+      display: inline-block;
+      margin-top: 1.5rem;
+      padding: 0.6rem 1rem;
+      background-color: #007bff;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      margin-right: 1rem;
+    }
+    .btn-historial:hover,
+    .volver:hover {
+      background-color: #0056b3;
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <h2>📥 Formulario de ingreso desde Almacén</h2>
 
+    <div class="filtro">
+      <input type="search" id="filtro" placeholder="🔍 Buscar componente por nombre..." />
+    </div>
+
     <% if (componentes.length === 0) { %>
       <p style="text-align:center; color:#888;">No hay componentes disponibles. Agregalos desde el panel de administrador.</p>
     <% } else { %>
       <form method="POST" action="/almacen">
-        <% componentes.forEach(c => { %>
-          <div class="componente">
-            <label for="<%= c._id %>"><%= c.nombre %></label>
-            <input type="number" name="<%= c._id %>" id="<%= c._id %>" min="0" value="0" />
-            <div class="detalle">Pts instalación: <%= c.puntosInstalacion %>, conexión: <%= c.puntosConexion %></div>
-          </div>
-        <% }) %>
+        <table id="tabla-componentes">
+          <thead>
+            <tr>
+              <th>Componente</th>
+              <th>Cantidad</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% componentes.forEach(c => { %>
+              <tr>
+                <td><%= c.nombre %></td>
+                <td><input type="number" name="<%= c._id %>" min="0" value="0" /></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+
         <button type="submit">Enviar a Bodega Central</button>
       </form>
     <% } %>
 
     <a href="/admin" class="volver">⬅️ Volver al panel principal</a>
     <a href="/movimientos/almacen" class="btn-historial">📖 Ver historial de ingresos desde Almacén</a>
-
   </div>
+
+  <script>
+    const inputFiltro = document.getElementById("filtro");
+    const filas = document.querySelectorAll("#tabla-componentes tbody tr");
+
+    inputFiltro.addEventListener("input", () => {
+      const texto = inputFiltro.value.toLowerCase();
+      filas.forEach(fila => {
+        const nombre = fila.cells[0].textContent.toLowerCase();
+        fila.style.display = nombre.includes(texto) ? "" : "none";
+      });
+    });
+  </script>
 </body>
 </html>
