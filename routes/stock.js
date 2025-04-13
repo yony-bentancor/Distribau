@@ -4,6 +4,7 @@ const router = express.Router();
 const User = require("../models/User");
 const Componente = require("../models/Componente");
 const BodegaUsuario = require("../models/BodegaUsuario");
+const BodegaCentral = require("../models/BodegaCentral");
 
 // GET /usuarios-tecnicos - listar usuarios que no son admin
 router.get("/usuarios-tecnicos", async (req, res) => {
@@ -106,6 +107,19 @@ router.put("/actualizar-stock-central/:id", async (req, res) => {
   } catch (err) {
     console.error("Error al actualizar stock central:", err);
     res.status(500).send("Error interno al actualizar stock");
+  }
+});
+// GET /bodega-central - devuelve el stock actual de la bodega central
+router.get("/bodega-central", async (req, res) => {
+  try {
+    const bodega = await BodegaCentral.findOne().populate(
+      "componentes.componente",
+      "nombre"
+    );
+    res.json(bodega?.componentes || []);
+  } catch (err) {
+    console.error("Error al obtener stock central:", err);
+    res.status(500).send("Error al obtener bodega central");
   }
 });
 
