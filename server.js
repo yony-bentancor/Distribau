@@ -14,6 +14,7 @@ const movimientosRoutes = require("./routes/movimientos");
 const almacenRoutes = require("./routes/almacen");
 const transferenciasRoutes = require("./routes/transferencias");
 const actividadesRoutes = require("./routes/actividades");
+const actividadesRouter = require("./routes/actividades");
 
 dotenv.config();
 
