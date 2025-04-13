@@ -134,6 +134,8 @@ formComp.addEventListener("submit", async (e) => {
   const datos = Object.fromEntries(new FormData(formComp));
   const body = {
     nombre: datos.nombre,
+    articuloComercial: datos.articuloComercial,
+    modelo: datos.modelo,
     puntosInstalacion: parseFloat(datos.puntosInstalacion),
     puntosConexion: parseFloat(datos.puntosConexion),
   };
