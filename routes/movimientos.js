@@ -267,4 +267,36 @@ router.post("/transferir", async (req, res) => {
   }
 });
 
+router.get("/movimientos/almacen", async (req, res) => {
+  try {
+    const movimientos = await Movimiento.find({
+      "origen.tipo": "usuario",
+      "origen.id": null,
+      "destino.tipo": "bodega",
+      "destino.id": null,
+    })
+      .sort({ fecha: -1 })
+      .populate("componentes.componente");
+
+    const parseados = movimientos.map((m) => ({
+      ...m.toObject(),
+      origenNombre: "Almacén",
+      destinoNombre: "Bodega Central",
+    }));
+
+    res.render("movimientos", {
+      movimientos: parseados,
+      tecnicos: [],
+      componentes: [],
+      tecnicoSeleccionado: null,
+      componenteSeleccionado: null,
+      desde: null,
+      hasta: null,
+    });
+  } catch (err) {
+    console.error("❌ Error al obtener movimientos desde almacén:", err);
+    res.status(500).send("Error al obtener historial de almacén");
+  }
+});
+
 module.exports = router;

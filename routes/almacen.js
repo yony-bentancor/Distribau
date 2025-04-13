@@ -44,8 +44,8 @@ router.post("/", async (req, res) => {
     await bodega.save();
 
     const nuevoMovimiento = new Movimiento({
-      origen: { tipo: "almacen" },
-      destino: { tipo: "bodega" },
+      origen: { tipo: "usuario", id: null }, // ✅ simulamos "almacén" como un origen sin usuario
+      destino: { tipo: "bodega", id: null },
       componentes: movimientos,
       comentario: "Ingreso desde almacén",
     });
