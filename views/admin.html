@@ -36,6 +36,7 @@
               <th>Acciones</th>
             </tr>
           </thead>
+            <a href="/almacen" class="btn-verde">📦 INGRESO ALMACEN</a>
           <tbody></tbody>
         </table>
       </section>
@@ -60,14 +61,37 @@
     </div>
 
     <!-- BODEGAS DE TÉCNICOS -->
-    <div id="bodega-tecnicos">
-      <h2>Bodega de Técnicos</h2>
-      <div id="bodegas-tecnicos"></div>
-    </div>
-    <a href="/almacen" class="btn-verde">📦 Ir al formulario de Almacén</a>
+   <div id="bodega-tecnicos">
+  <h2>Bodega de Técnicos</h2>
+
+  <table class="bodega-horizontal">
+    <thead>
+      <tr>
+        <th>Técnico</th>
+        <% componentesUnicos.forEach(c => { %>
+          <th><%= c.nombre %></th>
+        <% }) %>
+      </tr>
+    </thead>
+    <tbody>
+      <% bodegas.forEach(bodega => { %>
+        <tr>
+          <td><%= bodega.usuario.username %></td>
+          <% componentesUnicos.forEach(c => {
+              const comp = bodega.componentes.find(item => item.componente._id.toString() === c._id.toString());
+          %>
+            <td><%= comp ? comp.cantidad : 0 %></td>
+          <% }) %>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>
+
+  
 
 
-    <a href="/movimientos" target="_blank" class="historial">📖 Ver historial de movimientos</a>
+    <a href="/movimientos" target="_blank" class="historial">📖 HISTORIAL DE MOVIMIENTOS</a>
   </div>
 
   <script src="/js/admin.js"></script>
