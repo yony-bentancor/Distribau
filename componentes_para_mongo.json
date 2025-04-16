@@ -1,0 +1,828 @@
+[
+  {
+    "modelo": "BATERIAS",
+    "articuloComercial": "AUXALI.BATERI.COM5512MER",
+    "nombre": "Bateria electrolito absorbido 12V 4A",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "BATERIAS",
+    "articuloComercial": "AUXALI.BATERI.CODEV649",
+    "nombre": "Bateria electrolito absorvido 12V 7 A",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "CABLE",
+    "articuloComercial": "SEG_EL.ALARME.5400062295",
+    "nombre": "Cable p/ extensión antena  c/soporte PCS (50 Ohm)  de 2 metros Paradox",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "CABLE",
+    "articuloComercial": "SEG_EL.ALARME.5400062298",
+    "nombre": "Cable p/ extensión antena  PCS (50 Ohm)  de 15 metros Paradox",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "CABLE",
+    "articuloComercial": "SEG_EL.ALARME.5400062296",
+    "nombre": "Cable p/ extensión antena  PCS (50 Ohm)  de 4 metros Paradox",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "CABLE",
+    "articuloComercial": "INMUEB.ELECTR.5400085425",
+    "nombre": "Generico@cable gemelo",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "CABLE",
+    "articuloComercial": "SEG_EL.CCTV.5400085428",
+    "nombre": "Generico@cable UTO exterior",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "CABLE",
+    "articuloComercial": "SEG_EL.CCTV.5400085429",
+    "nombre": "Generico@cable UTP interior",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "CCTV",
+    "articuloComercial": "AUXINF.MODROU.TPLINKDECOM51",
+    "nombre": "Access Point Tp-link Deco M5 Ac1300 (1 Unidad) Dual Band Tcy",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "CCTV",
+    "articuloComercial": "SESCCT.CCTOTR.BALPASZDVB206ZUD",
+    "nombre": "Balun pasivo ( Par) alcance 120 a 300 mts señal HD y Analógica Ziden Mod ZDVB-206HD",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "CCTV",
+    "articuloComercial": "PA.CAMARA.5400082710",
+    "nombre": "Camara Bullet 1080/ 2 Mp/ 2.8mm / IP67/ IR20mts Dahua Mod -HAC-B1A21",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "CCTV",
+    "articuloComercial": "PA.CAMARA.5400082708",
+    "nombre": "Camara tipo Domo  1080/2Mp / 2.8mm/ IP67/ IR20mts Dahua Mod -HAC-T2A21",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "CCTV",
+    "articuloComercial": "AUXALI.CONBAS.CTOALIZDDCG01ZUD",
+    "nombre": "Conector alimentación Camara (P4) Male DC plug 5,5*2,1mm Zuden Mod ZDDC-G01",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "CCTV",
+    "articuloComercial": "SEG_EL.CCTV.5400020163",
+    "nombre": "Disco Rigido 2tb Western Digital Purple WD20PURX",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "CCTV",
+    "articuloComercial": "AUXINF.INFOTR.DISCO DURO 4TB",
+    "nombre": "Disco Rigido 4tb Western Digital Purple WD40PURX",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "CCTV",
+    "articuloComercial": "PA.GRABA.5400082663",
+    "nombre": "DVR 16 canales + 1 disco 6Tb Dahua Mod DH-XVR1B16H",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "CCTV",
+    "articuloComercial": "PA.GRABA.5400082662",
+    "nombre": "DVR 8 canales + 1 disco 3Tb Dahua Mod DH-XVR1B08H",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "CCTV",
+    "articuloComercial": "AUXALI.FUEALI.12V2ADGXYN280",
+    "nombre": "Fuente 100/240Vca: 12Vcc 2Amper DG-XIN-280 Mod AUS-2A",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "CCTV",
+    "articuloComercial": "SEG_EL.ALARME.TL-SG1005D",
+    "nombre": "SWITCH 5 PUERTOS 10/100/1000 (GIGABIT) MOD. TL-SG1005D",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "CLIMAX",
+    "articuloComercial": "PA.CENTR.5400072959",
+    "nombre": "CENTRAL RADIO 160 ZONAS 4G/IP/WIFI/ZWAY/ZIGBEE CLIMAX REF.F919 Mhz HSGW¿G8",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "CLIMAX",
+    "articuloComercial": "AUXALI.BATERI.5400085387",
+    "nombre": "Climax@Pack de baterías 6AA 7.2v 2600Mah NIMH Climax",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "CLIMAX",
+    "articuloComercial": "PA.VOLUME.5400085179",
+    "nombre": "IR¿32 V.2 CLIMAX @ PIR INDOOR PET IMMUNE REF. IR-32 V.2",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "CLIMAX",
+    "articuloComercial": "PA.TECLAD.5400085178",
+    "nombre": "KPT-32 V.2b ( 2T) CLIMAX @ KEYPAD + SIREN + 2 TAGS  KPT-32 V.2b (2T) PKPSKPT32NP6B2WR10",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "CLIMAX",
+    "articuloComercial": "PA.MAGNET.5400085182",
+    "nombre": "MAGNETICO RADIO C/ENTRADA DE ALARMA CLIMAX REF.F919 Mhz DC-23 c/carcaza DCSV-29",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "CLIMAX",
+    "articuloComercial": "PA.MAGNET.5400072965",
+    "nombre": "MAGNETICO RADIO CLIMAX REF.F919 Mhz MDC¿3",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "CLIMAX",
+    "articuloComercial": "PA.MANDO.5400072967",
+    "nombre": "MANDO RADIO 4 BOTONES IP41 CLIMAX REF. F919 Mhz RC¿15",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "CLIMAX",
+    "articuloComercial": "PA.ATRAC.5400072955",
+    "nombre": "MANDO RADIO PANICO CLIMAX REF.F919Mhz PB¿15¿P2",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "CLIMAX",
+    "articuloComercial": "PA.EXPANS.5400082215",
+    "nombre": "Modulo expansor 8 zonas cableadas ( c/carcaza) p/panel Hibrido  Climax WEZC-8",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "CLIMAX",
+    "articuloComercial": "PA.CENTR.5400082212",
+    "nombre": "Panel Hibrido RF+16Z Cableadas p/Latam Climax Ref. F919Mhz Hibrid panel-1",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "CLIMAX",
+    "articuloComercial": "PA.REPET.5400072970",
+    "nombre": "REPETIDOR RADIO SUPERVISADO + BATERIA RESPALDO CLIMAX REF. F919 Mhz RP¿29",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "CLIMAX",
+    "articuloComercial": "PA.SIRENA.5400072972",
+    "nombre": "SIRENA EXTERIOR RADIO CON BATERIA CLIMAX REF.F919 Mhz BX¿23",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "CLIMAX",
+    "articuloComercial": "PA.TRANSM.5400072976",
+    "nombre": "TRANSMISOR UNIVERSAL INTERIOR CLIMAX REF.F919 Mhz UT¿15SL",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "CLIMAX",
+    "articuloComercial": "PA.VOLUME.5400072977",
+    "nombre": "VOLUMETRICO INTERIOR RADIO CLIMAX REF. F919 Mhz IR¿29",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "CLIMAX",
+    "articuloComercial": "PA.VOLUME.5400072980",
+    "nombre": "VOLUMETRICO INTERIOR RADIO CORTINA CLIMAX REF.F919 Mhz IRC¿29",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "CLIMAX",
+    "articuloComercial": "PA.VOLUME.5400072979",
+    "nombre": "VOLUMETRICO INTERIOR RADIO DOBLE TECNOLOGIA CLIMAX REF.F919 Mhz IRM¿23B",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "CLIMAX",
+    "articuloComercial": "PA.CAMARA.5400085180",
+    "nombre": "VST¿892 V.2 CLIMAX @ PIRCAM INDOOR PET IMMUNE  REF. VST-892- V.2 PKPS892BALKF12WR40",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "CLIMAX",
+    "articuloComercial": "PA.CAMARA.5400085181",
+    "nombre": "VST-892EX CLIMAX @ PIRCAM OUDOOR CLIMAX REF. VST-892-EX",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "GENERICOS",
+    "articuloComercial": "SESINT.DETPER.BAR100MABT100ZUD",
+    "nombre": "Barrera Infrarroja doble haz 100 mts marca Zuden Mod ABT-100",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "GENERICOS",
+    "articuloComercial": "SESACC.TORBAR.ABT-30ZUDEN",
+    "nombre": "Barrera Infrarroja doble haz 30 mts marca Zuden Mod ABT-30",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "GENERICOS",
+    "articuloComercial": "SESINT.DETPER.BARRE60MABT60ZUD",
+    "nombre": "Barrera Infrarroja doble haz 60 mts marca Zuden Mod ABT-60",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "GENERICOS",
+    "articuloComercial": "SEG_EL.ALARME.5400001021",
+    "nombre": "Comunicador GPRS Nanocomm Mod. ED-5750",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "GENERICOS",
+    "articuloComercial": "SEG_EL.ALARME.5400005666",
+    "nombre": "Detector de movimiento de techo cableado con Tecnología Anti- Cloak Risco Mod. RK200DT",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "GENERICOS",
+    "articuloComercial": "SEG_EL.ALARME.5400005664",
+    "nombre": "Detector de movimiento infrarrojo exterior antimascota Takex mod. FE12",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "GENERICOS",
+    "articuloComercial": "SEG_EL.ALARME.5400005665",
+    "nombre": "Detector de movimiento Infrarrojo exterior doble tecnologia Risco Mod. RK315DT WATCH OUT",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "GENERICOS",
+    "articuloComercial": "SEG_EL.ALARME.5400005655",
+    "nombre": "Detector de movimiento infrarrojo interior , doble Tecnologia, Risco Mod. RK 415DT",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "GENERICOS",
+    "articuloComercial": "SEG_EL.ALARME.5400005663",
+    "nombre": "Detector de movimiento IR c/antimaking Risco Mod RK800AE",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "GENERICOS",
+    "articuloComercial": "SEG_EL.ALARME.5400005661",
+    "nombre": "Detector de vibracion Risco Mod. RK600",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "GENERICOS",
+    "articuloComercial": "SESINT.CONMAG.BLIPORZDD411M",
+    "nombre": "Detector magnético cableado blindado p/porton  GAP 2 a 2 ¾ Zuden Mod ZDD-411LMB",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "GENERICOS",
+    "articuloComercial": "SESINT.CONMAG.EXTBORZDD419MZUD",
+    "nombre": "Detector Magnético cableado exterior a bornera 3/4\" a 1\" Gap Zuden Mod ZDD-419M",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "GENERICOS",
+    "articuloComercial": "SEG_EL.ALARME.5400085415",
+    "nombre": "Generico @ Tamper",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "GENERICOS",
+    "articuloComercial": "SEG_EL.ALARME.TAKEX DETECTOR INALAMBRICO TX-",
+    "nombre": "TAKEX DETECTOR INALAMBRICO TX-114FR 180°",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "HONYWELL",
+    "articuloComercial": "PCIDET.ELECON.5800RP",
+    "nombre": "Detector Infrarrojo Inalambrico exterior Honeywell Mod. 5800PIR-OD",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "HONYWELL",
+    "articuloComercial": "PCIDET.ELECON.5890",
+    "nombre": "Detector Infrarrojo Inalambrico Honeywell Mod. 5800PIR",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "HONYWELL",
+    "articuloComercial": "SEG_EL.ALARME.5400006127",
+    "nombre": "Modulo de expansión cableado 8 zonas Honeywell Mod. 4219",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "HONYWELL",
+    "articuloComercial": "SEG_EL.ALARME.5400001033",
+    "nombre": "Modulo Repetidor inalambrico Honeywell Mod. 5800RP",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "HONYWELL",
+    "articuloComercial": "SESINT.CENTAC.VISTA-48LA",
+    "nombre": "Panel de alarmas cableado 48 zonas Honeywell Mod. VISTA-48LA",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "HONYWELL",
+    "articuloComercial": "PCIDET.ELECON.5804",
+    "nombre": "Pulsador Inalambrico 4 botones Honeywell Mod. 5834-4",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "HONYWELL",
+    "articuloComercial": "SESINT.SESOTR.5883HHON",
+    "nombre": "Receptor Inalambrico Honeywell 64 zonas Mod. 5883H",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "HONYWELL",
+    "articuloComercial": "SESACC.LECTEC.6160RF",
+    "nombre": "Teclado cableado alfanumerico  Honeywell Mod. 6160",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "HONYWELL",
+    "articuloComercial": "SEG_EL.ALARME.5400005643",
+    "nombre": "Teclado inalambrico Honeywell Mod. 5828V",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "HONYWELL",
+    "articuloComercial": "SESACC.CERRAD.5816",
+    "nombre": "Transmisor inalambrico de puerta / ventana Honeywell Mod. 5816",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "IP",
+    "articuloComercial": "SESCCT.CCTOTR.5400085430",
+    "nombre": "Generico@PoE Injector /Splitter Cable KIT color Negro Marca Shenzhen Zhangqing    Mod ZCPOEC001 ( Par )",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "IP",
+    "articuloComercial": "PA.CAMARA.5400082843",
+    "nombre": "PR_CUBE_V3 PROSEGUR @ CUBE IP INDOOR CAMERA 1080P 2.8MM W/POWER SUPPLY                           ",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "IP",
+    "articuloComercial": "PA.CAMARA.5400082845",
+    "nombre": "PR_DOMO_V3  PROSEGUR @ DOME IP OUTDOOR CAMERA 1080P 2.8MM W/POWER SUPPLY                           ",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "NEO",
+    "articuloComercial": "PA.PA.5400081539",
+    "nombre": "Bateria 3V cr17450 Tower NEO",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "NEO",
+    "articuloComercial": "SESINT.CENTAC.HS2064NKMODSC",
+    "nombre": "Central de alarmas ( Modulo) 8 Zonas exp 64/8part. DSC NEO Mod HS2064NKMO Con gabinete",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "NEO",
+    "articuloComercial": "SESINT.DETVIB.IRINPG4914DSC",
+    "nombre": "Detector de movimiento IR interior inalámbrico Visonic Mod NEXT K9 PG2 / DSC MOD PG4914P 433Mhz",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "NEO",
+    "articuloComercial": "SEG_EL.ALARME.5400005657",
+    "nombre": "Detector de movimiento PIR antimascota DSC Mod. LC100",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "NEO",
+    "articuloComercial": "SESINT.DETESP.PG4934PDSCNEO",
+    "nombre": "DETECTOR INFRARROJO INALAMBRICO PIRCAM C/CAMARA  DSC NEO PG4934P",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "NEO",
+    "articuloComercial": "SESINT.CONMAG.INPG4945DSC",
+    "nombre": "Detector Magnético inalámbrico c/entrada auxiliar Visonic Mod MC-302E PG2 / DSC MOD PG4945 433Mhz",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "NEO",
+    "articuloComercial": "PA.PA.5400063884",
+    "nombre": "Modulo de comunicación Dual Internet/HSPA GSM-3G DSC NEO Mod TL2803GE-LAT",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "NEO",
+    "articuloComercial": "PA.PA.5400063890",
+    "nombre": "Modulo expansor 8 Zonas cableadas DSC NEO Mod HSM2108",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "NEO",
+    "articuloComercial": "SESINT.SESOTR.433MHZ4920DSC",
+    "nombre": "Modulo repetidor DSC NEO PG4920 433 Mhz",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "NEO",
+    "articuloComercial": "SESINT.TRAALA.INHSM2HOSTDSC",
+    "nombre": "Modulo transceptor inalámbrico 128 Zon y 32 Keypad DSC NEO Mod HSM2HOST4  433Mhz",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "NEO",
+    "articuloComercial": "PA.PA.5400067437",
+    "nombre": "NEO-Tag de proximidad",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "NEO",
+    "articuloComercial": "SESINT.DETESP.WS4920REPDSC",
+    "nombre": "Repetidor inalambrico DSC Mod WS4920",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "NEO",
+    "articuloComercial": "SESINT.SIRENA.SIR-INTZDSH107BZUD",
+    "nombre": "Sirena de interior cableada 120db/1mts piezoeléctrica Zuden Mod ZDSH-107B",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "NEO",
+    "articuloComercial": "PA.PA.5400063888",
+    "nombre": "Teclado LCD cableado c/lector Tags DSC NEO Mod HS2LCDP",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "NEO",
+    "articuloComercial": "PA.IP.5400081440",
+    "nombre": "Universal Dual path comunicator 4GLTE y Ethernet / IP DSC Mod TL405LE-LAT",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "PARADOX",
+    "articuloComercial": "SESINT.TRAALA.PCS265LTEPAR",
+    "nombre": "Comunicador GPRS Paradox PCS265 LTE",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "PARADOX",
+    "articuloComercial": "SEG_EL.ALARME.5400055294",
+    "nombre": "Detector de movimiento Infrarrojo Inalambrico Paradox Mod. PMD2P",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "PARADOX",
+    "articuloComercial": "SESINT.DETESP.PMD85WPARADOX",
+    "nombre": "Detector Digital de Exterior Paradox PMD85W  PET 40 Kg.",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "PARADOX",
+    "articuloComercial": "SEG_EL.ALARME.5400055295",
+    "nombre": "Detector magnetico inalambrico p/ eterior Paradox Mod. DCTXP2",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "PARADOX",
+    "articuloComercial": "SESACC.SESOTR.APR3-ZX8",
+    "nombre": "Modulo expansor de 8 zonas Paradox Mod. APR3-ZX8 SP",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "PARADOX",
+    "articuloComercial": "SEG_EL.ALARME.5400035058",
+    "nombre": "Modulo expansor inalambrico Paradox Mod RTX3",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "PARADOX",
+    "articuloComercial": "SESACC.CONMOD.SP6000",
+    "nombre": "Panel de alarmas 8 zonas Paradox Mod. SP6000",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "PARADOX",
+    "articuloComercial": "SEG_EL.ALARME.5400035061",
+    "nombre": "PARADOX MODULO GPRS/GSM",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "PARADOX",
+    "articuloComercial": "SESACC.LECTEC.K32LCD",
+    "nombre": "Teclado 32 zonas Led Paradox K32 LED",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "PILAS",
+    "articuloComercial": "AUXALI.BATERI.5400085385",
+    "nombre": "3VCR123A PANASONIC @ BATERÍA DE LITIO 3V 1500MAH PANASONIC MOD CR123A",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "PILAS",
+    "articuloComercial": "AUXALI.BATERI.5400085386",
+    "nombre": "AA PANASONIC @ BATERÍA ALCALINA 1.5V LR6JACKET PANASONIC MOD AA",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "PILAS",
+    "articuloComercial": "AUXALI.BATERI.5400085221",
+    "nombre": "CR2032 PANASONIC @ BATERÍA BUTTON CELL 3V 225MAH PANASONIC MOD CR2032",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "PILAS",
+    "articuloComercial": "AUXALI.BATERI.5400085222",
+    "nombre": "CR3032 PANASONIC @ BATERÍA BUTTON CELL 3V 500MAH PANASONIC MOD CR3032",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "PILAS",
+    "articuloComercial": "AUXALI.BATERI.5400085562",
+    "nombre": "EV-CR2450 EVE @ PILA LITIO BOTON CR2450 3V EVE",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "PILAS",
+    "articuloComercial": "AUXALI.BATERI.5400085565",
+    "nombre": "LS 14500 SAFT @ BATERÍA DE LITIO SAFT MOD LS 14500",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "PILAS",
+    "articuloComercial": "AUXALI.BATERI.5400085567",
+    "nombre": "PT @ PILA LR20 ENERGIZER INDUSTRIAL - LR20",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "RSI",
+    "articuloComercial": "SEG_EL.ALARME.5400035712",
+    "nombre": "Control remoto Inalambrico 4 botones Proview RSI Mod. KF641",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "RSI",
+    "articuloComercial": "PA.PA.5400037028",
+    "nombre": "Detector Inalambrico de Interior Proview RSI Mod. IMD601",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "RSI",
+    "articuloComercial": "PA.PA.5400037018",
+    "nombre": "Detector Infrarrojo Inalambrico de interior c/ camara integrada Proview RSI Mod. IMV601",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "RSI",
+    "articuloComercial": "PA.PA.5400037022",
+    "nombre": "Detector magnetico inalambrico puerta / ventana Proview RSI Mod. IDC601",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "RSI",
+    "articuloComercial": "SEG_EL.ALARME.5400047525",
+    "nombre": "Detector Magnetico Puerta inalambrico c/ent cableada RSI Mod ICT601",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "RSI",
+    "articuloComercial": "SEG_EL.ALARME.5400036772",
+    "nombre": "Fuente de alimentacion - 100-240V/50-60Hz Proview RSI Mod. WPS-100",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "RSI",
+    "articuloComercial": "PA.PA.5400037015",
+    "nombre": "Panel de alarmas Inalambrico Proview RSI Mod. WIP630",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "RSI",
+    "articuloComercial": "PA.PA.5400051321",
+    "nombre": "SIRENA INTERIOR cableada RSI Mod WIS100",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "RSI",
+    "articuloComercial": "PA.PA.5400037016",
+    "nombre": "Teclado inalambrico alfanumerico Proview RSI Mod. WMB611",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "OTROS",
+    "articuloComercial": "CARTELES",
+    "nombre": "CARTELES",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "OTROS",
+    "articuloComercial": "CHIPS",
+    "nombre": "CHIPS",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "OTROS",
+    "articuloComercial": "IMANES",
+    "nombre": "IMANES",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "OTROS",
+    "articuloComercial": "ADHESIVOS",
+    "nombre": "ADHESIVOS",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "OTROS",
+    "articuloComercial": "MANUALES",
+    "nombre": "MANUALES",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "FERRETERIA",
+    "articuloComercial": "BOBINA CABLE INTERIOR",
+    "nombre": "BOBINA CABLE INTERIOR",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "FERRETERIA",
+    "articuloComercial": "BOBINA CABLE EXTERIOR",
+    "nombre": "BOBINA CABLE EXTERIOR",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "FERRETERIA",
+    "articuloComercial": "BOBINA CABLE 2MM",
+    "nombre": "BOBINA CABLE 2MM",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "FERRETERIA",
+    "articuloComercial": "SILICONA FRIA",
+    "nombre": "SILICONA FRIA",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "FERRETERIA",
+    "articuloComercial": "FICHA RJ45",
+    "nombre": "FICHA RJ45",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "FERRETERIA",
+    "articuloComercial": "TORNILLOS",
+    "nombre": "TORNILLOS",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "FERRETERIA",
+    "articuloComercial": "TACOS",
+    "nombre": "TACOS",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "FERRETERIA",
+    "articuloComercial": "CAJA DE ESTANCO",
+    "nombre": "CAJA DE ESTANCO",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  },
+  {
+    "modelo": "GENERICOS",
+    "articuloComercial": "TAGS",
+    "nombre": "TAG",
+    "puntosInstalacion": "",
+    "puntosConexion": ""
+  }
+]

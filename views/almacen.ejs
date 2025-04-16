@@ -96,11 +96,11 @@
 <body>
   <div class="container">
     <h2>📥 Formulario de ingreso desde Almacén</h2>
-
+  
     <div class="filtro">
-      <input type="search" id="filtro" placeholder="🔍 Buscar componente por nombre..." />
+      <input type="search" id="filtro" placeholder="🔍 Buscar componente por modelo o nombre..." />
     </div>
-
+  
     <% if (componentes.length === 0) { %>
       <p style="text-align:center; color:#888;">No hay componentes disponibles. Agregalos desde el panel de administrador.</p>
     <% } else { %>
@@ -108,37 +108,37 @@
         <table id="tabla-componentes">
           <thead>
             <tr>
-              <th>Componente</th>
+              <th>Componente (Modelo + Nombre)</th>
               <th>Cantidad</th>
             </tr>
           </thead>
           <tbody>
             <% componentes.forEach(c => { %>
               <tr>
-                <td><%= c.nombre %></td>
+                <td><strong><%= c.modelo %></strong> - <%= c.nombre %></td>
                 <td><input type="number" name="<%= c._id %>" min="0" value="0" /></td>
               </tr>
             <% }) %>
           </tbody>
         </table>
-
+  
         <button type="submit">Enviar a Bodega Central</button>
       </form>
     <% } %>
-
+  
     <a href="/admin" class="volver">⬅️ Volver al panel principal</a>
     <a href="/movimientos/almacen" class="btn-historial">📖 Ver historial de ingresos desde Almacén</a>
   </div>
-
+  
   <script>
     const inputFiltro = document.getElementById("filtro");
     const filas = document.querySelectorAll("#tabla-componentes tbody tr");
-
+  
     inputFiltro.addEventListener("input", () => {
       const texto = inputFiltro.value.toLowerCase();
       filas.forEach(fila => {
-        const nombre = fila.cells[0].textContent.toLowerCase();
-        fila.style.display = nombre.includes(texto) ? "" : "none";
+        const contenido = fila.cells[0].textContent.toLowerCase();
+        fila.style.display = contenido.includes(texto) ? "" : "none";
       });
     });
   </script>
