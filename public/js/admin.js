@@ -81,15 +81,24 @@ async function cargarBodegasUsuarios() {
 
   bodegas.forEach((b) => {
     const div = document.createElement("div");
+    div.classList.add("tarjeta-tecnico");
+
     let html = `<h4>👷 ${b.usuario.username}</h4>`;
-    html +=
-      b.componentes.length === 0
-        ? "<p style='color:#999;'>Sin componentes</p>"
-        : "<ul>";
-    b.componentes.forEach((c) => {
-      html += `<li>${c.componente.nombre}: <strong>${c.cantidad}</strong></li>`;
-    });
-    html += b.componentes.length ? "</ul>" : "";
+
+    if (b.componentes.length === 0) {
+      html += "<p style='color:#999;'>Sin componentes</p>";
+    } else {
+      html += `<div class="fila-componentes">`;
+      b.componentes.forEach((c) => {
+        html += `
+          <div class="componente">
+            <strong>${c.componente.modelo}</strong><br>
+            ${c.componente.nombre}: <span>${c.cantidad}</span>
+          </div>`;
+      });
+      html += `</div>`;
+    }
+
     div.innerHTML = html;
     contenedor.appendChild(div);
   });

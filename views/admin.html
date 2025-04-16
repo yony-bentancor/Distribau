@@ -61,33 +61,10 @@
     </div>
 
     <!-- BODEGAS DE TÉCNICOS -->
-   <div id="bodega-tecnicos">
+  <div id="bodega-tecnicos">
   <h2>Bodega de Técnicos</h2>
-
-  <table class="bodega-horizontal">
-    <thead>
-      <tr>
-        <th>Técnico</th>
-        <% componentesUnicos.forEach(c => { %>
-          <th><%= c.nombre %></th>
-        <% }) %>
-      </tr>
-    </thead>
-    <tbody>
-      <% bodegas.forEach(bodega => { %>
-        <tr>
-          <td><%= bodega.usuario.username %></td>
-          <% componentesUnicos.forEach(c => {
-              const comp = bodega.componentes.find(item => item.componente._id.toString() === c._id.toString());
-          %>
-            <td><%= comp ? comp.cantidad : 0 %></td>
-          <% }) %>
-        </tr>
-      <% }) %>
-    </tbody>
-  </table>
+  <div id="bodegas-tecnicos" class="grid-tecnicos"></div>
 </div>
-
   
 
 
