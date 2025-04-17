@@ -188,24 +188,48 @@ formTrans.addEventListener("submit", async (e) => {
     componentes[compId] = cantidad;
   }
 
-  let url = "/transferencias";
-  let body;
-  if (origenId === "bodega_central") {
-    url += "/a-tecnico";
-    body = { tecnicoId: destinoId, componentes };
-  } else if (destinoId === "bodega_central") {
-    url += "/devolucion";
-    body = { tecnicoId: origenId, componentes };
-  } else {
-    url += "/entre-tecnicos";
-    body = { origenId, destinoId, componentes };
-  }
+  const url = "/transferir";
+
+  const origen = {
+    tipo: origenId === "bodega_central" ? "bodega" : "usuario",
+    id: origenId === "bodega_central" ? null : origenId,
+  };
+
+  const destino = {
+    tipo: destinoId === "bodega_central" ? "bodega" : "usuario",
+    id: destinoId === "bodega_central" ? null : destinoId,
+  };
+
+  const componentesArray = Object.entries(componentes).map(
+    ([componenteId, cantidad]) => ({
+      componenteId,
+      cantidad,
+    })
+  );
+
+  const body = {
+    origen,
+    destino,
+    componentes: componentesArray,
+    comentario,
+  };
 
   const res = await fetch(url, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
   });
+
+  if (res.ok) {
+    mostrarAlerta("✅ Transferencia realizada correctamente");
+    formTrans.reset();
+    document.getElementById("componentes-transferencia").innerHTML = "";
+    cargarComponentes();
+    cargarBodegasUsuarios();
+  } else {
+    const msg = await res.text();
+    mostrarAlerta("⚠️ " + msg, "error");
+  }
 
   if (res.ok) {
     mostrarAlerta("✅ Transferencia realizada correctamente");
