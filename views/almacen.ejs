@@ -226,7 +226,7 @@
     });
 
     
-  const formComponente = document.getElementById("form-componente");
+  /* const formComponente = document.getElementById("form-componente");
   const alerta = document.getElementById("alerta");
 
   formComponente.addEventListener("submit", async (e) => {
@@ -258,8 +258,31 @@
     setTimeout(() => {
       alerta.textContent = "";
     }, 3000);
+  }); */
+ 
+const formComp = document.getElementById("form-componente");
+formComp.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const datos = Object.fromEntries(new FormData(formComp));
+  const body = {
+    nombre: datos.nombre,
+    articuloComercial: datos.articuloComercial,
+    modelo: datos.modelo,
+    puntosInstalacion: parseFloat(datos.puntosInstalacion),
+    puntosConexion: parseFloat(datos.puntosConexion),
+  };
+  const res = await fetch("/componentes", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
   });
-  </script>
-
+  if (res.ok) {
+    mostrarAlerta("✅ Componente creado correctamente");
+    formComp.reset();
+    cargarComponentes();
+  } else {
+    mostrarAlerta("❌ Error al crear componente", "error");
+  }
+}); </script>
 </body>
 </html>
