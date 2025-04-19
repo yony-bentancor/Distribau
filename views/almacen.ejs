@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Formulario Almacén</title>
+  <title>Gestión de Almacén</title>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
@@ -13,45 +13,40 @@
       color: #333;
     }
 
-    .main-layout {
+    .layout {
       display: flex;
       gap: 1rem;
+      height: 100vh;
+      box-sizing: border-box;
     }
 
-    .left-panel {
-      flex: 3;
+    .panel {
       background: white;
       padding: 1rem;
       border-radius: 10px;
       box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+      overflow-y: auto;
     }
 
-    .right-panel {
-      flex: 1;
-      background: #ffffff;
-      padding: 1rem;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-    }
+    .left-panel { flex: 1; }
+    .middle-panel { flex: 2; }
+    .right-panel { flex: 1; }
 
     h2 {
       text-align: center;
       margin-bottom: 1rem;
       color: #2c3e50;
-    }
-
-    .filtro {
-      text-align: center;
-      margin-bottom: 1rem;
+      font-size: 1.2rem;
     }
 
     input[type="search"] {
       padding: 0.6rem;
-      width: 80%;
-      max-width: 500px;
+      width: 90%;
       border: 1px solid #ccc;
       border-radius: 6px;
       font-size: 1rem;
+      display: block;
+      margin: 0 auto 1rem;
     }
 
     .modelo-box {
@@ -74,12 +69,8 @@
       border-bottom: 1px solid #eee;
     }
 
-    .componente-row:last-child {
-      border-bottom: none;
-    }
-
     input[type="number"] {
-      width: 80px;
+      width: 70px;
       padding: 0.4rem;
       border: 1px solid #ccc;
       border-radius: 4px;
@@ -87,7 +78,7 @@
 
     button[type="submit"] {
       margin-top: 1rem;
-      padding: 0.8rem 1.2rem;
+      padding: 0.6rem 1rem;
       background-color: #28a745;
       color: white;
       border: none;
@@ -98,36 +89,73 @@
       margin-left: auto;
       margin-right: auto;
     }
+    #form-componente input {
+  width: 100%;
+  padding: 0.6rem;
+  margin-bottom: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
 
-    .volver,
-    .btn-historial {
-      display: inline-block;
-      margin-top: 1rem;
-      padding: 0.6rem 1rem;
-      background-color: #007bff;
-      color: white;
-      text-decoration: none;
-      border-radius: 6px;
-      margin-right: 1rem;
+#form-componente button {
+  width: 100%;
+  padding: 0.7rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+#form-componente button:hover {
+  background-color: #0056b3;
+}
+
+#alerta {
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+
+    .historial-item {
+      font-size: 0.9rem;
+      border-bottom: 1px solid #eee;
+      padding: 0.5rem 0;
     }
 
-    .volver:hover,
-    .btn-historial:hover {
-      background-color: #0056b3;
+    .historial-item:last-child {
+      border-bottom: none;
     }
   </style>
 </head>
 <body>
 
-  <div class="main-layout">
+  <div class="layout">
 
-    <!-- PANEL PRINCIPAL: COMPONENTES -->
-    <div class="left-panel">
+    <!-- PANEL IZQUIERDO: CREAR COMPONENTE -->
+    <div class="panel left-panel">
+      <h2>➕ Nuevo Componente</h2>
+      <div id="alerta" style="margin-bottom:1rem;"></div>
+      
+      <form id="form-componente">
+        <input type="text" name="nombre" placeholder="Nombre del componente" required>
+        <input type="text" name="articuloComercial" placeholder="Artículo comercial (ej: CLM-101)">
+        <input type="text" name="modelo" placeholder="Modelo (ej: Climax)">
+        <input type="number" name="puntosInstalacion" step="0.01" placeholder="Puntaje instalación" required>
+        <input type="number" name="puntosConexion" step="0.01" placeholder="Puntaje conexión" required>
+        <button type="submit">Guardar</button>
+      </form>
+      
+    </div>
+
+    <!-- PANEL CENTRAL: INGRESO ALMACÉN -->
+    <div class="panel middle-panel">
       <h2>📥 Ingreso desde Almacén</h2>
 
-      <div class="filtro">
-        <input type="search" id="filtro" placeholder="🔍 Buscar por modelo o nombre..." />
-      </div>
+      <input type="search" id="filtro" placeholder="🔍 Buscar por modelo o nombre..." />
 
       <% if (componentes.length === 0) { %>
         <p style="text-align:center; color:#888;">No hay componentes disponibles.</p>
@@ -142,7 +170,7 @@
             for (let modelo in agrupados) {
           %>
             <div class="modelo-box" data-modelo="<%= modelo.toLowerCase() %>">
-              <div class="modelo-title">📦 Modelo: <%= modelo %></div>
+              <div class="modelo-title">📦 <%= modelo %></div>
               <% agrupados[modelo].forEach(c => { %>
                 <div class="componente-row" data-nombre="<%= c.nombre.toLowerCase() %>">
                   <div><%= c.nombre %></div>
@@ -154,16 +182,23 @@
           <button type="submit">Enviar a Bodega Central</button>
         </form>
       <% } %>
-
-      <a href="/admin" class="volver">⬅️ Volver al panel principal</a>
-      <a href="/movimientos/almacen" class="btn-historial">📖 Historial de ingresos</a>
     </div>
 
-    <!-- PANEL DERECHO: FUTURO FORMULARIO DE CREACIÓN -->
-    <div class="right-panel">
-      <h2>➕ Crear Componente</h2>
-      <p>Acá irá tu formulario de alta de componentes.</p>
+    <!-- PANEL DERECHO: HISTORIAL -->
+    <div class="panel right-panel">
+      <h2>📜 Historial de Ingresos</h2>
+      <% if (historial.length === 0) { %>
+        <p style="text-align:center; color:#888;">Aún no hay movimientos registrados.</p>
+      <% } else { %>
+        <% historial.forEach(mov => { %>
+          <div class="historial-item">
+            📅 <%= mov.fecha %><br>
+            🔄 <%= mov.componentes.map(c => `${c.nombre} (${c.cantidad})`).join(', ') %>
+          </div>
+        <% }) %>
+      <% } %>
     </div>
+
   </div>
 
   <script>
@@ -189,6 +224,42 @@
         box.style.display = algunoVisible ? "block" : "none";
       });
     });
+
+    
+  const formComponente = document.getElementById("form-componente");
+  const alerta = document.getElementById("alerta");
+
+  formComponente.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const formData = new FormData(formComponente);
+    const data = Object.fromEntries(formData.entries());
+
+    try {
+      const res = await fetch("/componentes", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+
+      if (res.ok) {
+        alerta.textContent = "✅ Componente creado correctamente.";
+        alerta.style.color = "green";
+        formComponente.reset();
+      } else {
+        const error = await res.text();
+        alerta.textContent = "⚠️ Error: " + error;
+        alerta.style.color = "red";
+      }
+    } catch (err) {
+      alerta.textContent = "⚠️ Error de conexión.";
+      alerta.style.color = "red";
+    }
+
+    setTimeout(() => {
+      alerta.textContent = "";
+    }, 3000);
+  });
   </script>
+
 </body>
 </html>
