@@ -8,10 +8,25 @@ const Almacen = require("../models/Almacen"); // importar nuevo modelo
 // GET: mostrar formulario de carga de stock
 router.get("/", async (req, res) => {
   try {
-    const componentes = await Componente.find();
-    res.render("almacen", { componentes }); // renderizar vista
+    const componentes = await Componente.find().lean();
+
+    const movimientos = await Movimiento.find({ "origen.tipo": "almacen" })
+      .sort({ fecha: -1 })
+      .limit(20)
+      .populate("componentes.componente")
+      .lean();
+
+    const historial = movimientos.map((mov) => ({
+      fecha: new Date(mov.createdAt || mov.fecha).toLocaleDateString("es-UY"),
+      componentes: mov.componentes.map((c) => ({
+        nombre: c.componente?.nombre || "Sin nombre",
+        cantidad: c.cantidad,
+      })),
+    }));
+
+    res.render("almacen", { componentes, historial }); // ✅ solucionado
   } catch (err) {
-    console.error("Error al cargar componentes:", err);
+    console.error("Error al cargar /almacen:", err);
     res.status(500).send("Error al mostrar el formulario de almacén");
   }
 });
