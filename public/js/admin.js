@@ -139,7 +139,7 @@ async function agregarLineaComponente() {
 }
 
 // Crear nuevo componente
-const formComp = document.getElementById("form-componente");
+/* const formComp = document.getElementById("form-componente");
 formComp.addEventListener("submit", async (e) => {
   e.preventDefault();
   const datos = Object.fromEntries(new FormData(formComp));
@@ -162,7 +162,7 @@ formComp.addEventListener("submit", async (e) => {
   } else {
     mostrarAlerta("❌ Error al crear componente", "error");
   }
-});
+}); */
 
 // Envío de transferencia
 const formTrans = document.getElementById("form-transferencia-multiple");
