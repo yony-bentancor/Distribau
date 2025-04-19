@@ -271,6 +271,16 @@ formComp.addEventListener("submit", async (e) => {
     puntosInstalacion: parseFloat(datos.puntosInstalacion),
     puntosConexion: parseFloat(datos.puntosConexion),
   };
+  function mostrarAlerta(mensaje, tipo = "success") {
+  const alerta = document.getElementById("alerta");
+  alerta.textContent = mensaje;
+  alerta.style.color = tipo === "success" ? "green" : "red";
+  alerta.style.fontWeight = "bold";
+  setTimeout(() => {
+    alerta.textContent = "";
+  }, 3000);
+}
+
   const res = await fetch("/componentes", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -279,7 +289,7 @@ formComp.addEventListener("submit", async (e) => {
   if (res.ok) {
     mostrarAlerta("✅ Componente creado correctamente");
     formComp.reset();
-    cargarComponentes();
+   // cargarComponentes();
   } else {
     mostrarAlerta("❌ Error al crear componente", "error");
   }
