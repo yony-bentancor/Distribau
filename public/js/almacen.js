@@ -32,6 +32,9 @@ formComp.addEventListener("submit", async (e) => {
     let box = document.querySelector(
       `[data-modelo="${nuevo.modelo.toLowerCase()}"]`
     );
+
+    await actualizarHistorial();
+
     if (!box) {
       box = document.createElement("div");
       box.className = "modelo-box";
@@ -114,3 +117,24 @@ inputFiltro.addEventListener("input", () => {
     box.style.display = visible ? "block" : "none";
   });
 });
+async function actualizarHistorial() {
+  const panel = document.querySelector(".right-panel");
+  const res = await fetch("/almacen/api/historial-almacen");
+  const historial = await res.json();
+
+  panel.innerHTML = "<h2>📜 Historial de Ingresos</h2>";
+
+  if (historial.length === 0) {
+    panel.innerHTML += `<p style="text-align:center; color:#888;">Aún no hay movimientos registrados.</p>`;
+    return;
+  }
+
+  historial.forEach((mov) => {
+    const div = document.createElement("div");
+    div.className = "historial-item";
+    div.innerHTML = `📅 ${mov.fecha}<br>🔄 ${mov.componentes
+      .map((c) => `${c.nombre} (${c.cantidad})`)
+      .join(", ")}`;
+    panel.appendChild(div);
+  });
+}
