@@ -60,14 +60,17 @@
       <% if (historial.length === 0) { %>
         <p style="text-align:center; color:#888;">Aún no hay movimientos registrados.</p>
       <% } else { %>
-        <% historial.forEach(mov => { %>
-          <div class="historial-item">
-            📅 <%= mov.fecha %><br>
-            🔄 <%= mov.componentes.map(c => `${c.nombre} (${c.cantidad})`).join(', ') %>
-          </div>
-        <% }) %>
+        <ul class="historial-lista">
+          <% historial.forEach(mov => { %>
+            <li class="historial-item">
+              <span class="fecha">📅 <%= mov.fecha %></span>
+              <span class="detalles">🔄 <%= mov.componentes.map(c => `${c.nombre} (${c.cantidad})`).join(', ') %></span>
+            </li>
+          <% }) %>
+        </ul>
       <% } %>
     </div>
+    
   </div>
 
   <script src="/js/almacen.js"></script>
