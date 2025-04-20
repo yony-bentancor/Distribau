@@ -34,11 +34,13 @@
       <h2>📥 Ingreso desde Almacén</h2>
       <label for="fechaIngreso">📆 Fecha de ingreso</label>
       <input 
-  type="date" 
-  name="fechaIngreso" 
-  id="fechaIngreso" 
-  required
-/>
+      type="date" 
+      name="fechaIngreso" 
+      id="fechaIngreso" 
+      required
+      value="<%= fechaSeleccionada || new Date().toISOString().substring(0, 10) %>"
+    />
+    
 
       <input type="search" id="filtro" placeholder="🔍 Buscar por modelo o nombre..." />
       

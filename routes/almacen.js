@@ -23,11 +23,12 @@ router.get("/", async (req, res) => {
         cantidad: c.cantidad,
       })),
     }));
+    const fechaSeleccionada = req.query.fechaIngreso;
 
     res.render("almacen", {
       componentes,
       historial,
-      fechaSeleccionada: req.query.fechaIngreso,
+      fechaSeleccionada,
     });
   } catch (err) {
     console.error("❌ Error al cargar /almacen:", err);
