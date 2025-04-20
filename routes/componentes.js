@@ -3,7 +3,6 @@ const express = require("express");
 const router = express.Router();
 const Componente = require("../models/Componente");
 
-// Crear nuevo componente
 router.post("/componentes", async (req, res) => {
   console.log("📥 Body recibido:", req.body);
 
@@ -16,7 +15,6 @@ router.post("/componentes", async (req, res) => {
       puntosConexion,
     } = req.body;
 
-    // Validación básica
     if (
       !nombre ||
       puntosInstalacion === undefined ||
@@ -41,7 +39,9 @@ router.post("/componentes", async (req, res) => {
     });
 
     await nuevo.save();
-    res.status(201).send("✅ Componente creado correctamente");
+
+    // ✅ Esta es la línea clave
+    res.status(201).json(nuevo);
   } catch (err) {
     console.error("❌ Error al crear componente:", err);
     res.status(500).send("❌ Error interno al crear componente");

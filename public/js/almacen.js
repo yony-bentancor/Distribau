@@ -99,6 +99,8 @@ function eliminarComponente(id, btn) {
 const modeloBoxes = document.querySelectorAll(".modelo-box");
 inputFiltro.addEventListener("input", () => {
   const texto = inputFiltro.value.toLowerCase();
+  const modeloBoxes = document.querySelectorAll(".modelo-box"); // ✅ moverlo aquí
+
   modeloBoxes.forEach((box) => {
     const modelo = box.getAttribute("data-modelo");
     const filas = box.querySelectorAll(".componente-row");
