@@ -30,12 +30,13 @@
     </div>
 
     <div class="panel middle-panel">
+      <form method="POST" action="/almacen" id="form-almacen">
       <h2>📥 Ingreso desde Almacén</h2>
       <label for="fechaIngreso">📆 Fecha de ingreso</label>
       <input type="date" name="fechaIngreso" id="fechaIngreso" required />
       <input type="search" id="filtro" placeholder="🔍 Buscar por modelo o nombre..." />
       
-      <form method="POST" action="/almacen" id="form-almacen">
+  
         <% const agrupados = {}; componentes.forEach(c => { if (!agrupados[c.modelo]) agrupados[c.modelo] = []; agrupados[c.modelo].push(c); }); for (let modelo in agrupados) { %>
         <div class="modelo-box" data-modelo="<%= modelo.toLowerCase() %>">
           <div class="modelo-title">📦 <%= modelo %></div>
