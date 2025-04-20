@@ -154,4 +154,51 @@ body {
     background-color: #ffffff22;
     border-color: #ffffff55;
   }
+  @media (max-width: 768px) {
+    .layout {
+      flex-direction: column;
+      height: auto;
+    }
+  
+    .panel {
+      width: 100%;
+      padding: 1rem 0.8rem;
+    }
+  
+    .nav-buttons {
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+  
+    .nav-buttons a {
+      width: 100%;
+      text-align: center;
+    }
+  
+    input[type="search"],
+    #form-componente input,
+    #form-componente button,
+    button[type="submit"] {
+      width: 100%;
+      font-size: 1rem;
+    }
+  
+    .modelo-row {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .componente-row {
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+  
+    input[type="number"] {
+      width: 100%;
+    }
+  
+    h2 {
+      font-size: 1rem;
+    }
+  }
   
