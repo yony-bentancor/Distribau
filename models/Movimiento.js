@@ -4,7 +4,6 @@ const movimientoSchema = new mongoose.Schema(
   {
     fecha: {
       type: Date,
-      default: Date.now,
     },
     origen: {
       tipo: {
