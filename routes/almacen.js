@@ -24,7 +24,11 @@ router.get("/", async (req, res) => {
       })),
     }));
 
-    res.render("almacen", { componentes, historial });
+    res.render("almacen", {
+      componentes,
+      historial,
+      fechaSeleccionada: req.query.fechaIngreso,
+    });
   } catch (err) {
     console.error("❌ Error al cargar /almacen:", err);
     res.status(500).send("Error al mostrar el formulario de almacén");
@@ -92,7 +96,9 @@ router.post("/", async (req, res) => {
 
     await nuevoMovimiento.save();
 
-    res.redirect("/almacen");
+    res.redirect(
+      "/almacen?fechaIngreso=" + encodeURIComponent(req.body.fechaIngreso)
+    );
   } catch (err) {
     console.error("❌ Error al guardar stock desde almacén:", err);
     res.status(500).send("Error interno");
