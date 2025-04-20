@@ -154,6 +154,35 @@ body {
     background-color: #ffffff22;
     border-color: #ffffff55;
   }
+
+  .historial-lista {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .historial-item {
+    padding: 0.7rem;
+    margin-bottom: 0.4rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f8f9fb;
+    display: flex;
+    flex-direction: column;
+    font-size: 0.95rem;
+  }
+  
+  .historial-item .fecha {
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 0.2rem;
+  }
+  
+  .historial-item .detalles {
+    color: #555;
+    font-size: 0.9rem;
+  }
+  
   @media (max-width: 768px) {
     .layout {
       flex-direction: column;
