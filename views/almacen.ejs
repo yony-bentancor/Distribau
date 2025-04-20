@@ -4,142 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Gestión de Almacén</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #f5f6fa;
-      margin: 0;
-      padding: 1rem;
-      color: #333;
-    }
-
-    .layout {
-      display: flex;
-      gap: 1rem;
-      height: 100vh;
-      box-sizing: border-box;
-    }
-
-    .panel {
-      background: white;
-      padding: 1rem;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-      overflow-y: auto;
-    }
-
-    .left-panel { flex: 1; }
-    .middle-panel { flex: 2; }
-    .right-panel { flex: 1; }
-
-    h2 {
-      text-align: center;
-      margin-bottom: 1rem;
-      color: #2c3e50;
-      font-size: 1.2rem;
-    }
-
-    input[type="search"] {
-      padding: 0.6rem;
-      width: 90%;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 1rem;
-      display: block;
-      margin: 0 auto 1rem;
-    }
-
-    .modelo-box {
-      margin-bottom: 1rem;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      padding: 0.8rem;
-    }
-
-    .modelo-title {
-      font-weight: bold;
-      margin-bottom: 0.5rem;
-      color: #1f2f46;
-    }
-
-    .componente-row {
-      display: flex;
-      justify-content: space-between;
-      padding: 0.4rem 0;
-      border-bottom: 1px solid #eee;
-    }
-
-    input[type="number"] {
-      width: 70px;
-      padding: 0.4rem;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-
-    button[type="submit"] {
-      margin-top: 1rem;
-      padding: 0.6rem 1rem;
-      background-color: #28a745;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      font-size: 1rem;
-      cursor: pointer;
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    #form-componente input {
-  width: 100%;
-  padding: 0.6rem;
-  margin-bottom: 0.6rem;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 1rem;
-  box-sizing: border-box;
-}
-
-#form-componente button {
-  width: 100%;
-  padding: 0.7rem;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-size: 1rem;
-  cursor: pointer;
-}
-
-#form-componente button:hover {
-  background-color: #0056b3;
-}
-
-#alerta {
-  font-size: 0.9rem;
-  text-align: center;
-}
-
-
-    .historial-item {
-      font-size: 0.9rem;
-      border-bottom: 1px solid #eee;
-      padding: 0.5rem 0;
-    }
-
-    .historial-item:last-child {
-      border-bottom: none;
-    }
-  </style>
+  <link rel="stylesheet" href="/css/almacen.css">
 </head>
 <body>
-
   <div class="layout">
-
-    <!-- PANEL IZQUIERDO: CREAR COMPONENTE -->
     <div class="panel left-panel">
       <h2>➕ Nuevo Componente</h2>
       <div id="alerta" style="margin-bottom:1rem;"></div>
-      
       <form id="form-componente">
         <input type="text" name="nombre" placeholder="Nombre del componente" required>
         <input type="text" name="articuloComercial" placeholder="Artículo comercial (ej: CLM-101)">
@@ -148,43 +19,31 @@
         <input type="number" name="puntosConexion" step="0.01" placeholder="Puntaje conexión" required>
         <button type="submit">Guardar</button>
       </form>
-      
     </div>
 
-    <!-- PANEL CENTRAL: INGRESO ALMACÉN -->
     <div class="panel middle-panel">
       <h2>📥 Ingreso desde Almacén</h2>
-
       <input type="search" id="filtro" placeholder="🔍 Buscar por modelo o nombre..." />
-
-      <% if (componentes.length === 0) { %>
-        <p style="text-align:center; color:#888;">No hay componentes disponibles.</p>
-      <% } else { %>
-        <form method="POST" action="/almacen" id="form-almacen">
-          <% 
-            const agrupados = {};
-            componentes.forEach(c => {
-              if (!agrupados[c.modelo]) agrupados[c.modelo] = [];
-              agrupados[c.modelo].push(c);
-            });
-            for (let modelo in agrupados) {
-          %>
-            <div class="modelo-box" data-modelo="<%= modelo.toLowerCase() %>">
-              <div class="modelo-title">📦 <%= modelo %></div>
-              <% agrupados[modelo].forEach(c => { %>
-                <div class="componente-row" data-nombre="<%= c.nombre.toLowerCase() %>">
-                  <div><%= c.nombre %></div>
-                  <input type="number" name="<%= c._id %>" min="0" value="0" />
-                </div>
-              <% }) %>
+      <form method="POST" action="/almacen" id="form-almacen">
+        <% const agrupados = {}; componentes.forEach(c => { if (!agrupados[c.modelo]) agrupados[c.modelo] = []; agrupados[c.modelo].push(c); }); for (let modelo in agrupados) { %>
+        <div class="modelo-box" data-modelo="<%= modelo.toLowerCase() %>">
+          <div class="modelo-title">📦 <%= modelo %></div>
+          <% agrupados[modelo].forEach(c => { %>
+          <div class="componente-row" data-nombre="<%= c.nombre.toLowerCase() %>">
+            <div><strong><%= c.nombre %></strong>
+              <br>
+              <button type="button" onclick="editarComponente('<%= c._id %>', '<%= c.nombre %>', <%= c.puntosInstalacion %>, <%= c.puntosConexion %>)">✏️</button>
+              <button type="button" onclick="eliminarComponente('<%= c._id %>', this)">🗑️</button>
             </div>
-          <% } %>
-          <button type="submit">Enviar a Bodega Central</button>
-        </form>
-      <% } %>
+            <input type="number" name="<%= c._id %>" min="0" value="0" />
+          </div>
+          <% }) %>
+        </div>
+        <% } %>
+        <button type="submit">Enviar a Bodega Central</button>
+      </form>
     </div>
 
-    <!-- PANEL DERECHO: HISTORIAL -->
     <div class="panel right-panel">
       <h2>📜 Historial de Ingresos</h2>
       <% if (historial.length === 0) { %>
@@ -198,101 +57,8 @@
         <% }) %>
       <% } %>
     </div>
-
   </div>
 
-  <script>
-    const inputFiltro = document.getElementById("filtro");
-    const modeloBoxes = document.querySelectorAll(".modelo-box");
-
-    inputFiltro.addEventListener("input", () => {
-      const texto = inputFiltro.value.toLowerCase();
-
-      modeloBoxes.forEach(box => {
-        const modelo = box.getAttribute("data-modelo");
-        const filas = box.querySelectorAll(".componente-row");
-
-        let algunoVisible = false;
-
-        filas.forEach(fila => {
-          const nombre = fila.getAttribute("data-nombre");
-          const coincide = modelo.includes(texto) || nombre.includes(texto);
-          fila.style.display = coincide ? "flex" : "none";
-          if (coincide) algunoVisible = true;
-        });
-
-        box.style.display = algunoVisible ? "block" : "none";
-      });
-    });
-
-    
-  /* const formComponente = document.getElementById("form-componente");
-  const alerta = document.getElementById("alerta");
-
-  formComponente.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const formData = new FormData(formComponente);
-    const data = Object.fromEntries(formData.entries());
-
-    try {
-      const res = await fetch("/componentes", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data)
-      });
-
-      if (res.ok) {
-        alerta.textContent = "✅ Componente creado correctamente.";
-        alerta.style.color = "green";
-        formComponente.reset();
-      } else {
-        const error = await res.text();
-        alerta.textContent = "⚠️ Error: " + error;
-        alerta.style.color = "red";
-      }
-    } catch (err) {
-      alerta.textContent = "⚠️ Error de conexión.";
-      alerta.style.color = "red";
-    }
-
-    setTimeout(() => {
-      alerta.textContent = "";
-    }, 3000);
-  }); */
- 
-const formComp = document.getElementById("form-componente");
-formComp.addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const datos = Object.fromEntries(new FormData(formComp));
-  const body = {
-    nombre: datos.nombre,
-    articuloComercial: datos.articuloComercial,
-    modelo: datos.modelo,
-    puntosInstalacion: parseFloat(datos.puntosInstalacion),
-    puntosConexion: parseFloat(datos.puntosConexion),
-  };
-  function mostrarAlerta(mensaje, tipo = "success") {
-  const alerta = document.getElementById("alerta");
-  alerta.textContent = mensaje;
-  alerta.style.color = tipo === "success" ? "green" : "red";
-  alerta.style.fontWeight = "bold";
-  setTimeout(() => {
-    alerta.textContent = "";
-  }, 3000);
-}
-
-  const res = await fetch("/componentes", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body),
-  });
-  if (res.ok) {
-    mostrarAlerta("✅ Componente creado correctamente");
-    formComp.reset();
-   // cargarComponentes();
-  } else {
-    mostrarAlerta("❌ Error al crear componente", "error");
-  }
-}); </script>
+  <script src="/js/almacen.js"></script>
 </body>
 </html>
