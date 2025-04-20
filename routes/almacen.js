@@ -69,12 +69,13 @@ router.post("/", async (req, res) => {
 
     await almacen.save();
     await bodega.save();
-    const fecha = req.body.fechaIngreso
+
+    const fechaElegida = req.body.fechaIngreso
       ? new Date(req.body.fechaIngreso)
       : new Date();
 
     const nuevoMovimiento = new Movimiento({
-      fecha,
+      fecha: fechaElegida,
       origen: { tipo: "almacen", id: almacen._id },
       destino: { tipo: "bodega", id: null },
       componentes: movimientos,
