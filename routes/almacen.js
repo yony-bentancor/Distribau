@@ -45,6 +45,10 @@ router.post("/", async (req, res) => {
     const fecha = req.body.fechaIngreso
       ? new Date(req.body.fechaIngreso)
       : new Date();
+    console.log(fecha);
+    console.log("🧾 Body completo:", req.body);
+    console.log("📆 Fecha de ingreso cruda:", req.body.fechaIngreso);
+    console.log("📆 Fecha parseada:", fecha);
 
     delete entradas.fechaIngreso; // eliminamos del objeto para que no lo procese como componente
 
