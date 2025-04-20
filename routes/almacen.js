@@ -34,7 +34,13 @@ router.get("/", async (req, res) => {
 // POST: procesar ingreso desde almacén a bodega central
 router.post("/", async (req, res) => {
   try {
-    const entradas = req.body; // { componenteId: cantidad }
+    const entradas = req.body;
+
+    const fecha = req.body.fechaIngreso
+      ? new Date(req.body.fechaIngreso)
+      : new Date();
+
+    delete entradas.fechaIngreso; // eliminamos del objeto para que no lo procese como componente
 
     let almacen = await Almacen.findOne();
     if (!almacen) almacen = new Almacen({ componentes: [] });
@@ -44,18 +50,24 @@ router.post("/", async (req, res) => {
 
     const movimientos = [];
 
+    // Limpieza de posibles entradas corruptas en almacen o bodega
+    almacen.componentes = almacen.componentes.filter((c) => c.componente);
+    bodega.componentes = bodega.componentes.filter((c) => c.componente);
+
     for (let id in entradas) {
       const cantidad = parseInt(entradas[id]);
       if (!isNaN(cantidad) && cantidad > 0) {
-        // descontar del almacén (si existiera)
+        // Almacen
         const enAlmacen = almacen.componentes.find(
-          (c) => c.componente.toString() === id
+          (c) => c.componente && c.componente.toString() === id
         );
-        if (enAlmacen) enAlmacen.cantidad -= cantidad;
+        if (enAlmacen) {
+          enAlmacen.cantidad -= cantidad;
+        }
 
-        // agregar a bodega central
+        // Bodega Central
         const enBodega = bodega.componentes.find(
-          (c) => c.componente.toString() === id
+          (c) => c.componente && c.componente.toString() === id
         );
         if (enBodega) {
           enBodega.cantidad += cantidad;
@@ -70,12 +82,8 @@ router.post("/", async (req, res) => {
     await almacen.save();
     await bodega.save();
 
-    const fechaElegida = req.body.fechaIngreso
-      ? new Date(req.body.fechaIngreso)
-      : new Date();
-
     const nuevoMovimiento = new Movimiento({
-      fecha: fechaElegida,
+      fecha,
       origen: { tipo: "almacen", id: almacen._id },
       destino: { tipo: "bodega", id: null },
       componentes: movimientos,
@@ -90,6 +98,7 @@ router.post("/", async (req, res) => {
     res.status(500).send("Error interno");
   }
 });
+
 // API: obtener historial de ingresos desde almacén (formato JSON)
 router.get("/api/historial-almacen", async (req, res) => {
   try {
