@@ -23,7 +23,8 @@ router.get("/", async (req, res) => {
         cantidad: c.cantidad,
       })),
     }));
-    const fechaSeleccionada = req.query.fechaIngreso;
+    const fechaSeleccionada =
+      req.query.fechaIngreso || new Date().toISOString().split("T")[0];
 
     res.render("almacen", {
       componentes,
