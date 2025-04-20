@@ -162,35 +162,36 @@ td button:last-child {
   justify-content: space-between;
   align-items: center;
   background: #1f2f46;
-  padding: 1rem;
-  color: white;
+  padding: 1rem 2rem;
   font-family: 'Segoe UI', sans-serif;
   position: sticky;
   top: 0;
   z-index: 1000;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
 .btn-top {
-  background: #007bff;
-  color: white;
-  padding: 0.5rem 1rem;
+  background-color: #e0ecff;
+  color: #1f2f46;
+  padding: 0.45rem 1.1rem;
   text-decoration: none;
-  border-radius: 8px;
+  border-radius: 12px;
   font-size: 0.95rem;
-  font-weight: bold;
-  transition: background 0.3s;
+  font-weight: 500;
+  border: 1px solid #bfd8ff;
+  transition: all 0.3s ease;
 }
 
 .btn-top:hover {
-  background: #0056b3;
+  background-color: #d0e2ff;
+  color: #0d2c60;
+  border-color: #a9caff;
 }
 
-.logo img {
-  height: 40px;
-  max-width: 160px;
-  object-fit: contain;
-  display: block;
-  margin: 0 auto;
+.centro {
+  font-weight: bold;
+  font-size: 1rem;
+  letter-spacing: 0.5px;
 }
 
 .izquierda {
