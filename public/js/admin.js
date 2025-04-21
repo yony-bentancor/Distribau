@@ -27,16 +27,18 @@ async function cargarComponentes() {
     );
     const cantidad = enStock ? enStock.cantidad : 0;
 
-    const fila = document.createElement("tr");
-    fila.innerHTML = `
-      <td>${c.nombre}</td>
-      <td>${cantidad}</td>
-      <td>
-        <button onclick="editarComponente('${c._id}', '${c.nombre}', ${c.puntosInstalacion}, ${c.puntosConexion})">✏️</button>
-        <button onclick="eliminarComponente('${c._id}')">🗑️</button>
-      </td>
-    `;
-    tbody.appendChild(fila);
+    if (cantidad >= 1) {
+      const fila = document.createElement("tr");
+      fila.innerHTML = `
+        <td>${c.nombre}</td>
+        <td>${cantidad}</td>
+        <td>
+          <button onclick="editarComponente('${c._id}', '${c.nombre}', ${c.puntosInstalacion}, ${c.puntosConexion})">✏️</button>
+          <button onclick="eliminarComponente('${c._id}')">🗑️</button>
+        </td>
+      `;
+      tbody.appendChild(fila);
+    }
   });
 }
 
@@ -125,16 +127,35 @@ async function agregarLineaComponente() {
     const res = await fetch("/componentes");
     todosLosComponentes = await res.json();
   }
+
+  // Obtener stock actual desde la bodega central
+  const stockRes = await fetch("/bodega-central");
+  const stockCentral = await stockRes.json();
+
+  // Filtrar solo los componentes con cantidad > 0
+  const componentesDisponibles = todosLosComponentes.filter((c) => {
+    const enStock = stockCentral.find(
+      (s) => s?.componente?._id?.toString() === c._id.toString()
+    );
+    return enStock && enStock.cantidad > 0;
+  });
+
+  // Si no hay componentes con stock, mostrar alerta
+  if (componentesDisponibles.length === 0) {
+    alert("⚠️ No hay componentes con stock disponible.");
+    return;
+  }
+
   const div = document.createElement("div");
   div.innerHTML = `
-      <select class="select-componente" required>
-        ${todosLosComponentes
-          .map((c) => `<option value="${c._id}">${c.nombre}</option>`)
-          .join("")}
-      </select>
-      <input type="number" min="1" class="cantidad-componente" placeholder="Cantidad" required>
-      <button type="button" onclick="this.parentNode.remove()">❌</button>
-    `;
+    <select class="select-componente" required>
+      ${componentesDisponibles
+        .map((c) => `<option value="${c._id}">${c.nombre}</option>`)
+        .join("")}
+    </select>
+    <input type="number" min="1" class="cantidad-componente" placeholder="Cantidad" required>
+    <button type="button" onclick="this.parentNode.remove()">❌</button>
+  `;
   document.getElementById("componentes-transferencia").appendChild(div);
 }
 
