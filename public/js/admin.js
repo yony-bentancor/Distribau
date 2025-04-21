@@ -122,7 +122,7 @@ async function cargarTecnicosParaTransferencia() {
   });
 }
 
-async function agregarLineaComponente() {
+/* async function agregarLineaComponente() {
   if (todosLosComponentes.length === 0) {
     const res = await fetch("/componentes");
     todosLosComponentes = await res.json();
@@ -137,6 +137,43 @@ async function agregarLineaComponente() {
       <input type="number" min="1" class="cantidad-componente" placeholder="Cantidad" required>
       <button type="button" onclick="this.parentNode.remove()">❌</button>
     `;
+  document.getElementById("componentes-transferencia").appendChild(div);
+}
+  
+ */ async function agregarLineaComponente() {
+  if (todosLosComponentes.length === 0) {
+    const [resComp, resStock] = await Promise.all([
+      fetch("/componentes"),
+      fetch("/bodega-central"),
+    ]);
+
+    const componentes = await resComp.json();
+    const stockCentral = await resStock.json();
+
+    // Filtrar solo los que tienen stock ≥ 1
+    todosLosComponentes = componentes.filter((c) => {
+      const enStock = stockCentral.find(
+        (s) => s?.componente?._id?.toString() === c._id.toString()
+      );
+      return enStock && enStock.cantidad >= 1;
+    });
+  }
+
+  // Si no hay componentes disponibles con stock, mostrar alerta
+  if (todosLosComponentes.length === 0) {
+    return mostrarAlerta("⚠️ No hay componentes con stock disponible", "error");
+  }
+
+  const div = document.createElement("div");
+  div.innerHTML = `
+    <select class="select-componente" required>
+      ${todosLosComponentes
+        .map((c) => `<option value="${c._id}">${c.nombre}</option>`)
+        .join("")}
+    </select>
+    <input type="number" min="1" class="cantidad-componente" placeholder="Cantidad" required>
+    <button type="button" onclick="this.parentNode.remove()">❌</button>
+  `;
   document.getElementById("componentes-transferencia").appendChild(div);
 }
 
