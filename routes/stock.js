@@ -122,5 +122,76 @@ router.get("/bodega-central", async (req, res) => {
     res.status(500).send("Error al obtener bodega central");
   }
 });
+const Movimiento = require("../models/Movimiento");
+
+router.post("/transferir", async (req, res) => {
+  try {
+    const { origen, destino, componentes, comentario } = req.body;
+
+    if (!origen || !destino || !componentes || componentes.length === 0) {
+      return res.status(400).send("❌ Datos incompletos");
+    }
+
+    const origenBodega =
+      origen.tipo === "usuario"
+        ? await BodegaUsuario.findOne({ usuario: origen.id })
+        : await BodegaCentral.findOne();
+
+    const destinoBodega =
+      destino.tipo === "usuario"
+        ? await BodegaUsuario.findOne({ usuario: destino.id })
+        : await BodegaCentral.findOne();
+
+    if (!origenBodega || !destinoBodega) {
+      return res.status(400).send("❌ Alguna bodega no existe");
+    }
+
+    const movimientos = [];
+
+    for (let { componenteId, cantidad } of componentes) {
+      cantidad = parseInt(cantidad);
+      if (isNaN(cantidad) || cantidad <= 0) continue;
+
+      // Restar en origen
+      const enOrigen = origenBodega.componentes.find(
+        (c) => c.componente.toString() === componenteId
+      );
+      if (!enOrigen || enOrigen.cantidad < cantidad) {
+        return res.status(400).send("❌ Stock insuficiente en origen");
+      }
+      enOrigen.cantidad -= cantidad;
+
+      // Sumar en destino
+      const enDestino = destinoBodega.componentes.find(
+        (c) => c.componente.toString() === componenteId
+      );
+      if (enDestino) {
+        enDestino.cantidad += cantidad;
+      } else {
+        destinoBodega.componentes.push({ componente: componenteId, cantidad });
+      }
+
+      movimientos.push({ componente: componenteId, cantidad });
+    }
+
+    await origenBodega.save();
+    await destinoBodega.save();
+
+    const nuevoMovimiento = new Movimiento({
+      origen,
+      destino,
+      componentes: movimientos,
+      comentario,
+      fecha: new Date(),
+    });
+
+    await nuevoMovimiento.save();
+
+    res.status(200).send("✅ Transferencia registrada correctamente");
+  } catch (err) {
+    console.error("❌ Error en /transferir:", err);
+    res.status(500).send("❌ Error interno al transferir");
+  }
+});
 
 module.exports = router;
