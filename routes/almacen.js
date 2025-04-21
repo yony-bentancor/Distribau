@@ -17,19 +17,16 @@ router.get("/", async (req, res) => {
       .lean();
 
     const historial = movimientos.map((mov) => ({
-      fecha: new Date(mov.createdAt || mov.fecha).toLocaleDateString("es-UY"),
+      fecha: new Date(mov.fecha).toLocaleDateString("es-UY"), // ahora solo se usa `mov.fecha`
       componentes: mov.componentes.map((c) => ({
         nombre: c.componente?.nombre || "Sin nombre",
         cantidad: c.cantidad,
       })),
     }));
-    const fechaSeleccionada =
-      req.query.fechaIngreso || new Date().toISOString().split("T")[0];
 
     res.render("almacen", {
       componentes,
       historial,
-      fechaSeleccionada,
     });
   } catch (err) {
     console.error("❌ Error al cargar /almacen:", err);
