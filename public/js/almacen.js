@@ -138,3 +138,11 @@ async function actualizarHistorial() {
     panel.appendChild(div);
   });
 }
+document.querySelectorAll(".toggle-componentes").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    const contenedor = btn.closest(".modelo-title").nextElementSibling;
+    const visible = contenedor.style.display === "block";
+    contenedor.style.display = visible ? "none" : "block";
+    btn.textContent = visible ? "➕" : "➖";
+  });
+});

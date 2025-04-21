@@ -31,36 +31,47 @@
 
     <div class="panel middle-panel">
       <form method="POST" action="/almacen" id="form-almacen">
-      <h2>📥 Ingreso desde Almacén</h2>
-      <label for="fechaIngreso">📆 Fecha de ingreso</label>
-      <input 
-      type="date" 
-      name="fechaIngreso" 
-      id="fechaIngreso" 
-      required
-    />
-    
-
-      <input type="search" id="filtro" placeholder="🔍 Buscar por modelo o nombre..." />
+        <h2>📥 Ingreso desde Almacén</h2>
       
-  
-        <% const agrupados = {}; componentes.forEach(c => { if (!agrupados[c.modelo]) agrupados[c.modelo] = []; agrupados[c.modelo].push(c); }); for (let modelo in agrupados) { %>
-        <div class="modelo-box" data-modelo="<%= modelo.toLowerCase() %>">
-          <div class="modelo-title">📦 <%= modelo %></div>
-          <% agrupados[modelo].forEach(c => { %>
-          <div class="componente-row" data-nombre="<%= c.nombre.toLowerCase() %>">
-            <div><strong><%= c.nombre %></strong>
-              <br>
-              <button type="button" onclick="editarComponente('<%= c._id %>', '<%= c.nombre %>', <%= c.puntosInstalacion %>, <%= c.puntosConexion %>)">✏️</button>
-              <button type="button" onclick="eliminarComponente('<%= c._id %>', this)">🗑️</button>
+        <button type="submit" class="boton-enviar-arriba">Enviar a Bodega Central</button> <!-- 🔼 Botón arriba -->
+      
+        <label for="fechaIngreso">📆 Fecha de ingreso</label>
+        <input 
+          type="date" 
+          name="fechaIngreso" 
+          id="fechaIngreso" 
+          required
+        />
+      
+        <input type="search" id="filtro" placeholder="🔍 Buscar por modelo o nombre..." />
+        
+        <% 
+          const agrupados = {};
+          componentes.forEach(c => {
+            if (!agrupados[c.modelo]) agrupados[c.modelo] = [];
+            agrupados[c.modelo].push(c);
+          });
+          for (let modelo in agrupados) {
+        %>
+          <div class="modelo-box" data-modelo="<%= modelo.toLowerCase() %>">
+            <div class="modelo-title">
+              <button type="button" class="toggle-componentes">➕</button> 📦 <%= modelo %>
             </div>
-            <input type="number" name="<%= c._id %>" min="0" value="0" />
+            <div class="componentes-container" style="display:none;">
+              <% agrupados[modelo].forEach(c => { %>
+                <div class="componente-row" data-nombre="<%= c.nombre.toLowerCase() %>">
+                  <div><strong><%= c.nombre %></strong><br>
+                    <button type="button" onclick="editarComponente('<%= c._id %>', '<%= c.nombre %>', <%= c.puntosInstalacion %>, <%= c.puntosConexion %>)">✏️</button>
+                    <button type="button" onclick="eliminarComponente('<%= c._id %>', this)">🗑️</button>
+                  </div>
+                  <input type="number" name="<%= c._id %>" min="0" value="0" />
+                </div>
+              <% }) %>
+            </div>
           </div>
-          <% }) %>
-        </div>
         <% } %>
-        <button type="submit">Enviar a Bodega Central</button>
       </form>
+      
     </div>
 
     <div class="panel right-panel">
