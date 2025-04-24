@@ -127,7 +127,16 @@
       const detalles = document.getElementById(`detalles-${index}`);
       detalles.style.display = detalles.style.display === "block" ? "none" : "block";
     }
+  
+    // Nuevo: abre o cierra la lista de componentes por modelo
+    document.querySelectorAll('.toggle-componentes').forEach(btn => {
+      btn.addEventListener('click', function () {
+        const container = this.closest('.modelo-box').querySelector('.componentes-container');
+        container.style.display = container.style.display === 'none' ? 'block' : 'none';
+      });
+    });
   </script>
+  
   
   
 </body>
