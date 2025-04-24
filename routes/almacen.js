@@ -4,6 +4,7 @@ const Componente = require("../models/Componente");
 const BodegaCentral = require("../models/BodegaCentral");
 const Movimiento = require("../models/Movimiento");
 const Almacen = require("../models/Almacen");
+const ExcelJS = require("exceljs");
 
 router.get("/", async (req, res) => {
   try {
@@ -140,7 +141,7 @@ router.get("/exportar-excel/:fecha", async (req, res) => {
       .populate("componentes.componente", "nombre modelo")
       .lean();
 
-    // Filtramos los movimientos por la fecha que viene del URL
+    // Filtrar movimientos por fecha
     const movimientosFiltrados = movimientos.filter((mov) => {
       const fechaMov = new Date(mov.fecha).toLocaleDateString("es-UY");
       return fechaMov === fechaFiltro;
@@ -152,9 +153,12 @@ router.get("/exportar-excel/:fecha", async (req, res) => {
         .send("No se encontraron movimientos para esa fecha");
     }
 
-    const ExcelJS = require("exceljs");
+    // Crear Excel
     const workbook = new ExcelJS.Workbook();
-    const sheet = workbook.addWorksheet("Ingreso " + fechaFiltro);
+
+    // 🛡️ Reemplazar caracteres inválidos para el nombre de la hoja
+    const hojaNombre = "Ingreso_" + fechaFiltro.replace(/[\/:*?[\]]/g, "-");
+    const sheet = workbook.addWorksheet(hojaNombre);
 
     sheet.columns = [
       { header: "Fecha", key: "fecha", width: 20 },
@@ -176,10 +180,10 @@ router.get("/exportar-excel/:fecha", async (req, res) => {
       });
     });
 
-    res.setHeader(
-      "Content-Disposition",
-      `attachment; filename=ingreso_${fechaFiltro.replaceAll("/", "-")}.xlsx`
-    );
+    // 🗂️ Nombre del archivo sin caracteres inválidos
+    const filename = `ingreso_${fechaFiltro.replace(/[\/:*?[\]]/g, "-")}.xlsx`;
+
+    res.setHeader("Content-Disposition", `attachment; filename=${filename}`);
     res.setHeader(
       "Content-Type",
       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
