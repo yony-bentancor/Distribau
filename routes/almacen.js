@@ -6,9 +6,10 @@ const Movimiento = require("../models/Movimiento");
 const Almacen = require("../models/Almacen");
 
 // GET: mostrar formulario de carga de stock + historial
-router.get("/", async (req, res) => {
+/* router.get("/", async (req, res) => {
   try {
     const componentes = await Componente.find().lean();
+    
 
     const movimientos = await Movimiento.find({ "origen.tipo": "almacen" })
       .sort({ fecha: -1 })
@@ -20,6 +21,34 @@ router.get("/", async (req, res) => {
       fecha: new Date(mov.fecha).toLocaleDateString("es-UY"), // ahora solo se usa `mov.fecha`
       componentes: mov.componentes.map((c) => ({
         nombre: c.componente?.nombre || "Sin nombre",
+        cantidad: c.cantidad,
+      })),
+    }));
+
+    res.render("almacen", {
+      componentes,
+      historial,
+    });
+  } catch (err) {
+    console.error("❌ Error al cargar /almacen:", err);
+    res.status(500).send("Error al mostrar el formulario de almacén");
+  }
+}); */
+// GET: mostrar formulario de carga de stock + historial
+router.get("/", async (req, res) => {
+  try {
+    const componentes = await Componente.find().lean();
+
+    const movimientos = await Movimiento.find({ "origen.tipo": "almacen" })
+      .sort({ fecha: -1 })
+      .limit(20)
+      .populate("componentes.componente", "nombre modelo") // populamos los campos necesarios
+      .lean();
+
+    const historial = movimientos.map((mov) => ({
+      fecha: new Date(mov.fecha).toLocaleDateString("es-UY"),
+      componentes: mov.componentes.map((c) => ({
+        componente: c.componente, // se conserva el objeto completo para usar modelo y nombre
         cantidad: c.cantidad,
       })),
     }));
