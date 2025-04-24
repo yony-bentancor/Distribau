@@ -80,17 +80,28 @@
         <p style="text-align:center; color:#888;">Aún no hay movimientos registrados.</p>
       <% } else { %>
         <ul class="historial-lista">
-          <% historial.forEach((mov, index) => { %>
+          <% historial.forEach((mov, index) => { 
+            const modelos = {};
+            mov.componentes.forEach(c => {
+              if (!modelos[c.modelo]) modelos[c.modelo] = [];
+              modelos[c.modelo].push(c);
+            });
+          %>
             <li class="historial-item">
               <button class="toggle-btn" onclick="toggleDetalles(<%= index %>)">
-                📅 <%= mov.fecha %> <span class="arrow">▼</span>
+                Ingreso #<%= index + 1 %> <span class="arrow">▼</span>
               </button>
               <div class="detalles" id="detalles-<%= index %>">
-                <ul>
-                  <% mov.componentes.forEach(c => { %>
-                    <li>🔧 <%= c.nombre %> (<strong><%= c.cantidad %></strong>)</li>
-                  <% }) %>
-                </ul>
+                <% for (let modelo in modelos) { %>
+                  <div style="margin-bottom: 1rem;">
+                    <strong>📦 Modelo: <%= modelo %></strong>
+                    <ul style="margin-left: 1rem;">
+                      <% modelos[modelo].forEach(c => { %>
+                        <li>🔧 <%= c.nombre %> (<strong><%= c.cantidad %></strong>)</li>
+                      <% }) %>
+                    </ul>
+                  </div>
+                <% } %>
               </div>
             </li>
           <% }) %>
@@ -108,6 +119,7 @@
       detalles.style.display = detalles.style.display === "block" ? "none" : "block";
     }
   </script>
+  
   
 </body>
 </html>
