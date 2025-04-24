@@ -91,8 +91,13 @@
           %>
             <li class="historial-item">
               <button class="toggle-btn" onclick="toggleDetalles(<%= index %>)">
-                Ingreso #<%= index + 1 %> <span class="arrow">▼</span>
+                📅 <%= mov.fecha %> <span class="arrow">▼</span>
               </button>
+              <form method="GET" action="/almacen/exportar-excel/<%= encodeURIComponent(mov.fecha) %>">
+                <button type="submit" class="descargar-btn">📥 Descargar Excel</button>
+              </form>
+              
+              
               <div class="detalles" id="detalles-<%= index %>">
                 <% for (let modelo in modelos) { %>
                   <div style="margin-bottom: 1rem;">

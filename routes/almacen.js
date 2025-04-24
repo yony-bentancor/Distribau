@@ -5,36 +5,6 @@ const BodegaCentral = require("../models/BodegaCentral");
 const Movimiento = require("../models/Movimiento");
 const Almacen = require("../models/Almacen");
 
-// GET: mostrar formulario de carga de stock + historial
-/* router.get("/", async (req, res) => {
-  try {
-    const componentes = await Componente.find().lean();
-    
-
-    const movimientos = await Movimiento.find({ "origen.tipo": "almacen" })
-      .sort({ fecha: -1 })
-      .limit(20)
-      .populate("componentes.componente")
-      .lean();
-
-    const historial = movimientos.map((mov) => ({
-      fecha: new Date(mov.fecha).toLocaleDateString("es-UY"), // ahora solo se usa `mov.fecha`
-      componentes: mov.componentes.map((c) => ({
-        nombre: c.componente?.nombre || "Sin nombre",
-        cantidad: c.cantidad,
-      })),
-    }));
-
-    res.render("almacen", {
-      componentes,
-      historial,
-    });
-  } catch (err) {
-    console.error("❌ Error al cargar /almacen:", err);
-    res.status(500).send("Error al mostrar el formulario de almacén");
-  }
-}); */
-// GET: mostrar formulario de carga de stock + historial
 router.get("/", async (req, res) => {
   try {
     const componentes = await Componente.find().lean();
@@ -158,6 +128,68 @@ router.get("/api/historial-almacen", async (req, res) => {
   } catch (err) {
     console.error("❌ Error al obtener historial:", err);
     res.status(500).send("Error al obtener historial");
+  }
+});
+
+router.get("/exportar-excel/:fecha", async (req, res) => {
+  const fechaFiltro = req.params.fecha;
+
+  try {
+    const movimientos = await Movimiento.find({ "origen.tipo": "almacen" })
+      .sort({ fecha: -1 })
+      .populate("componentes.componente", "nombre modelo")
+      .lean();
+
+    // Filtramos los movimientos por la fecha que viene del URL
+    const movimientosFiltrados = movimientos.filter((mov) => {
+      const fechaMov = new Date(mov.fecha).toLocaleDateString("es-UY");
+      return fechaMov === fechaFiltro;
+    });
+
+    if (movimientosFiltrados.length === 0) {
+      return res
+        .status(404)
+        .send("No se encontraron movimientos para esa fecha");
+    }
+
+    const ExcelJS = require("exceljs");
+    const workbook = new ExcelJS.Workbook();
+    const sheet = workbook.addWorksheet("Ingreso " + fechaFiltro);
+
+    sheet.columns = [
+      { header: "Fecha", key: "fecha", width: 20 },
+      { header: "Modelo", key: "modelo", width: 20 },
+      { header: "Componente", key: "nombre", width: 30 },
+      { header: "Cantidad", key: "cantidad", width: 10 },
+    ];
+
+    movimientosFiltrados.forEach((mov) => {
+      const fecha = new Date(mov.fecha).toLocaleDateString("es-UY");
+      mov.componentes.forEach((c) => {
+        if (!c.componente) return;
+        sheet.addRow({
+          fecha,
+          modelo: c.componente.modelo || "Sin modelo",
+          nombre: c.componente.nombre,
+          cantidad: c.cantidad,
+        });
+      });
+    });
+
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filename=ingreso_${fechaFiltro.replaceAll("/", "-")}.xlsx`
+    );
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    );
+
+    await workbook.xlsx.write(res);
+    res.end();
+  } catch (err) {
+    console.error("❌ Error exportando ingreso:", err);
+    res.status(500).send("Error al generar Excel");
   }
 });
 
