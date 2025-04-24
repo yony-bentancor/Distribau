@@ -80,18 +80,34 @@
         <p style="text-align:center; color:#888;">Aún no hay movimientos registrados.</p>
       <% } else { %>
         <ul class="historial-lista">
-          <% historial.forEach(mov => { %>
+          <% historial.forEach((mov, index) => { %>
             <li class="historial-item">
-              <span class="fecha">📅 <%= mov.fecha %></span>
-              <span class="detalles">🔄 <%= mov.componentes.map(c => `${c.nombre} (${c.cantidad})`).join(', ') %></span>
+              <button class="toggle-btn" onclick="toggleDetalles(<%= index %>)">
+                📅 <%= mov.fecha %> <span class="arrow">▼</span>
+              </button>
+              <div class="detalles" id="detalles-<%= index %>">
+                <ul>
+                  <% mov.componentes.forEach(c => { %>
+                    <li>🔧 <%= c.nombre %> (<strong><%= c.cantidad %></strong>)</li>
+                  <% }) %>
+                </ul>
+              </div>
             </li>
           <% }) %>
         </ul>
       <% } %>
     </div>
     
+    
   </div>
 
   <script src="/js/almacen.js"></script>
+  <script>
+    function toggleDetalles(index) {
+      const detalles = document.getElementById(`detalles-${index}`);
+      detalles.style.display = detalles.style.display === "block" ? "none" : "block";
+    }
+  </script>
+  
 </body>
 </html>

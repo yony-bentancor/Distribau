@@ -219,26 +219,43 @@ body {
   }
   
   .historial-item {
-    border-bottom: 1px solid #eee;
-    padding: 0.5rem 0;
-    display: flex;
-    flex-direction: column;
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #f9f9f9;
   }
   
-  .historial-item:last-child {
-    border-bottom: none;
-  }
-  
-  .fecha {
+  .toggle-btn {
+    width: 100%;
+    text-align: left;
+    padding: 0.8rem 1rem;
     font-weight: bold;
-    color: #333;
+    background: #eaeaea;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .toggle-btn:hover {
+    background: #dcdcdc;
   }
   
   .detalles {
-    font-size: 0.9rem;
-    color: #555;
-    margin-top: 0.2rem;
+    display: none;
+    padding: 0.5rem 1.5rem 1rem;
+    font-size: 0.95rem;
+    color: #444;
   }
+  
+  .detalles ul {
+    padding-left: 1rem;
+    margin: 0;
+  }
+  
   
   
   @media (max-width: 768px) {
