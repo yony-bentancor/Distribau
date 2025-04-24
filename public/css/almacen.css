@@ -325,3 +325,31 @@ button[type="submit"] {
 .descargar-icono:hover {
   opacity: 1;
 }
+.descargar-btn {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  padding: 0;
+  margin-left: 0.5rem;
+  cursor: pointer;
+  color: #666;
+  opacity: 0.6;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.descargar-btn1 {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  padding: 0;
+  margin-left: 0.5rem;
+  cursor: pointer;
+  color: #666;
+  opacity: 0.6;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.descargar-btn1:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}

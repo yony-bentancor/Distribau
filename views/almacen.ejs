@@ -93,12 +93,14 @@
               <button class="toggle-btn" onclick="toggleDetalles(<%= index %>)">
                 📅 <%= mov.fecha %> <span class="arrow">▼</span>
               </button>
-              <form method="GET" action="/almacen/exportar-excel/<%= encodeURIComponent(mov.fecha) %>">
-                <button type="submit" class="descargar-btn">📥</button>
+             
+              
+              
+              <div class="detalles" id="detalles-<%= index %>"> 
+                <form method="GET" action="/almacen/exportar-excel/<%= encodeURIComponent(mov.fecha) %>">
+                  <button type="submit" class="descargar-btn1" title="Descargar Excel">📥</button>
+
               </form>
-              
-              
-              <div class="detalles" id="detalles-<%= index %>">
                 <% for (let modelo in modelos) { %>
                   <div style="margin-bottom: 1rem;">
                     <strong>📦 Modelo: <%= modelo %></strong>
