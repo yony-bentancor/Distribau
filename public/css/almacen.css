@@ -1,308 +1,306 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap');
+
 body {
-    font-family: 'Segoe UI', sans-serif;
-    background: #f5f6fa;
-    margin: 0;
-    padding: 1rem;
-    color: #333;
-  }
-  
+  font-family: 'Segoe UI', sans-serif;
+  background: #f5f6fa;
+  margin: 0;
+  padding: 1rem;
+  color: #333;
+}
+
+.layout {
+  display: flex;
+  gap: 1rem;
+  height: 100vh;
+  box-sizing: border-box;
+}
+
+.panel {
+  background: white;
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  overflow-y: auto;
+}
+
+.left-panel {
+  flex: 0.8;
+}
+
+.middle-panel {
+  flex: 2;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
+}
+
+.right-panel {
+  flex: 1.2;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 1rem;
+  color: #2c3e50;
+  font-size: 1.2rem;
+}
+
+input[type="search"] {
+  padding: 0.6rem;
+  width: 90%;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  display: block;
+  margin: 0 auto 1rem;
+}
+
+.modelo-box {
+  margin-bottom: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 0.8rem;
+}
+
+.modelo-title {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: #1f2f46;
+}
+
+.componente-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid #eee;
+}
+
+input[type="number"] {
+  width: 70px;
+  padding: 0.4rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+button[type="submit"] {
+  margin-top: 1rem;
+  padding: 0.6rem 1rem;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#form-componente input {
+  width: 100%;
+  padding: 0.6rem;
+  margin-bottom: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+#form-componente button {
+  width: 100%;
+  padding: 0.7rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+#form-componente button:hover {
+  background-color: #0056b3;
+}
+
+#alerta {
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.historial-item {
+  font-size: 0.9rem;
+  border-bottom: 1px solid #eee;
+  padding: 0.5rem 0;
+}
+
+.historial-item:last-child {
+  border-bottom: none;
+}
+
+.top-bar {
+  background: #1f2f46;
+  padding: 1rem 2rem;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.nav-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.nav-buttons a {
+  background-color: transparent;
+  color: #ffffff;
+  text-decoration: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  border: 1px solid #ffffff33;
+  transition: all 0.3s ease;
+}
+
+.nav-buttons a:hover {
+  background-color: #ffffff22;
+  border-color: #ffffff55;
+}
+
+.historial-lista {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.historial-item {
+  padding: 0.7rem;
+  margin-bottom: 0.4rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f8f9fb;
+  display: flex;
+  flex-direction: column;
+  font-size: 0.95rem;
+}
+
+.historial-item .fecha {
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 0.2rem;
+}
+
+.historial-item .detalles {
+  color: #555;
+  font-size: 0.9rem;
+}
+
+.boton-enviar-arriba {
+  margin-bottom: 1rem;
+  padding: 0.6rem 1rem;
+  background-color: #1f7a8c;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.toggle-componentes {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  margin-right: 0.5rem;
+  cursor: pointer;
+  color: #1f2f46;
+}
+
+.panel.right-panel {
+  background: #fff;
+  border-radius: 10px;
+  padding: 1rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  margin-top: 1rem;
+}
+
+.toggle-btn {
+  width: 100%;
+  text-align: left;
+  padding: 0.8rem 1rem;
+  font-weight: bold;
+  background: #eaeaea;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.toggle-btn:hover {
+  background: #dcdcdc;
+}
+
+.detalles {
+  display: none;
+  padding: 0.5rem 1.5rem 1rem;
+  font-size: 0.95rem;
+  color: #444;
+}
+
+.detalles ul {
+  padding-left: 1rem;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
   .layout {
-    display: flex;
-    gap: 1rem;
-    height: 100vh;
-    box-sizing: border-box;
-  }
-  
-  .panel {
-    background: white;
-    padding: 1rem;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-    overflow-y: auto;
-  }
-  
-  .left-panel { flex: 1; }
-  .middle-panel { flex: 2; }
-  .right-panel { flex: 1; }
-  
-  h2 {
-    text-align: center;
-    margin-bottom: 1rem;
-    color: #2c3e50;
-    font-size: 1.2rem;
-  }
-  
-  input[type="search"] {
-    padding: 0.6rem;
-    width: 90%;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 1rem;
-    display: block;
-    margin: 0 auto 1rem;
-  }
-  
-  .modelo-box {
-    margin-bottom: 1rem;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 0.8rem;
-  }
-  
-  .modelo-title {
-    font-weight: bold;
-    margin-bottom: 0.5rem;
-    color: #1f2f46;
-  }
-  
-  .componente-row {
-    display: flex;
-    justify-content: space-between;
-    padding: 0.4rem 0;
-    border-bottom: 1px solid #eee;
-  }
-  
-  input[type="number"] {
-    width: 70px;
-    padding: 0.4rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  button[type="submit"] {
-    margin-top: 1rem;
-    padding: 0.6rem 1rem;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-size: 1rem;
-    cursor: pointer;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  
-  #form-componente input {
-    width: 100%;
-    padding: 0.6rem;
-    margin-bottom: 0.6rem;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 1rem;
-    box-sizing: border-box;
-  }
-  
-  #form-componente button {
-    width: 100%;
-    padding: 0.7rem;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-size: 1rem;
-    cursor: pointer;
-  }
-  
-  #form-componente button:hover {
-    background-color: #0056b3;
-  }
-  
-  #alerta {
-    font-size: 0.9rem;
-    text-align: center;
-  }
-  
-  .historial-item {
-    font-size: 0.9rem;
-    border-bottom: 1px solid #eee;
-    padding: 0.5rem 0;
-  }
-  
-  .historial-item:last-child {
-    border-bottom: none;
-  }
-  .top-bar {
-    background: #1f2f46;
-    padding: 1rem 2rem;
-    text-align: center;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-  }
-  
-  .nav-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
-  }
-  
-  .nav-buttons a {
-    background-color: transparent;
-    color: #ffffff;
-    text-decoration: none;
-    padding: 0.6rem 1.2rem;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: 500;
-    border: 1px solid #ffffff33;
-    transition: all 0.3s ease;
-  }
-  
-  .nav-buttons a:hover {
-    background-color: #ffffff22;
-    border-color: #ffffff55;
+    flex-direction: column;
+    height: auto;
   }
 
-  .historial-lista {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .historial-item {
-    padding: 0.7rem;
-    margin-bottom: 0.4rem;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background-color: #f8f9fb;
-    display: flex;
-    flex-direction: column;
-    font-size: 0.95rem;
-  }
-  
-  .historial-item .fecha {
-    font-weight: 600;
-    color: #2c3e50;
-    margin-bottom: 0.2rem;
-  }
-  
-  .historial-item .detalles {
-    color: #555;
-    font-size: 0.9rem;
-  }
-  .boton-enviar-arriba {
-    margin-bottom: 1rem;
-    padding: 0.6rem 1rem;
-    background-color: #1f7a8c;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-size: 1rem;
-    cursor: pointer;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  
-  .toggle-componentes {
-    background: none;
-    border: none;
-    font-size: 1rem;
-    margin-right: 0.5rem;
-    cursor: pointer;
-    color: #1f2f46;
-  }
-  .panel.right-panel {
-    background: #fff;
-    border-radius: 10px;
-    padding: 1rem;
-    box-shadow: 0 0 10px rgba(0,0,0,0.05);
-    margin-top: 1rem;
-  }
-  
-  .historial-lista {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .historial-item {
-    margin-bottom: 1rem;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    overflow: hidden;
-    background: #f9f9f9;
-  }
-  
-  .toggle-btn {
+  .panel {
     width: 100%;
-    text-align: left;
-    padding: 0.8rem 1rem;
-    font-weight: bold;
-    background: #eaeaea;
-    border: none;
-    cursor: pointer;
+    padding: 1rem 0.8rem;
+  }
+
+  .nav-buttons {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .nav-buttons a {
+    width: 100%;
+    text-align: center;
+  }
+
+  input[type="search"],
+  #form-componente input,
+  #form-componente button,
+  button[type="submit"] {
+    width: 100%;
     font-size: 1rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
   }
-  
-  .toggle-btn:hover {
-    background: #dcdcdc;
+
+  .modelo-row {
+    flex-direction: column;
+    align-items: flex-start;
   }
-  
-  .detalles {
-    display: none;
-    padding: 0.5rem 1.5rem 1rem;
-    font-size: 0.95rem;
-    color: #444;
+
+  .componente-row {
+    flex-direction: column;
+    gap: 0.3rem;
   }
-  
-  .detalles ul {
-    padding-left: 1rem;
-    margin: 0;
+
+  input[type="number"] {
+    width: 100%;
   }
-  
-  
-  
-  @media (max-width: 768px) {
-    .layout {
-      flex-direction: column;
-      height: auto;
-    }
-  
-    .panel {
-      width: 100%;
-      padding: 1rem 0.8rem;
-    }
-  
-    .nav-buttons {
-      flex-direction: column;
-      gap: 0.8rem;
-    }
-  
-    .nav-buttons a {
-      width: 100%;
-      text-align: center;
-    }
-  
-    input[type="search"],
-    #form-componente input,
-    #form-componente button,
-    button[type="submit"] {
-      width: 100%;
-      font-size: 1rem;
-    }
-  
-    .modelo-row {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-  
-    .componente-row {
-      flex-direction: column;
-      gap: 0.3rem;
-    }
-  
-    input[type="number"] {
-      width: 100%;
-    }
-  
-    h2 {
-      font-size: 1rem;
-    }
+
+  h2 {
+    font-size: 1rem;
   }
-  
+}
