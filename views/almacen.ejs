@@ -91,11 +91,12 @@
           %>
             <li class="historial-item">
               <button class="toggle-btn" onclick="toggleDetalles(<%= index %>)">
-                📅 <%= mov.fecha %> <span class="arrow">▼</span>
+                📅 <%= mov.fecha %>
+                <form method="GET" action="/almacen/exportar-excel/<%= encodeURIComponent(mov.fecha) %>" style="display:inline;">
+                  <button type="submit" class="descargar-icono" title="Descargar Excel"></button>
+                </form>
+                <span class="arrow">▼</span>
               </button>
-              <form method="GET" action="/almacen/exportar-excel/<%= encodeURIComponent(mov.fecha) %>">
-                <button type="submit" class="descargar-btn">📥 Descargar Excel</button>
-              </form>
               
               
               <div class="detalles" id="detalles-<%= index %>">
