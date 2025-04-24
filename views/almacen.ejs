@@ -83,8 +83,10 @@
           <% historial.forEach((mov, index) => { 
             const modelos = {};
             mov.componentes.forEach(c => {
-              if (!modelos[c.modelo]) modelos[c.modelo] = [];
-              modelos[c.modelo].push(c);
+              const modelo = c.componente.modelo || "Sin modelo";
+              const nombre = c.componente.nombre;
+              if (!modelos[modelo]) modelos[modelo] = [];
+              modelos[modelo].push({ nombre, cantidad: c.cantidad });
             });
           %>
             <li class="historial-item">
