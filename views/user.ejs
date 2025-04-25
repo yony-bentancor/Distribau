@@ -230,25 +230,11 @@
 
     <!-- Bodega central -->
     <section>
-      <h2>🏢 Bodega Central</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Nombre</th>
-            <th>Stock</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% stockCentral.forEach(c => { %>
-            <tr>
-              <td><%= c.nombre %></td>
-              <td><%= c.stock || 0 %></td>
-            </tr>
-          <% }) %>
-        </tbody>
-      </table>
+      <h2>🧩 Modelos en tu Bodega</h2>
+      <ul id="listaModelos"></ul>
+      <div id="detalleModelo" style="margin-top: 1rem;"></div>
     </section>
-
+    
     <!-- Formulario de nueva actividad -->
     <section>
       <h2>📋 Nueva Actividad</h2>
@@ -427,6 +413,31 @@
   window.onload = () => {
   cargarResumen("dia"); // Esto carga el resumen del día automáticamente
 };
+
+  // Paso 1: Obtener modelos únicos desde la bodega
+  const modelosUnicos = [...new Set(componentesTecnico.map(c => c.componente.nombre))];
+
+  const lista = document.getElementById("listaModelos");
+  const detalle = document.getElementById("detalleModelo");
+
+  modelosUnicos.forEach(nombreModelo => {
+    const li = document.createElement("li");
+    li.textContent = nombreModelo;
+    li.style.cursor = "pointer";
+    li.style.padding = "4px 0";
+    li.addEventListener("click", () => {
+      const componentesDelModelo = componentesTecnico.filter(c => c.componente.nombre === nombreModelo);
+      detalle.innerHTML = `
+        <h3>📦 Componentes del modelo "${nombreModelo}"</h3>
+        <ul>
+          ${componentesDelModelo.map(c => `<li>${c.componente.nombre}: <strong>${c.cantidad}</strong></li>`).join("")}
+        </ul>
+      `;
+    });
+    lista.appendChild(li);
+  });
+
+
 
 </script>
 
