@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Demo Parallax Multi-Capa</title>
+  <title>Parallax Ciudad Multicapa</title>
   <style>
     body, html {
       margin: 0;
@@ -11,7 +11,7 @@
       height: 100%;
       overflow-x: hidden;
       font-family: 'Poppins', sans-serif;
-      background-color: #111;
+      background: #111;
       color: white;
     }
 
@@ -36,26 +36,36 @@
       transform-origin: center;
     }
 
-    .layer1 {
-      background-image: url('https://picsum.photos/id/1015/1920/1080'); /* fondo más lejano */
-      transform: translateZ(-2px) scale(3);
+    /* Fondo - Skyline ciudad */
+    .background-layer {
+      background-image: url('https://images.unsplash.com/photo-1549921296-3a9982f66cbb?auto=format&fit=crop&w=1920&q=80');
+      transform: translateZ(-1px) scale(2);
       z-index: 1;
     }
 
-    .layer2 {
-      background-image: url('https://picsum.photos/id/1016/1920/1080'); /* capa intermedia */
-      transform: translateZ(-1px) scale(2);
+    /* Medio - Nubes */
+    .clouds-layer {
+      background-image: url('https://pngimg.com/uploads/cloud/cloud_PNG16.png');
+      background-size: 600px;
+      background-repeat: no-repeat;
+      background-position: center top;
+      transform: translateZ(0px) scale(1.2);
       z-index: 2;
       opacity: 0.8;
     }
 
-    .layer3 {
-      background-image: url('https://picsum.photos/id/1018/1920/1080'); /* capa más cercana */
-      transform: translateZ(0px) scale(1);
+    /* Cercano - Globo aerostático */
+    .hotairballoon-layer {
+      background-image: url('https://pngimg.com/uploads/hot_air_balloon/hot_air_balloon_PNG32.png');
+      background-size: 300px;
+      background-repeat: no-repeat;
+      background-position: right center;
+      transform: translateZ(0.3px) scale(1.5);
       z-index: 3;
       opacity: 0.9;
     }
 
+    /* Contenido de la página */
     .content {
       position: relative;
       z-index: 4;
@@ -78,19 +88,19 @@
 <body>
 
 <div class="parallax-container">
-  <div class="parallax-layer layer1"></div>
-  <div class="parallax-layer layer2"></div>
-  <div class="parallax-layer layer3"></div>
+  <div class="parallax-layer background-layer"></div>
+  <div class="parallax-layer clouds-layer"></div>
+  <div class="parallax-layer hotairballoon-layer"></div>
 
   <div class="content">
-    <h1>Parallax Multicapa</h1>
-    <p>Este es un ejemplo donde las diferentes capas se mueven a velocidades distintas, creando un efecto 3D.</p>
+    <h1>Ciudad en Movimiento</h1>
+    <p>El fondo, las nubes y el globo se mueven a diferentes velocidades para crear un efecto 3D realista.</p>
   </div>
 </div>
 
 <div class="content">
   <h1>Más contenido</h1>
-  <p>Podés seguir agregando secciones debajo, mientras el efecto parallax se mantiene.</p>
+  <p>Podés seguir agregando secciones y el efecto se mantiene.</p>
 </div>
 
 </body>
