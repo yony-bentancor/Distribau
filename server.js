@@ -54,6 +54,9 @@ app.use("/almacen", almacenRoutes);
 app.use("/transferencias", transferenciasRoutes);
 app.use("/", actividadesRoutes);
 app.use("/actividades", actividadesRouter);
+app.get("/prueba", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "prueba.html"));
+});
 
 // Ruta pública
 app.get("/", (req, res) => {
