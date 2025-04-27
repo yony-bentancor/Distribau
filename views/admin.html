@@ -42,7 +42,8 @@
         <h2>Stock Bodega Central</h2>
         <table id="tabla-componentes">
           <thead>
-            <tr>
+            <tr> 
+              <th>Modelo</th>
               <th>Nombre</th>
               <th>Stock</th>
               <th>Acciones</th>
@@ -54,23 +55,32 @@
       </section>
 
       <!-- TRANSFERENCIAS -->
-      <section class="seccion" id="transferir-stock">
-        <h2>Transferir Stock</h2>
-        <form id="form-transferencia-multiple">
-          <label>Origen</label>
-          <select id="origen" required></select>
+    <section class="seccion" id="transferir-stock">
+  <h2>Transferir Stock</h2>
+  <form id="form-transferencia-multiple">
+    <label>Origen</label>
+    <select id="origen" required></select>
 
-          <label>Destino</label>
-          <select id="destino" required></select>
+    <label>Destino</label>
+    <select id="destino" required></select>
 
-          <div id="componentes-transferencia"></div>
+    <div id="componentes-transferencia"></div>
 
-          <button type="button" onclick="agregarLineaComponente()">➕ Agregar Componente</button>
-          <textarea id="comentario" placeholder="Comentario (opcional)" rows="2"></textarea>
-          <button type="submit">Transferir</button>
-        </form>
-      </section>
+    <div style="display: flex; gap: 10px; margin-top: 15px;">
+      <button type="button" onclick="agregarLineaComponente()">➕ Agregar Componente</button>
     </div>
+
+    <label style="margin-top:20px;">Comentario</label>
+    <textarea id="comentario" placeholder="Comentario (opcional)" rows="2"></textarea>
+
+    <div style="display: flex; gap: 10px; margin-top: 15px;">
+      <button type="submit">Transferir</button>
+    </div>
+  </form>
+
+  <div id="resumen-transferencia" style="margin-top:20px; background:#eef; padding:15px; border-radius:8px; display:none;"></div>
+</section>
+
 
     <!-- BODEGAS DE TÉCNICOS -->
   <div id="bodega-tecnicos">

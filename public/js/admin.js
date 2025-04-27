@@ -21,6 +21,13 @@ async function cargarComponentes() {
   const stockRes = await fetch("/bodega-central");
   const stockCentral = await stockRes.json();
 
+  // Ordenar componentes por modelo
+  componentes.sort((a, b) => {
+    if (a.modelo < b.modelo) return -1;
+    if (a.modelo > b.modelo) return 1;
+    return 0;
+  });
+
   componentes.forEach((c) => {
     const enStock = stockCentral.find(
       (s) => s?.componente?._id?.toString() === c._id.toString()
@@ -30,7 +37,7 @@ async function cargarComponentes() {
     if (cantidad >= 1) {
       const fila = document.createElement("tr");
       fila.innerHTML = `
-      <td>${c.modelo}</td>
+        <td>${c.modelo}</td>
         <td>${c.nombre}</td>
         <td>${cantidad}</td>
         <td>
@@ -148,7 +155,7 @@ async function cargarTecnicosParaTransferencia() {
   document.getElementById("componentes-transferencia").appendChild(div);
 }
   
- */ async function agregarLineaComponente() {
+ */ /* async function agregarLineaComponente() {
   if (todosLosComponentes.length === 0) {
     const [resComp, resStock] = await Promise.all([
       fetch("/componentes"),
@@ -183,7 +190,7 @@ async function cargarTecnicosParaTransferencia() {
     <button type="button" onclick="this.parentNode.remove()">❌</button>
   `;
   document.getElementById("componentes-transferencia").appendChild(div);
-}
+} */
 
 // Crear nuevo componente
 /* const formComp = document.getElementById("form-componente");
@@ -210,9 +217,58 @@ formComp.addEventListener("submit", async (e) => {
     mostrarAlerta("❌ Error al crear componente", "error");
   }
 }); */
+async function agregarLineaComponente() {
+  if (todosLosComponentes.length === 0) {
+    const [resComp, resStock] = await Promise.all([
+      fetch("/componentes"),
+      fetch("/bodega-central"),
+    ]);
+    const componentes = await resComp.json();
+    const stockCentral = await resStock.json();
+
+    todosLosComponentes = componentes
+      .map((c) => {
+        const stock = stockCentral.find(
+          (s) => s?.componente?._id?.toString() === c._id.toString()
+        );
+        if (stock && stock.cantidad > 0) {
+          return {
+            _id: c._id,
+            nombre: c.nombre,
+            modelo: c.modelo,
+            stock: stock.cantidad,
+          };
+        }
+      })
+      .filter(Boolean);
+  }
+
+  if (todosLosComponentes.length === 0) {
+    return mostrarAlerta("⚠️ No hay componentes con stock disponible", "error");
+  }
+
+  const div = document.createElement("div");
+  div.style.marginTop = "10px";
+  div.style.display = "flex";
+  div.style.gap = "10px";
+  div.innerHTML = `
+    <select class="select-componente" required>
+      <option value="">Seleccionar Componente</option>
+      ${todosLosComponentes
+        .map(
+          (c) =>
+            `<option value="${c._id}">${c.modelo} - ${c.nombre} (Stock: ${c.stock})</option>`
+        )
+        .join("")}
+    </select>
+    <input type="number" min="1" class="cantidad-componente" placeholder="Cantidad" required style="flex:1;">
+    <button type="button" onclick="this.parentNode.remove()" style="background:#d33; color:white;">❌</button>
+  `;
+  document.getElementById("componentes-transferencia").appendChild(div);
+}
 
 // Envío de transferencia
-const formTrans = document.getElementById("form-transferencia-multiple");
+/* const formTrans = document.getElementById("form-transferencia-multiple");
 formTrans.addEventListener("submit", async (e) => {
   e.preventDefault();
   const origenId = document.getElementById("origen").value;
@@ -287,6 +343,100 @@ formTrans.addEventListener("submit", async (e) => {
   } else {
     const msg = await res.text();
     mostrarAlerta("⚠️ " + msg, "error");
+  }
+}); */
+formTrans.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const origenId = document.getElementById("origen").value;
+  const destinoId = document.getElementById("destino").value;
+  const comentario = document.getElementById("comentario").value;
+  const selects = document.querySelectorAll(".select-componente");
+  const cantidades = document.querySelectorAll(".cantidad-componente");
+
+  if (origenId === destinoId) {
+    return mostrarAlerta("⚠️ Origen y destino no pueden ser iguales", "error");
+  }
+
+  const componentes = [];
+  selects.forEach((select, i) => {
+    const componenteId = select.value;
+    const cantidad = parseInt(cantidades[i].value);
+    const stockDisponible =
+      todosLosComponentes.find((c) => c._id === componenteId)?.stock || 0;
+
+    if (!componenteId || isNaN(cantidad) || cantidad <= 0) {
+      return mostrarAlerta("❌ Datos inválidos", "error");
+    }
+    if (cantidad > stockDisponible) {
+      return mostrarAlerta(
+        "⚠️ No podés transferir más stock del disponible",
+        "error"
+      );
+    }
+
+    componentes.push({ componenteId, cantidad });
+  });
+
+  if (componentes.length === 0) {
+    return mostrarAlerta("⚠️ Agrega al menos un componente", "error");
+  }
+
+  // Mostrar resumen
+  const resumen = document.getElementById("resumen-transferencia");
+  resumen.style.display = "block";
+  resumen.innerHTML = `
+    <h3>Resumen de Transferencia</h3>
+    <p><strong>Origen:</strong> ${origenId}</p>
+    <p><strong>Destino:</strong> ${destinoId}</p>
+    <ul style="text-align:left;">
+      ${componentes
+        .map((c) => {
+          const comp = todosLosComponentes.find(
+            (x) => x._id === c.componenteId
+          );
+          return `<li>${c.cantidad}x ${comp.modelo} - ${comp.nombre}</li>`;
+        })
+        .join("")}
+    </ul>
+    <p><strong>Comentario:</strong> ${comentario || "(Sin comentario)"}</p>
+  `;
+
+  if (confirm("¿Confirmás esta transferencia?")) {
+    const url = "/transferir";
+
+    const origen = {
+      tipo: origenId === "bodega_central" ? "bodega" : "usuario",
+      id: origenId === "bodega_central" ? null : origenId,
+    };
+    const destino = {
+      tipo: destinoId === "bodega_central" ? "bodega" : "usuario",
+      id: destinoId === "bodega_central" ? null : destinoId,
+    };
+
+    const body = {
+      origen,
+      destino,
+      componentes,
+      comentario,
+    };
+
+    const res = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+
+    if (res.ok) {
+      mostrarAlerta("✅ Transferencia realizada correctamente");
+      formTrans.reset();
+      document.getElementById("componentes-transferencia").innerHTML = "";
+      resumen.style.display = "none";
+      cargarComponentes();
+      cargarBodegasUsuarios();
+    } else {
+      const msg = await res.text();
+      mostrarAlerta("⚠️ " + msg, "error");
+    }
   }
 });
 
