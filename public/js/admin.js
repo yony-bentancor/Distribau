@@ -30,10 +30,11 @@ async function cargarComponentes() {
     if (cantidad >= 1) {
       const fila = document.createElement("tr");
       fila.innerHTML = `
+      <td>${c.modelo}</td>
         <td>${c.nombre}</td>
         <td>${cantidad}</td>
         <td>
-          <button onclick="editarComponente('${c._id}', '${c.nombre}', ${c.puntosInstalacion}, ${c.puntosConexion})">✏️</button>
+          <button onclick="editarComponente('${c._id}','${c.modelo}', '${c.nombre}', ${c.puntosInstalacion}, ${c.puntosConexion})">✏️</button>
           <button onclick="eliminarComponente('${c._id}')">🗑️</button>
         </td>
       `;
@@ -50,7 +51,14 @@ async function eliminarComponente(id) {
   }
 }
 
-function editarComponente(id, nombre, puntosInstalacion, puntosConexion) {
+function editarComponente(
+  id,
+  modelo,
+  nombre,
+  puntosInstalacion,
+  puntosConexion
+) {
+  const nuevoModelo = prompt("Nuevo modelo:", modelo);
   const nuevoNombre = prompt("Nuevo nombre:", nombre);
   const nuevoPI = prompt("Nuevo puntaje instalación:", puntosInstalacion);
   const nuevoPC = prompt("Nuevo puntaje conexión:", puntosConexion);
