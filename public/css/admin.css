@@ -303,3 +303,8 @@ td button:last-child {
   color: #003580;
   font-size: 0.95rem;
 }
+/* Quitar scroll SOLO en Transferir Stock */
+#transferir-stock {
+  max-height: none;
+  overflow-y: visible;
+}
