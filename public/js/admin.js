@@ -158,19 +158,48 @@ async function cargarTecnicosParaTransferencia() {
  */
 
 async function agregarLineaComponente() {
+  const origenSeleccionado = document.getElementById("origen").value;
+
   if (todosLosComponentes.length === 0) {
-    const [resComp, resStock] = await Promise.all([
-      fetch("/componentes"),
-      fetch("/bodega-central"),
-    ]);
+    let componentes = [];
+    let stock = [];
 
-    const componentes = await resComp.json();
-    const stockCentral = await resStock.json();
+    if (origenSeleccionado === "bodega_central") {
+      // Traemos stock central
+      const [resComp, resStock] = await Promise.all([
+        fetch("/componentes"),
+        fetch("/bodega-central"),
+      ]);
+      componentes = await resComp.json();
+      stock = await resStock.json();
+    } else {
+      // Traemos stock del técnico seleccionado
+      const [resComp, resBodegas] = await Promise.all([
+        fetch("/componentes"),
+        fetch(`/bodegas-usuarios`),
+      ]);
+      componentes = await resComp.json();
+      const bodegas = await resBodegas.json();
+      const bodegaOrigen = bodegas.find(
+        (b) => b.usuario._id === origenSeleccionado
+      );
 
-    // Filtrar solo los que tienen stock ≥ 1 y guardar modelo + nombre + stock
+      if (!bodegaOrigen) {
+        return mostrarAlerta(
+          "⚠️ No se encontró la bodega del técnico seleccionado",
+          "error"
+        );
+      }
+      stock = bodegaOrigen.componentes.map((c) => ({
+        componente: { _id: c.componente._id.toString() },
+        cantidad: c.cantidad,
+      }));
+    }
+
+    // Filtrar componentes que realmente tienen stock
     todosLosComponentes = componentes
       .map((c) => {
-        const enStock = stockCentral.find(
+        const enStock = stock.find(
           (s) => s?.componente?._id?.toString() === c._id.toString()
         );
         if (enStock && enStock.cantidad >= 1) {
@@ -182,16 +211,18 @@ async function agregarLineaComponente() {
           };
         }
       })
-      .filter(Boolean); // Elimina los undefined
+      .filter(Boolean);
   }
 
-  // Si no hay componentes disponibles con stock, mostrar alerta
   if (todosLosComponentes.length === 0) {
-    return mostrarAlerta("⚠️ No hay componentes con stock disponible", "error");
+    return mostrarAlerta(
+      "⚠️ No hay componentes con stock disponible en esta bodega",
+      "error"
+    );
   }
 
   const div = document.createElement("div");
-  div.classList.add("fade-in"); // Animación
+  div.classList.add("fade-in");
   div.innerHTML = `
     <select class="select-componente" required>
       <option value="">Seleccionar Componente</option>
@@ -207,6 +238,10 @@ async function agregarLineaComponente() {
   `;
   document.getElementById("componentes-transferencia").appendChild(div);
 }
+
+document.getElementById("origen").addEventListener("change", () => {
+  todosLosComponentes = []; // 🔥 Vaciamos para que al agregar se vuelva a cargar según el origen
+});
 
 // Crear nuevo componente
 /* const formComp = document.getElementById("form-componente");
