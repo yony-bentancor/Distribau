@@ -30,26 +30,32 @@
       </table>
     </section>
 
-    <!-- Bodega central -->
-    <section>
-      <h2>🏢 Bodega Central</h2>
-      <table>
-        <thead>
+   <!-- Bodega Central Mejorado -->
+<section class="seccion">
+  <h2>🏢 Bodega Central</h2>
+
+  <div class="tabla-container">
+    <table class="tabla-bodega">
+      <thead>
+        <tr>
+          <th>Modelo</th>
+          <th>Nombre</th>
+          <th>Stock</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% stockCentral.forEach(c => { %>
           <tr>
-            <th>Modelo - Nombre</th>
-            <th>Stock</th>
+            <td><%= c.modelo || "Sin Modelo" %></td>
+            <td><%= c.nombre %></td>
+            <td style="text-align: center;"><%= c.stock || 0 %></td>
           </tr>
-        </thead>
-        <tbody>
-          <% stockCentral.forEach(c => { %>
-            <tr>
-              <td><%= c.modelo ? c.modelo + " - " : "" %><%= c.nombre %></td>
-              <td><%= c.stock || 0 %></td>
-            </tr>
-          <% }) %>
-        </tbody>
-      </table>
-    </section>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</section>
+
 
     <!-- Formulario de nueva actividad -->
     <section>
