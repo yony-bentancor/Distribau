@@ -212,6 +212,12 @@ async function agregarLineaComponente() {
         }
       })
       .filter(Boolean);
+    // 🔥 Ordenarlos por modelo (A-Z)
+    todosLosComponentes.sort((a, b) => {
+      if (a.modelo < b.modelo) return -1;
+      if (a.modelo > b.modelo) return 1;
+      return 0;
+    });
   }
 
   if (todosLosComponentes.length === 0) {
