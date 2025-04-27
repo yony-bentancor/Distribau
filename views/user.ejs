@@ -31,19 +31,23 @@
     </section>
 
    <!-- Bodega central -->
+<!-- Bodega central -->
 <section>
   <h2>🏢 Bodega Central</h2>
 
   <div id="bodega-central">
-    <% const modelosUnicos = {}; %>
-    <% stockCentral.forEach(c => { 
-      if (c.modelo && !modelosUnicos[c.modelo]) { 
-        modelosUnicos[c.modelo] = []; 
-      } 
-      if (c.modelo) { 
-        modelosUnicos[c.modelo].push(c); 
+    <% 
+    // Agrupar componentes por modelo
+    const modelosUnicos = {};
+
+    stockCentral.forEach(c => {
+      const modelo = c.modelo || "Sin Modelo";
+      if (!modelosUnicos[modelo]) {
+        modelosUnicos[modelo] = [];
       }
-    }); %>
+      modelosUnicos[modelo].push(c);
+    }); 
+    %>
 
     <% Object.keys(modelosUnicos).forEach(modelo => { %>
       <div class="modelo-group">
@@ -72,6 +76,7 @@
     <% }); %>
   </div>
 </section>
+
 
 
     <!-- Formulario de nueva actividad -->
