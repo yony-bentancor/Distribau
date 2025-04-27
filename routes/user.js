@@ -21,21 +21,29 @@ router.get("/user", async (req, res) => {
   }
 
   try {
+    // Buscar bodega del técnico
     const bodega = await BodegaUsuario.findOne({ usuario: userId }).populate(
       "componentes.componente",
       "nombre modelo"
     );
 
-    const bodegaCentral = await BodegaCentral.find().populate(
-      "componente",
+    // Buscar todos los componentes de la bodega central
+    const bodegaCentralDocs = await BodegaCentral.find().populate(
+      "componentes.componente",
       "nombre modelo"
     );
 
-    const stockCentral = bodegaCentral.map((c) => ({
-      nombre: c.componente?.nombre || "Sin Nombre",
-      modelo: c.componente?.modelo || "Sin Modelo",
-      stock: c.cantidad || 0,
-    }));
+    // Recorrer todos los componentes de la bodega central
+    const stockCentral = [];
+    bodegaCentralDocs.forEach((doc) => {
+      doc.componentes.forEach((c) => {
+        stockCentral.push({
+          nombre: c.componente?.nombre || "Sin Nombre",
+          modelo: c.componente?.modelo || "Sin Modelo",
+          stock: c.cantidad || 0,
+        });
+      });
+    });
 
     if (!bodega) {
       console.log("📭 Bodega vacía");
