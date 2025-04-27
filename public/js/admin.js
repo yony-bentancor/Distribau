@@ -155,7 +155,9 @@ async function cargarTecnicosParaTransferencia() {
   document.getElementById("componentes-transferencia").appendChild(div);
 }
   
- */ async function agregarLineaComponente() {
+ */
+
+async function agregarLineaComponente() {
   if (todosLosComponentes.length === 0) {
     const [resComp, resStock] = await Promise.all([
       fetch("/componentes"),
@@ -165,13 +167,22 @@ async function cargarTecnicosParaTransferencia() {
     const componentes = await resComp.json();
     const stockCentral = await resStock.json();
 
-    // Filtrar solo los que tienen stock ≥ 1
-    todosLosComponentes = componentes.filter((c) => {
-      const enStock = stockCentral.find(
-        (s) => s?.componente?._id?.toString() === c._id.toString()
-      );
-      return enStock && enStock.cantidad >= 1;
-    });
+    // Filtrar solo los que tienen stock ≥ 1 y guardar modelo + nombre + stock
+    todosLosComponentes = componentes
+      .map((c) => {
+        const enStock = stockCentral.find(
+          (s) => s?.componente?._id?.toString() === c._id.toString()
+        );
+        if (enStock && enStock.cantidad >= 1) {
+          return {
+            _id: c._id,
+            nombre: c.nombre,
+            modelo: c.modelo,
+            stock: enStock.cantidad,
+          };
+        }
+      })
+      .filter(Boolean); // Elimina los undefined
   }
 
   // Si no hay componentes disponibles con stock, mostrar alerta
@@ -180,11 +191,15 @@ async function cargarTecnicosParaTransferencia() {
   }
 
   const div = document.createElement("div");
-  div.classList.add("fade-in"); // 👈 Agregamos la clase para la animación
+  div.classList.add("fade-in"); // Animación
   div.innerHTML = `
     <select class="select-componente" required>
+      <option value="">Seleccionar Componente</option>
       ${todosLosComponentes
-        .map((c) => `<option value="${c._id}">${c.nombre}</option>`)
+        .map(
+          (c) =>
+            `<option value="${c._id}">${c.modelo} - ${c.nombre} (Stock: ${c.stock})</option>`
+        )
         .join("")}
     </select>
     <input type="number" min="1" class="cantidad-componente" placeholder="Cantidad" required>
