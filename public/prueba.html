@@ -3,123 +3,116 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Dinámico Partículas + Scroll Animado</title>
+  <title>3 Divs con 3 Estilos Diferentes</title>
   <style>
     /* Reset */
-    html, body {
+    * {
       margin: 0;
       padding: 0;
-      width: 100%;
+      box-sizing: border-box;
+    }
+
+    html, body {
       height: 100%;
-      overflow-x: hidden;
       font-family: 'Poppins', sans-serif;
-      background: #0a0a0a;
-      color: white;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
     }
 
-    /* Canvas de partículas */
-    #particles-js {
-      position: fixed;
+    /* Contenedor principal */
+    .contenedor {
       width: 100%;
-      height: 100%;
-      background: #0a0a0a;
-      z-index: 1;
     }
 
-    /* Contenido */
-    .content {
-      position: relative;
-      z-index: 2;
-      padding: 100px 20px;
+    /* DIV 1 - Degradado animado */
+    .div1 {
+      height: 100vh;
+      background: linear-gradient(270deg, #ff7e5f, #feb47b, #86a8e7, #91eae4);
+      background-size: 600% 600%;
+      animation: gradientMove 10s ease infinite;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 2.5rem;
       text-align: center;
     }
 
-    section {
-      margin: 100px 0;
-      opacity: 0;
-      transform: translateY(50px);
-      transition: all 1s ease;
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
 
-    section.visible {
-      opacity: 1;
-      transform: translateY(0);
+    /* DIV 2 - Fondo animado tipo ondas */
+    .div2 {
+      height: 100vh;
+      background: #0f2027; /* fallback */
+      background: linear-gradient(to right, #2c5364, #203a43, #0f2027);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 2.5rem;
+      text-align: center;
     }
 
-    h1 {
-      font-size: 3rem;
-      margin-bottom: 20px;
+    .onda {
+      position: absolute;
+      width: 200%;
+      height: 200px;
+      bottom: 0;
+      left: 0;
+      background: url('https://svgshare.com/i/uX6.svg') repeat-x;
+      background-size: contain;
+      animation: wave 8s linear infinite;
+      opacity: 0.6;
     }
 
-    p {
-      font-size: 1.2rem;
-      max-width: 600px;
-      margin: auto;
+    @keyframes wave {
+      0% { background-position-x: 0; }
+      100% { background-position-x: 1000px; }
+    }
+
+    /* DIV 3 - Fondo dinámico tipo "luces" */
+    .div3 {
+      height: 100vh;
+      background: radial-gradient(circle at 50% 50%, #ffafbd, #ffc3a0, #2193b0);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 2.5rem;
+      text-align: center;
+      animation: pulse 5s infinite;
+    }
+
+    @keyframes pulse {
+      0% { background-size: 100% 100%; }
+      50% { background-size: 110% 110%; }
+      100% { background-size: 100% 100%; }
     }
   </style>
 </head>
 
 <body>
 
-<!-- Partículas -->
-<div id="particles-js"></div>
+<div class="contenedor">
+  <div class="div1">
+    Estilo 1: Degradado Animado
+  </div>
 
-<!-- Contenido -->
-<div class="content">
-  <section>
-    <h1>Bienvenido</h1>
-    <p>Este es un sitio dinámico con partículas flotando y contenido que aparece suavemente al hacer scroll.</p>
-  </section>
+  <div class="div2">
+    Estilo 2: Fondo con Onda Animada
+    <div class="onda"></div>
+  </div>
 
-  <section>
-    <h1>Explora</h1>
-    <p>Las partículas se mueven constantemente de fondo y cada sección entra animada.</p>
-  </section>
-
-  <section>
-    <h1>Descubre</h1>
-    <p>Combina efectos modernos para un sitio más atractivo y con movimiento sutil.</p>
-  </section>
+  <div class="div3">
+    Estilo 3: Fondo Dinámico tipo Luces
+  </div>
 </div>
-
-<!-- Particles.js Library -->
-<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-
-<!-- Configuración de partículas -->
-<script>
-  particlesJS('particles-js', {
-    "particles": {
-      "number": {
-        "value": 80
-      },
-      "size": {
-        "value": 3
-      },
-      "move": {
-        "speed": 2
-      },
-      "line_linked": {
-        "enable": true
-      }
-    }
-  });
-</script>
-
-<!-- Animaciones de scroll -->
-<script>
-  function showSectionsOnScroll() {
-    const sections = document.querySelectorAll('section');
-    sections.forEach(section => {
-      const rect = section.getBoundingClientRect();
-      if (rect.top < window.innerHeight - 100) {
-        section.classList.add('visible');
-      }
-    });
-  }
-
-  window.addEventListener('scroll', showSectionsOnScroll);
-  window.addEventListener('load', showSectionsOnScroll);
-</script>
 
 </body>
 </html>
