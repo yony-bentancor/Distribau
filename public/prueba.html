@@ -2,149 +2,120 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Parallax Ciudad Multicapa</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Parallax 3 Capas Simple</title>
   <style>
-    .ufo-container {
-  position: absolute;
-  top: 50px; /* Podés ajustar */
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 5; /* Que quede sobre el fondo */
-}
-
-.ufo {
-  width: 150px; /* Tamaño del UFO */
-  animation: spin 8s linear infinite; /* 8 segundos para un giro completo */
-}
-
-/* Animación de rotación */
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-    body, html {
+    html, body {
       margin: 0;
       padding: 0;
       height: 100%;
       overflow-x: hidden;
+      scroll-behavior: smooth;
       font-family: 'Poppins', sans-serif;
-      background: #111;
-      color: white;
+      background: #000;
     }
 
     .parallax-container {
       position: relative;
-      height: 100vh;
-      overflow-x: hidden;
-      overflow-y: auto;
-      perspective: 1px;
-      perspective-origin: center center;
+      height: 200vh; /* El alto que quieras */
+      overflow: hidden;
     }
 
-    .parallax-layer {
+    /* Fondo fijo */
+    .background {
+      background-image: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
       position: absolute;
       top: 0;
       left: 0;
-      right: 0;
-      bottom: 0;
-      background-repeat: no-repeat;
-      background-position: center;
-      background-size: cover;
-      transform-origin: center;
-    }
-
-    /* Fondo - Skyline ciudad */
-    .background-layer {
-background-image: url('/img/1.png');
-
-      transform: translateZ(-1px) scale(2);
+      width: 100%;
+      height: 100%;
       z-index: 1;
     }
 
-    /* Medio - Nubes */
-    .clouds-layer {
-      background-image: url('/img/2.png');
-      background-size: 600px;
-      background-repeat: no-repeat;
-      background-position: center top;
-      transform: translateZ(0px) scale(1.2);
+    /* Imagen recortada 1 */
+    .layer1 {
+      position: absolute;
+      top: 10%;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: center;
       z-index: 2;
-      opacity: 0.8;
     }
 
-    /* Cercano - Globo aerostático */
-    .hotairballoon-layer {
-     background-image: url('/img/3.png');
-      background-size: 300px;
-      background-repeat: no-repeat;
-      background-position: right center;
-      transform: translateZ(0.3px) scale(1.5);
-      z-index: 3;
+    .layer1 img {
+      width: 800px;
+      max-width: 100%;
       opacity: 0.9;
+      pointer-events: none;
     }
 
-    /* Contenido de la página */
+    /* Imagen recortada 2 */
+    .layer2 {
+      position: absolute;
+      top: 30%;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      z-index: 3;
+    }
+
+    .layer2 img {
+      width: 500px;
+      max-width: 100%;
+      opacity: 1;
+      pointer-events: none;
+    }
+
+    /* Contenido */
     .content {
       position: relative;
       z-index: 4;
-      margin-top: 100vh;
+      margin-top: 180vh;
       padding: 50px;
-      background: rgba(122, 119, 119, 0.7);
+      background: rgba(0, 0, 0, 0.7);
+      color: white;
       text-align: center;
-    }
-
-    h1 {
-      font-size: 3rem;
-      margin-bottom: 1rem;
-    }
-
-    p {
-      font-size: 1.2rem;
     }
   </style>
 </head>
+
 <body>
 
 <div class="parallax-container">
-  <div class="parallax-layer background-layer"></div>
-  <div class="parallax-layer clouds-layer"></div>
-  <div class="parallax-layer hotairballoon-layer"></div>
+  <div class="background"></div>
 
-  <div class="content">
-    <h1>Ciudad en Movimiento</h1>
-    <p>El fondo, las nubes y el globo se mueven a diferentes velocidades para crear un efecto 3D realista.</p>
+  <div class="layer1">
+    <img src="https://pngimg.com/uploads/tree/tree_PNG2115.png" alt="Árboles">
   </div>
-</div>
-<div class="ufo-container">
-  <img src="/img/ufo.png" alt="Platillo Volador" class="ufo">
+
+  <div class="layer2">
+    <img src="https://pngimg.com/uploads/cloud/cloud_PNG15.png" alt="Nubes">
+  </div>
+
 </div>
 
 <div class="content">
-  <h1></h1>
-  <p>.</p>
+  <h1>Explora el Mundo Fantástico</h1>
+  <p>Este es un ejemplo de Parallax sencillo con fondo y 2 capas PNG recortadas.</p>
 </div>
-<div class="content">
-  <h1></h1>
-  <p>.</p>
-</div>
-<div class="content">
-  <h1></h1>
-  <p>.</p>
-</div>
-<div class="content">
-  <h1></h1>
-  <p>.</p>
-</div>
-<div class="content">
-  <h1></h1>
-  <p>.</p>
-</div>
+
+<script>
+  // Pequeño efecto parallax dinámico al hacer scroll
+  window.addEventListener('scroll', function() {
+    const scrollY = window.scrollY;
+
+    const layer1 = document.querySelector('.layer1 img');
+    const layer2 = document.querySelector('.layer2 img');
+
+    layer1.style.transform = `translateY(${scrollY * 0.3}px)`;
+    layer2.style.transform = `translateY(${scrollY * 0.6}px)`;
+  });
+</script>
 
 </body>
 </html>
