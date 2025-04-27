@@ -30,56 +30,26 @@
       </table>
     </section>
 
-   <!-- Bodega central -->
-   <section>
-    <h2>🏢 Bodega Central</h2>
-  
-    <div id="bodega-central">
-      <% 
-      const modelosUnicos = {};
-  
-      stockCentral.forEach(c => {
-        const modelo = c.modelo || "Sin Modelo";
-        if (!modelosUnicos[modelo]) {
-          modelosUnicos[modelo] = [];
-        }
-        modelosUnicos[modelo].push(c);
-      });
-      %>
-  
-      <% Object.keys(modelosUnicos).forEach(modelo => { %>
-        <div class="modelo-group">
-          <button type="button" class="btn-modelo" onclick="toggleComponentes('<%= modelo.replace(/\s+/g, '-') %>')">
-            <span><%= modelo %></span>
-            <span id="icono-<%= modelo.replace(/\s+/g, '-') %>">⬇️</span>
-          </button>
-  
-          <div id="comp-<%= modelo.replace(/\s+/g, '-') %>" class="componentes-lista" style="display:none; padding:10px; border-left:2px solid #007bff; margin-top:5px;">
-            <table style="width: 100%;">
-              <thead>
-                <tr>
-                  <th>Nombre</th>
-                  <th>Stock</th>
-                </tr>
-              </thead>
-              <tbody>
-                <% modelosUnicos[modelo].forEach(comp => { %>
-                  <tr>
-                    <td><%= comp.nombre %></td>
-                    <td><%= comp.stock || 0 %></td>
-                  </tr>
-                <% }); %>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      <% }); %>
-    </div>
-  </section>
-  
-
-
-
+    <!-- Bodega central -->
+    <section>
+      <h2>🏢 Bodega Central</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Modelo - Nombre</th>
+            <th>Stock</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% stockCentral.forEach(c => { %>
+            <tr>
+              <td><%= c.modelo ? c.modelo + " - " : "" %><%= c.nombre %></td>
+              <td><%= c.stock || 0 %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </section>
 
     <!-- Formulario de nueva actividad -->
     <section>

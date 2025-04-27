@@ -93,18 +93,6 @@ async function cargarResumen(periodo) {
   document.getElementById("totalPuntos").innerText = `🔢 Total puntos: ${totalPuntos.toFixed(2)}`;
 }
 
-// 🔥 NUEVO: Toggle para mostrar/ocultar componentes por modelo
-function toggleComponentes(modeloId) {
-  const div = document.getElementById('comp-' + modeloId);
-  if (div) {
-    if (div.style.display === "none") {
-      div.style.display = "block";
-    } else {
-      div.style.display = "none";
-    }
-  }
-}
-
 window.onload = () => {
   cargarResumen("dia"); // Auto carga de actividades del día
 };
