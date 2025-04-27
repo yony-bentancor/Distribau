@@ -212,79 +212,18 @@ td button:last-child {
     flex-direction: column;
   }
 }
-/* Mejoras visuales específicas para Transferir Stock */
-#transferir-stock {
-  max-width: 600px;
-  margin: 2rem auto;
-  background: #ffffff;
-  padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+/* Animación para componentes agregados */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-#transferir-stock h2 {
-  margin-bottom: 1.5rem;
-  font-size: 1.8rem;
-  color: #1f2f46;
-}
-
-#transferir-stock form {
-  display: flex;
-  flex-direction: column;
-}
-
-#transferir-stock select,
-#transferir-stock input,
-#transferir-stock textarea {
-  margin-bottom: 1rem;
-  font-size: 1rem;
-}
-
-#transferir-stock button[type="submit"],
-#transferir-stock button[type="button"] {
-  background: linear-gradient(135deg, #007bff, #0056b3);
-  border: none;
-  color: #fff;
-  font-weight: bold;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-#transferir-stock button[type="submit"]:hover,
-#transferir-stock button[type="button"]:hover {
-  background: linear-gradient(135deg, #0056b3, #003580);
-}
-
-#componentes-transferencia > div {
-  background: #f0f2f5;
-  padding: 0.5rem;
-  border-radius: 8px;
-  margin-bottom: 0.7rem;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-#componentes-transferencia select,
-#componentes-transferencia input {
-  flex: 1;
-}
-
-#componentes-transferencia button {
-  background: #dc3545;
-  color: white;
-  border: none;
-  padding: 0.5rem;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-#resumen-transferencia {
-  background: #e9f5ff;
-  padding: 1rem;
-  margin-top: 1.5rem;
-  border-radius: 10px;
-  color: #003580;
-  font-size: 0.95rem;
+.fade-in {
+  animation: fadeIn 0.4s ease forwards;
 }

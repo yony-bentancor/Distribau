@@ -180,6 +180,7 @@ async function cargarTecnicosParaTransferencia() {
   }
 
   const div = document.createElement("div");
+  div.classList.add("fade-in"); // 👈 Agregamos la clase para la animación
   div.innerHTML = `
     <select class="select-componente" required>
       ${todosLosComponentes
