@@ -12,6 +12,60 @@
 
     <!-- PANEL IZQUIERDO: Bodega Técnico + Formulario Actividad -->
     <div class="panel-izquierdo">
+         <!-- Formulario Nueva Actividad -->
+         <section>
+          <h2>📝 Nueva Actividad</h2>
+          <form id="formActividad">
+    
+            <label>Número de actividad</label>
+            <input type="text" name="numero" required>
+    
+            <label>Fecha</label>
+            <input type="date" name="fecha" required>
+    
+            <label>Tipo de actividad</label>
+            <select name="tipo" required>
+              <option value="">Seleccionar...</option>
+              <option value="instalacion">Instalación</option>
+              <option value="ampliacion">Ampliación</option>
+              <option value="continuacion">Continuación</option>
+              <option value="reduccion">Reducción</option>
+              <option value="desinstalacion">Desinstalación</option>
+              <option value="reparacion">Reparación</option>
+            </select>
+    
+            <label>Componentes utilizados</label>
+            <div id="componentesUsados"></div>
+            <button type="button" onclick="agregarComponente()">➕ Agregar Componente</button>
+    
+            <label>Estado</label>
+            <select name="estado" required>
+              <option value="realizado">Realizado</option>
+              <option value="cancelado">Cancelado</option>
+              <option value="pendiente">Pendiente</option>
+            </select>
+    
+            <div class="checkbox-row">
+              <input type="checkbox" name="comunicarse" id="comunicarse">
+              <label for="comunicarse">¿Hay que comunicarse?</label>
+            </div>
+    
+            <div class="checkbox-row">
+              <input type="checkbox" id="usarKm" onchange="toggleKmInput(this)">
+              <label for="usarKm">¿Incluye kilómetros?</label>
+            </div>
+    
+            <input type="number" name="km" id="kmInput" style="display:none;" placeholder="Kilómetros">
+    
+            <label>Comentario</label>
+            <textarea name="comentario" rows="3"></textarea>
+    
+            <div class="acciones">
+              <button type="submit">Guardar Actividad</button>
+            </div>
+    
+          </form>
+        </section>
   
       <!-- Bodega del Técnico -->
       <section>
@@ -34,93 +88,14 @@
         </table>
       </section>
   
-      <!-- Formulario Nueva Actividad -->
-      <section>
-        <h2>📝 Nueva Actividad</h2>
-        <form id="formActividad">
-  
-          <label>Número de actividad</label>
-          <input type="text" name="numero" required>
-  
-          <label>Fecha</label>
-          <input type="date" name="fecha" required>
-  
-          <label>Tipo de actividad</label>
-          <select name="tipo" required>
-            <option value="">Seleccionar...</option>
-            <option value="instalacion">Instalación</option>
-            <option value="ampliacion">Ampliación</option>
-            <option value="continuacion">Continuación</option>
-            <option value="reduccion">Reducción</option>
-            <option value="desinstalacion">Desinstalación</option>
-            <option value="reparacion">Reparación</option>
-          </select>
-  
-          <label>Componentes utilizados</label>
-          <div id="componentesUsados"></div>
-          <button type="button" onclick="agregarComponente()">➕ Agregar Componente</button>
-  
-          <label>Estado</label>
-          <select name="estado" required>
-            <option value="realizado">Realizado</option>
-            <option value="cancelado">Cancelado</option>
-            <option value="pendiente">Pendiente</option>
-          </select>
-  
-          <div class="checkbox-row">
-            <input type="checkbox" name="comunicarse" id="comunicarse">
-            <label for="comunicarse">¿Hay que comunicarse?</label>
-          </div>
-  
-          <div class="checkbox-row">
-            <input type="checkbox" id="usarKm" onchange="toggleKmInput(this)">
-            <label for="usarKm">¿Incluye kilómetros?</label>
-          </div>
-  
-          <input type="number" name="km" id="kmInput" style="display:none;" placeholder="Kilómetros">
-  
-          <label>Comentario</label>
-          <textarea name="comentario" rows="3"></textarea>
-  
-          <div class="acciones">
-            <button type="submit">Guardar Actividad</button>
-          </div>
-  
-        </form>
-      </section>
+   
   
     </div>
   
     <!-- PANEL DERECHO: Bodega Central + Resumen Actividades -->
     <div class="panel-derecho">
-  
-      <!-- Bodega Central -->
-      <section>
-        <h2>🏢 Bodega Central</h2>
-        <div class="tabla-container">
-          <table class="tabla-bodega">
-            <thead>
-              <tr>
-                <th>Modelo</th>
-                <th>Nombre</th>
-                <th>Stock</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% stockCentral.forEach(c => { %>
-                <tr>
-                  <td><%= c.modelo || "Sin Modelo" %></td>
-                  <td><%= c.nombre %></td>
-                  <td style="text-align:center;"><%= c.stock || 0 %></td>
-                </tr>
-              <% }) %>
-            </tbody>
-          </table>
-        </div>
-      </section>
-  
-      <!-- Resumen de Actividades -->
-      <section>
+       <!-- Resumen de Actividades -->
+       <section>
         <h2>📊 Resumen de Actividades</h2>
   
         <div class="resumen-filtros">
@@ -147,6 +122,33 @@
   
       </section>
   
+  
+      <!-- Bodega Central -->
+      <section>
+        <h2>🏢 Bodega Central</h2>
+        <div class="tabla-container">
+          <table class="tabla-bodega">
+            <thead>
+              <tr>
+                <th>Modelo</th>
+                <th>Nombre</th>
+                <th>Stock</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% stockCentral.forEach(c => { %>
+                <tr>
+                  <td><%= c.modelo || "Sin Modelo" %></td>
+                  <td><%= c.nombre %></td>
+                  <td style="text-align:center;"><%= c.stock || 0 %></td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </section>
+  
+     
     </div>
   
   </div>
