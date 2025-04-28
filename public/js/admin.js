@@ -156,6 +156,15 @@ async function cargarTecnicosParaTransferencia() {
 }
   
  */
+// Detecta la URL actual
+const links = document.querySelectorAll(".nav-buttons a");
+const currentPath = window.location.pathname;
+
+links.forEach((link) => {
+  if (link.getAttribute("href") === currentPath) {
+    link.classList.add("activo");
+  }
+});
 
 async function agregarLineaComponente() {
   const origenSeleccionado = document.getElementById("origen").value;

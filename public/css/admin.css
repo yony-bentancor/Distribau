@@ -308,3 +308,20 @@ td button:last-child {
   max-height: none;
   overflow-y: visible;
 }
+.nav-buttons a {
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #212529;
+  font-weight: 600;
+  transition: background-color 0.3s;
+}
+
+.nav-buttons a:hover {
+  background-color: #dee2e6;
+}
+
+.nav-buttons a.activo {
+  background-color: #007bff;
+  color: white;
+}
