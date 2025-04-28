@@ -1,6 +1,9 @@
 // Variables del servidor
 const componentesTecnico = <%- JSON.stringify(bodegaUsuario) %>;
 
+console.log("✅ Cargando componentesTecnico:", componentesTecnico);
+
+
 function agregarComponente() {
   const div = document.createElement("div");
   div.classList.add("componente");
