@@ -2,42 +2,116 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>TECNICO | Componentes y Stock</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="/css/user.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel de Actividades</title>
+  <link rel="stylesheet" href="/ruta/a/tu/estilo.css"> <!-- Ajusta la ruta -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
 
   <div class="grid">
+
+    <!-- NUEVA ACTIVIDAD -->
     <section class="nueva-actividad">
       <h2>Nueva Actividad</h2>
-      <!-- Aquí el formulario o inputs -->
+      <form action="/nueva-actividad" method="POST">
+        <input type="text" name="cliente" placeholder="Cliente" required>
+        <input type="text" name="categoria" placeholder="Categoría" required>
+        <select name="componente" required>
+          <option value="">Selecciona Componente</option>
+          <option value="Central">Central</option>
+          <option value="Teclado">Teclado</option>
+          <option value="Sirena">Sirena</option>
+          <option value="PIR">PIR</option>
+        </select>
+        <input type="number" name="unidades" placeholder="Unidades" min="1" required>
+        <button type="submit">Agregar Actividad</button>
+      </form>
     </section>
-  
+
+    <!-- TU BODEGA -->
     <section class="tu-bodega">
       <h2>Tu Bodega</h2>
-      <!-- Aquí tabla o info de bodega -->
+      <table class="tabla-bodega">
+        <thead>
+          <tr>
+            <th>Componente</th>
+            <th>Stock</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% bodegaUsuario.forEach(item => { %>
+            <tr>
+              <td><%= item.nombre %></td>
+              <td><%= item.cantidad %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
     </section>
-  
+
+    <!-- RESUMEN DE ACTIVIDADES -->
     <section class="resumen-actividades">
       <h2>Resumen de Actividades</h2>
-      <!-- Aquí filtros + tabla resumen -->
+
+      <div class="resumen-filtros">
+        <form action="/filtrar-resumen" method="GET">
+          <select name="filtroCategoria">
+            <option value="">Todas las Categorías</option>
+            <option value="Instalación">Instalación</option>
+            <option value="Mantenimiento">Mantenimiento</option>
+            <option value="Reparación">Reparación</option>
+          </select>
+          <button type="submit">Filtrar</button>
+        </form>
+      </div>
+
+      <table class="tabla-resumen">
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Cliente</th>
+            <th>Categoría</th>
+            <th>Componente</th>
+            <th>Unidades</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% resumenActividades.forEach(act => { %>
+            <tr>
+              <td><%= act.fecha %></td>
+              <td><%= act.cliente %></td>
+              <td><%= act.categoria %></td>
+              <td><%= act.componente %></td>
+              <td><%= act.unidades %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
     </section>
-  
+
+    <!-- BODEGA CENTRAL -->
     <section class="bodega-central">
       <h2>Bodega Central</h2>
-      <!-- Aquí tabla o stock central -->
+      <table class="tabla-bodega">
+        <thead>
+          <tr>
+            <th>Componente</th>
+            <th>Stock Disponible</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% bodegaCentral.forEach(item => { %>
+            <tr>
+              <td><%= item.nombre %></td>
+              <td><%= item.cantidad %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
     </section>
+
   </div>
-  
-  
-
-<!-- Variables para JS -->
-<script>
-  window.componentesTecnico = <%- JSON.stringify(bodegaUsuario) %>;
-</script>
-
-<script src="/js/user.js"></script>
 
 </body>
 </html>
