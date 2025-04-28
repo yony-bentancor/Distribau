@@ -12,15 +12,25 @@
   
   /* GRID PRINCIPAL */
   .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
     gap: 1rem;
     padding: 1.5rem;
-    align-items: start;
+    justify-content: center;
   }
   
-  /* ESTILOS DE CADA PANEL */
-  section {
+  .panel {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    width: 100%;
+    max-width: 1600px; /* máximo ancho para que no se estire demasiado */
+    justify-content: space-between;
+  }
+  
+  .panel section {
+    flex: 1 1 calc(25% - 1rem);
+    min-width: 280px;
     background: white;
     padding: 1rem;
     border-radius: 16px;
@@ -31,13 +41,13 @@
     transition: transform 0.2s ease;
   }
   
-  section:hover {
+  .panel section:hover {
     transform: translateY(-5px);
   }
   
   /* TÍTULOS */
   h2 {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     text-align: center;
     color: #34495e;
     border-bottom: 2px solid #ecf0f1;
@@ -47,19 +57,19 @@
   
   /* COLORES PERSONALIZADOS */
   .nueva-actividad {
-    background: #d0e7ff;
+    background: #e0f7fa; /* celeste muy suave */
   }
   
   .tu-bodega {
-    background: #d6f5d6;
+    background: #e8f5e9; /* verde muy claro */
   }
   
   .resumen-actividades {
-    background: #fff4cc;
+    background: #fffde7; /* amarillo pastel */
   }
   
   .bodega-central {
-    background: #e3eaf0;
+    background: #f3e5f5; /* violeta pastel */
   }
   
   /* TABLAS */
@@ -70,7 +80,7 @@
   }
   
   thead {
-    background-color: #007bff;
+    background-color: #4a90e2;
     color: white;
   }
   
@@ -97,29 +107,34 @@
   /* BOTONES */
   button {
     padding: 0.6rem;
-    background-color: #28a745;
+    background-color: #5dade2; /* celeste pastel bonito */
     color: white;
     border: none;
     border-radius: 8px;
     cursor: pointer;
     font-weight: bold;
     transition: background-color 0.2s;
+    font-size: 0.95rem;
   }
   
   button:hover {
-    background-color: #218838;
+    background-color: #3498db; /* tono un poco más fuerte al pasar el mouse */
   }
   
-  /* RESPONSIVE: ALINEACIÓN BONITA */
+  /* RESPONSIVE */
   @media (max-width: 1000px) {
-    .grid {
-      grid-template-columns: 1fr 1fr;
+    .panel section {
+      flex: 1 1 calc(50% - 1rem);
     }
   }
   
   @media (max-width: 600px) {
-    .grid {
-      grid-template-columns: 1fr;
+    .panel {
+      flex-direction: column;
+    }
+  
+    .panel section {
+      flex: 1 1 100%;
     }
   }
   
