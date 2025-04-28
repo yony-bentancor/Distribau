@@ -6,6 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="/css/user.css">
 </head>
+<script>
+  const componentesTecnico = <%- JSON.stringify(bodegaUsuario) %>;
+</script>
+<script src="/js/user.js"></script>
 <body>
   <div class="grid">
 
@@ -135,10 +139,7 @@
     </section>
 
   </div>
-  <script>
-    const componentesTecnico = <%- JSON.stringify(bodegaUsuario) %>;
-  </script>
-  <script src="/js/user.js"></script>
+
   
 </body>
 </html>
