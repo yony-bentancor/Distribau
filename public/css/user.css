@@ -15,8 +15,7 @@
     grid-template-columns: 1fr 1fr 1fr;
     gap: 1rem;
     padding: 1.5rem;
-    align-items: start; /* 👈 ¡ESTO! */
-
+    align-items: start; /* ✅ Hace que todos los sections estén arriba */
   }
   
   section {
@@ -24,6 +23,8 @@
     padding: 1rem;
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
   }
   
   h2 {
@@ -93,26 +94,29 @@
     margin-top: 0.5rem;
   }
   
+  /* Responsive mejorado */
   @media (max-width: 900px) {
     .grid {
       grid-template-columns: 1fr;
+      padding: 1rem;
     }
   }
   
-  /* Estilo resumen de actividades */
+  /* Mejoras Resumen Actividades */
   .resumen-filtros {
     display: flex;
     justify-content: center;
     gap: 0.5rem;
     margin-bottom: 1rem;
+    flex-wrap: wrap; /* ✅ Para que en móvil los botones se bajen si no entran */
   }
   
   .resumen-filtros button {
     background-color: #6c757d;
     border: none;
     color: white;
-    padding: 0.4rem 0.9rem;
-    border-radius: 6px;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
     cursor: pointer;
     font-size: 0.9rem;
     transition: background-color 0.2s ease;
@@ -126,10 +130,14 @@
     width: 100%;
     border-collapse: collapse;
     font-size: 0.9rem;
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
   }
   
   .tabla-resumen th, .tabla-resumen td {
-    padding: 0.5rem;
+    padding: 0.7rem;
     text-align: left;
     border-bottom: 1px solid #ddd;
   }
@@ -138,7 +146,7 @@
     background-color: #007bff;
     color: white;
   }
-
+  
   .tabla-container {
     overflow-x: auto;
     margin-top: 1rem;
@@ -168,5 +176,4 @@
   .tabla-bodega tr:hover {
     background-color: #f8f9fa;
   }
-
-    
+  
