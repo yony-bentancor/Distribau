@@ -74,6 +74,15 @@ document
     }
   });
 
+const filtros = document.querySelectorAll(".resumen-filtros button");
+
+filtros.forEach((boton) => {
+  boton.addEventListener("click", () => {
+    filtros.forEach((b) => b.classList.remove("active")); // quitar active a todos
+    boton.classList.add("active"); // poner active solo al clickeado
+  });
+});
+
 async function cargarResumen(periodo) {
   const res = await fetch(`/actividades/resumen?periodo=${periodo}`);
   const actividades = await res.json();
