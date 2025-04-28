@@ -6,41 +6,35 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="/css/user.css">
 </head>
-<script>
-  const componentesTecnico = <%- JSON.stringify(bodegaUsuario) %>;
-</script>
-
-<script src="/js/user.js"></script>
 <body>
-  <div class="grid">
 
-    <!-- Bodega del técnico -->
-    <section>
-      <h2>📦 Tu Bodega</h2>
-      <table>
-        <thead>
+<div class="grid">
+
+  <!-- Bodega del técnico -->
+  <section>
+    <h2>📦 Tu Bodega</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Modelo - Nombre</th>
+          <th>Cantidad</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% componentes.forEach(c => { %>
           <tr>
-            <th>Modelo - Nombre</th>
-            <th>Cantidad</th>
+            <td><%= c.componente.modelo ? c.componente.modelo + " - " : "" %><%= c.componente.nombre %></td>
+            <td><%= c.cantidad %></td>
           </tr>
-        </thead>
-        <tbody>
-          <% componentes.forEach(c => { %>
-            <tr>
-              <td><%= c.componente.modelo ? c.componente.modelo + " - " : "" %><%= c.componente.nombre %></td>
-              <td><%= c.cantidad %></td>
-            </tr>
-          <% }) %>
-        </tbody>
-      </table>
-    </section>
+        <% }) %>
+      </tbody>
+    </table>
+  </section>
 
-   <!-- Bodega Central Mejorado -->
-<section class="seccion">
-  <h2>🏢 Bodega Central</h2>
-
-  <div class="tabla-container">
-    <table class="tabla-bodega">
+  <!-- Bodega Central -->
+  <section>
+    <h2>🏢 Bodega Central</h2>
+    <table>
       <thead>
         <tr>
           <th>Modelo</th>
@@ -51,96 +45,93 @@
       <tbody>
         <% stockCentral.forEach(c => { %>
           <tr>
-            <td><%= c.modelo || "Sin Modelo" %></td>
+            <td><%= c.modelo %></td>
             <td><%= c.nombre %></td>
-            <td style="text-align: center;"><%= c.stock || 0 %></td>
+            <td><%= c.stock %></td>
           </tr>
         <% }) %>
       </tbody>
     </table>
-  </div>
-</section>
+  </section>
 
+  <!-- Nueva Actividad -->
+  <section>
+    <h2>📋 Nueva Actividad</h2>
+    <form id="formActividad">
+      <label>Número de actividad</label>
+      <input type="text" name="numero" required>
 
-    <!-- Formulario de nueva actividad -->
-    <section>
-      <h2>📋 Nueva Actividad</h2>
-      <form id="formActividad">
-        <label>Número de actividad</label>
-        <input type="text" name="numero" required>
+      <label>Fecha</label>
+      <input type="date" name="fecha" required>
 
-        <label>Fecha</label>
-        <input type="date" name="fecha" required>
+      <label>Tipo de actividad</label>
+      <select name="tipo" required>
+        <option value="">Seleccionar...</option>
+        <option value="instalacion">Instalación</option>
+        <option value="ampliacion">Ampliación</option>
+        <option value="continuacion">Continuación</option>
+        <option value="reduccion">Reducción</option>
+        <option value="desinstalacion">Desinstalación</option>
+        <option value="reparacion">Reparación</option>
+      </select>
 
-        <label>Tipo de actividad</label>
-        <select name="tipo" required>
-          <option value="">Seleccionar...</option>
-          <option value="instalacion">Instalación</option>
-          <option value="ampliacion">Ampliación</option>
-          <option value="continuacion">Continuación</option>
-          <option value="reduccion">Reducción</option>
-          <option value="desinstalacion">Desinstalación</option>
-          <option value="reparacion">Reparación</option>
-        </select>
+      <label>Componentes utilizados</label>
+      <div id="componentesUsados"></div>
+      <button type="button" onclick="agregarComponente()">➕ Agregar Componente</button>
 
-        <label>Componentes utilizados</label>
-        <div id="componentesUsados"></div>
-        <button type="button" onclick="agregarComponente()">➕ Agregar Componente</button>
+      <label>Estado</label>
+      <select name="estado">
+        <option value="realizado">Realizado</option>
+        <option value="cancelado">Cancelado</option>
+        <option value="pendiente">Pendiente</option>
+      </select>
 
-        <label>Estado</label>
-        <select name="estado">
-          <option value="realizado">Realizado</option>
-          <option value="cancelado">Cancelado</option>
-          <option value="pendiente">Pendiente</option>
-        </select>
+      <label><input type="checkbox" name="comunicarse"> ¿Hay que comunicarse?</label>
 
-        <label>
-          <input type="checkbox" name="comunicarse"> ¿Hay que comunicarse?
-        </label>
+      <label><input type="checkbox" id="usarKm" onchange="toggleKmInput(this)"> ¿Incluye kilómetros?</label>
+      <input type="number" name="km" id="kmInput" style="display:none;" placeholder="Kilómetros">
 
-        <label>
-          <input type="checkbox" id="usarKm" onchange="toggleKmInput(this)"> ¿Incluye kilómetros?
-        </label>
-        <input type="number" name="km" id="kmInput" style="display:none;" placeholder="Kilómetros">
+      <label>Comentario</label>
+      <textarea name="comentario" rows="3"></textarea>
 
-        <label>Comentario</label>
-        <textarea name="comentario" rows="3"></textarea>
-
-        <div class="acciones">
-          <button type="submit">Guardar Actividad</button>
-        </div>
-      </form>
-    </section>
-
-    <!-- Panel de resumen de actividades -->
-    <section>
-      <h2>📊 Resumen de Actividades</h2>
-
-      <div class="resumen-filtros">
-        <button onclick="cargarResumen('dia')">Hoy</button>
-        <button onclick="cargarResumen('semana')">Esta Semana</button>
-        <button onclick="cargarResumen('mes')">Este Mes</button>
+      <div class="acciones">
+        <button type="submit">Guardar Actividad</button>
       </div>
+    </form>
+  </section>
 
-      <table class="tabla-resumen">
-        <thead>
-          <tr>
-            <th>Número</th>
-            <th>Tipo</th>
-            <th>Puntos</th>
-            <th>Detalle</th>
-          </tr>
-        </thead>
-        <tbody id="resumenCuerpo">
-          <tr><td colspan="4" style="text-align:center;">Seleccione un filtro para ver actividades</td></tr>
-        </tbody>
-      </table>
-      <div id="totalPuntos" style="text-align: right; margin-top: 0.5rem; font-weight: 600;"></div>
+  <!-- Resumen -->
+  <section>
+    <h2>📊 Resumen de Actividades</h2>
+    <div class="resumen-filtros">
+      <button onclick="cargarResumen('dia')">Hoy</button>
+      <button onclick="cargarResumen('semana')">Esta Semana</button>
+      <button onclick="cargarResumen('mes')">Este Mes</button>
+    </div>
+    <table class="tabla-resumen">
+      <thead>
+        <tr>
+          <th>Número</th>
+          <th>Tipo</th>
+          <th>Puntos</th>
+          <th>Detalle</th>
+        </tr>
+      </thead>
+      <tbody id="resumenCuerpo">
+        <tr><td colspan="4" style="text-align:center;">Seleccione un filtro para ver actividades</td></tr>
+      </tbody>
+    </table>
+    <div id="totalPuntos" style="text-align:right; font-weight:600; margin-top:0.5rem;"></div>
+  </section>
 
-    </section>
+</div>
 
-  </div>
+<!-- Variables para JS -->
+<script>
+  window.componentesTecnico = <%- JSON.stringify(bodegaUsuario) %>;
+</script>
 
-  
+<script src="/js/user.js"></script>
+
 </body>
 </html>
