@@ -8,123 +8,149 @@
 </head>
 <body>
 
-<div class="grid">
+  <div class="grid">
 
-  <!-- Bodega del técnico -->
-  <section>
-    <h2>📦 Tu Bodega</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Modelo - Nombre</th>
-          <th>Cantidad</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% componentes.forEach(c => { %>
-          <tr>
-            <td><%= c.componente.modelo ? c.componente.modelo + " - " : "" %><%= c.componente.nombre %></td>
-            <td><%= c.cantidad %></td>
-          </tr>
-        <% }) %>
-      </tbody>
-    </table>
-  </section>
-
-  <!-- Bodega Central -->
-  <section>
-    <h2>🏢 Bodega Central</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Modelo</th>
-          <th>Nombre</th>
-          <th>Stock</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% stockCentral.forEach(c => { %>
-          <tr>
-            <td><%= c.modelo %></td>
-            <td><%= c.nombre %></td>
-            <td><%= c.stock %></td>
-          </tr>
-        <% }) %>
-      </tbody>
-    </table>
-  </section>
-
-  <!-- Nueva Actividad -->
-  <section>
-    <h2>📋 Nueva Actividad</h2>
-    <form id="formActividad">
-      <label>Número de actividad</label>
-      <input type="text" name="numero" required>
-
-      <label>Fecha</label>
-      <input type="date" name="fecha" required>
-
-      <label>Tipo de actividad</label>
-      <select name="tipo" required>
-        <option value="">Seleccionar...</option>
-        <option value="instalacion">Instalación</option>
-        <option value="ampliacion">Ampliación</option>
-        <option value="continuacion">Continuación</option>
-        <option value="reduccion">Reducción</option>
-        <option value="desinstalacion">Desinstalación</option>
-        <option value="reparacion">Reparación</option>
-      </select>
-
-      <label>Componentes utilizados</label>
-      <div id="componentesUsados"></div>
-      <button type="button" onclick="agregarComponente()">➕ Agregar Componente</button>
-
-      <label>Estado</label>
-      <select name="estado">
-        <option value="realizado">Realizado</option>
-        <option value="cancelado">Cancelado</option>
-        <option value="pendiente">Pendiente</option>
-      </select>
-
-      <label><input type="checkbox" name="comunicarse"> ¿Hay que comunicarse?</label>
-
-      <label><input type="checkbox" id="usarKm" onchange="toggleKmInput(this)"> ¿Incluye kilómetros?</label>
-      <input type="number" name="km" id="kmInput" style="display:none;" placeholder="Kilómetros">
-
-      <label>Comentario</label>
-      <textarea name="comentario" rows="3"></textarea>
-
-      <div class="acciones">
-        <button type="submit">Guardar Actividad</button>
-      </div>
-    </form>
-  </section>
-
-  <!-- Resumen -->
-  <section>
-    <h2>📊 Resumen de Actividades</h2>
-    <div class="resumen-filtros">
-      <button onclick="cargarResumen('dia')">Hoy</button>
-      <button onclick="cargarResumen('semana')">Esta Semana</button>
-      <button onclick="cargarResumen('mes')">Este Mes</button>
+    <!-- PANEL IZQUIERDO: Bodega Técnico + Formulario Actividad -->
+    <div class="panel-izquierdo">
+  
+      <!-- Bodega del Técnico -->
+      <section>
+        <h2>📦 Tu Bodega</h2>
+        <table class="tabla-bodega">
+          <thead>
+            <tr>
+              <th>Modelo - Nombre</th>
+              <th>Cantidad</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% componentes.forEach(c => { %>
+              <tr>
+                <td><%= c.componente.modelo ? c.componente.modelo + " - " : "" %><%= c.componente.nombre %></td>
+                <td><%= c.cantidad %></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </section>
+  
+      <!-- Formulario Nueva Actividad -->
+      <section>
+        <h2>📝 Nueva Actividad</h2>
+        <form id="formActividad">
+  
+          <label>Número de actividad</label>
+          <input type="text" name="numero" required>
+  
+          <label>Fecha</label>
+          <input type="date" name="fecha" required>
+  
+          <label>Tipo de actividad</label>
+          <select name="tipo" required>
+            <option value="">Seleccionar...</option>
+            <option value="instalacion">Instalación</option>
+            <option value="ampliacion">Ampliación</option>
+            <option value="continuacion">Continuación</option>
+            <option value="reduccion">Reducción</option>
+            <option value="desinstalacion">Desinstalación</option>
+            <option value="reparacion">Reparación</option>
+          </select>
+  
+          <label>Componentes utilizados</label>
+          <div id="componentesUsados"></div>
+          <button type="button" onclick="agregarComponente()">➕ Agregar Componente</button>
+  
+          <label>Estado</label>
+          <select name="estado" required>
+            <option value="realizado">Realizado</option>
+            <option value="cancelado">Cancelado</option>
+            <option value="pendiente">Pendiente</option>
+          </select>
+  
+          <div class="checkbox-row">
+            <input type="checkbox" name="comunicarse" id="comunicarse">
+            <label for="comunicarse">¿Hay que comunicarse?</label>
+          </div>
+  
+          <div class="checkbox-row">
+            <input type="checkbox" id="usarKm" onchange="toggleKmInput(this)">
+            <label for="usarKm">¿Incluye kilómetros?</label>
+          </div>
+  
+          <input type="number" name="km" id="kmInput" style="display:none;" placeholder="Kilómetros">
+  
+          <label>Comentario</label>
+          <textarea name="comentario" rows="3"></textarea>
+  
+          <div class="acciones">
+            <button type="submit">Guardar Actividad</button>
+          </div>
+  
+        </form>
+      </section>
+  
     </div>
-    <table class="tabla-resumen">
-      <thead>
-        <tr>
-          <th>Número</th>
-          <th>Tipo</th>
-          <th>Puntos</th>
-          <th>Detalle</th>
-        </tr>
-      </thead>
-      <tbody id="resumenCuerpo">
-        <tr><td colspan="4" style="text-align:center;">Seleccione un filtro para ver actividades</td></tr>
-      </tbody>
-    </table>
-    <div id="totalPuntos" style="text-align:right; font-weight:600; margin-top:0.5rem;"></div>
-  </section>
-
-</div>
+  
+    <!-- PANEL DERECHO: Bodega Central + Resumen Actividades -->
+    <div class="panel-derecho">
+  
+      <!-- Bodega Central -->
+      <section>
+        <h2>🏢 Bodega Central</h2>
+        <div class="tabla-container">
+          <table class="tabla-bodega">
+            <thead>
+              <tr>
+                <th>Modelo</th>
+                <th>Nombre</th>
+                <th>Stock</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% stockCentral.forEach(c => { %>
+                <tr>
+                  <td><%= c.modelo || "Sin Modelo" %></td>
+                  <td><%= c.nombre %></td>
+                  <td style="text-align:center;"><%= c.stock || 0 %></td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </section>
+  
+      <!-- Resumen de Actividades -->
+      <section>
+        <h2>📊 Resumen de Actividades</h2>
+  
+        <div class="resumen-filtros">
+          <button onclick="cargarResumen('dia')">Hoy</button>
+          <button onclick="cargarResumen('semana')">Esta Semana</button>
+          <button onclick="cargarResumen('mes')">Este Mes</button>
+        </div>
+  
+        <table class="tabla-resumen">
+          <thead>
+            <tr>
+              <th>Número</th>
+              <th>Tipo</th>
+              <th>Puntos</th>
+              <th>Detalle</th>
+            </tr>
+          </thead>
+          <tbody id="resumenCuerpo">
+            <tr><td colspan="4" style="text-align:center;">Seleccione un filtro para ver actividades</td></tr>
+          </tbody>
+        </table>
+  
+        <div id="totalPuntos" style="text-align:right; font-weight:600; margin-top:0.5rem;"></div>
+  
+      </section>
+  
+    </div>
+  
+  </div>
+  
 
 <!-- Variables para JS -->
 <script>
