@@ -57,9 +57,11 @@ router.get("/user", async (req, res) => {
     console.log("📦 Componentes encontrados:", bodega.componentes.length);
 
     res.render("user", {
-      componentes: bodega.componentes || [],
+      componentes: Array.isArray(bodega?.componentes) ? bodega.componentes : [],
       stockCentral,
-      bodegaUsuario: bodega.componentes || [],
+      bodegaUsuario: Array.isArray(bodega?.componentes)
+        ? bodega.componentes
+        : [],
     });
   } catch (err) {
     console.error("❌ Error en /user:", err);
