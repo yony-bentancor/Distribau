@@ -15,6 +15,7 @@ const almacenRoutes = require("./routes/almacen");
 const transferenciasRoutes = require("./routes/transferencias");
 const actividadesRoutes = require("./routes/actividades");
 const actividadesRouter = require("./routes/actividades");
+const registerRouter = require("./routes/register");
 
 dotenv.config();
 
@@ -45,6 +46,9 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
 // Rutas
+
+app.use(registerRouter);
+
 app.use("/", authRoutes);
 app.use("/movimientos", movimientosRoutes);
 app.use("/", stockRoutes);
