@@ -14,6 +14,12 @@ router.post("/login", async (req, res) => {
     if (!user) {
       return res.status(401).send("Usuario no encontrado");
     }
+    if (!user.password) {
+      console.error("El usuario no tiene una contraseña en la base de datos");
+      return res.status(500).send("Usuario sin contraseña registrada");
+    }
+    console.log("Usuario encontrado:", user);
+    console.log("Contraseña guardada:", user.password);
 
     // Comparar contraseñas
     const match = await bcrypt.compare(password, user.password);
