@@ -7,13 +7,7 @@ router.post("/componentes", async (req, res) => {
   console.log("📥 Body recibido:", req.body);
 
   try {
-    const {
-      nombre,
-      articuloComercial,
-      modelo,
-      puntosInstalacion,
-      puntosConexion,
-    } = req.body;
+    const { nombre, modelo, puntosInstalacion, puntosConexion } = req.body;
 
     if (
       !nombre ||
@@ -32,7 +26,6 @@ router.post("/componentes", async (req, res) => {
 
     const nuevo = new Componente({
       nombre,
-      articuloComercial,
       modelo,
       puntosInstalacion: pi,
       puntosConexion: pc,

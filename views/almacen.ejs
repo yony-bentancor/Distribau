@@ -9,8 +9,8 @@
 <header class="top-bar">
   <nav class="nav-buttons">
     <a href="/actividades">📋 Actividades</a>
-    <a href="/admin">🏢 Bodega Central</a>
-    <a href="/almacen">📦 Almacén</a>
+    <a href="/admin">🏢 Bodega DISTRIBAU</a>
+    <a href="/almacen">📦 Almacén PROSEGUR</a>
   </nav>
 </header>
 
@@ -21,7 +21,6 @@
       <div id="alerta" style="margin-bottom:1rem;"></div>
       <form id="form-componente">
         <input type="text" name="nombre" placeholder="Nombre del componente" required>
-        <input type="text" name="articuloComercial" placeholder="Artículo comercial (ej: CLM-101)">
         <input type="text" name="modelo" placeholder="Modelo (ej: Climax)">
         <input type="number" name="puntosInstalacion" step="0.01" placeholder="Puntaje instalación" required>
         <input type="number" name="puntosConexion" step="0.01" placeholder="Puntaje conexión" required>
@@ -31,9 +30,9 @@
 
     <div class="panel middle-panel">
       <form method="POST" action="/almacen" id="form-almacen">
-        <h2>📥 Ingreso desde Almacén</h2>
+        <h2>📥 Ingreso desde PROSEGUR</h2>
       
-        <button type="submit" class="boton-enviar-arriba">Enviar a Bodega Central</button> <!-- 🔼 Botón arriba -->
+        <button type="submit" class="boton-enviar-arriba">Enviar a Bodega DISTRIBAU</button> <!-- 🔼 Botón arriba -->
       
         <label for="fechaIngreso">📆 Fecha de ingreso</label>
         <input 
