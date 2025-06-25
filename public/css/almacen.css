@@ -36,6 +36,13 @@ body {
 .right-panel {
   flex: 1.2;
 }
+.middle-panel {
+  flex: 2;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
+  overflow-y: auto; /* permite hacer scroll vertical */
+  max-height: 100vh; /* o la altura que uses */
+}
 
 h2 {
   text-align: center;
