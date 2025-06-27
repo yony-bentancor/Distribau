@@ -171,9 +171,7 @@ td button:last-child {
   display: flex;
   justify-content: center;
   gap: 2rem;
-}
-
-.nav-buttons a {
+}.nav-buttons a {
   background-color: transparent;
   color: #ffffff;
   text-decoration: none;
