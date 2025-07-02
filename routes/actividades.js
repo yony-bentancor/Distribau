@@ -6,7 +6,7 @@ const Actividad = require("../models/Actividad");
 const Componente = require("../models/Componente");
 const BodegaUsuario = require("../models/BodegaUsuario");
 
-// POST /actividades - Registrar nueva actividad
+// POST /actividades - Registrar nueva actividad (técnico)
 router.post("/actividades", async (req, res) => {
   try {
     const {
@@ -22,7 +22,6 @@ router.post("/actividades", async (req, res) => {
 
     const tecnicoId = req.session.user.id;
 
-    // Validar componentes y stock en bodega del técnico
     const bodega = await BodegaUsuario.findOne({ usuario: tecnicoId });
     if (!bodega)
       return res.status(400).send("No se encontró la bodega del técnico");
@@ -44,22 +43,18 @@ router.post("/actividades", async (req, res) => {
           .send(`Stock insuficiente de ${componente.nombre}`);
       }
 
-      // Calcular puntaje por componente (usamos puntosInstalacion como base)
       puntajeTotal += cantidad * componente.puntosInstalacion;
       componentesValidados.push({ componente: componenteId, cantidad });
 
-      // Descontar del stock
       stockTecnico.cantidad -= cantidad;
     }
 
     await bodega.save();
 
-    // Calcular puntaje por km (si hay)
     if (km && !isNaN(km)) {
       puntajeTotal += km * 0.03;
     }
 
-    // Guardar actividad
     const nuevaActividad = new Actividad({
       numero,
       fecha,
@@ -80,9 +75,9 @@ router.post("/actividades", async (req, res) => {
     res.status(500).send("Error interno del servidor");
   }
 });
-// GET /actividades/resumen?desde=YYYY-MM-DD&hasta=YYYY-MM-DD
-// GET /actividades/resumen?periodo=dia|semana|mes
-router.get("/resumen", requireAuth, async (req, res) => {
+
+// GET /actividades/resumen?periodo=dia|semana|mes (solo para técnicos)
+router.get("/actividades/resumen", requireAuth, async (req, res) => {
   const userId = req.session.user.id;
   const { periodo } = req.query;
 
@@ -90,7 +85,7 @@ router.get("/resumen", requireAuth, async (req, res) => {
   const fin = new Date();
 
   if (periodo === "semana") {
-    const dia = inicio.getDay(); // 0 (domingo) a 6 (sábado)
+    const dia = inicio.getDay();
     inicio.setDate(inicio.getDate() - dia);
     inicio.setHours(0, 0, 0, 0);
     fin.setDate(inicio.getDate() + 6);
@@ -101,7 +96,6 @@ router.get("/resumen", requireAuth, async (req, res) => {
     fin.setMonth(inicio.getMonth() + 1, 0);
     fin.setHours(23, 59, 59, 999);
   } else {
-    // "dia"
     inicio.setHours(0, 0, 0, 0);
     fin.setHours(23, 59, 59, 999);
   }
