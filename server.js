@@ -16,7 +16,6 @@ const transferenciasRoutes = require("./routes/transferencias");
 const actividadesRoutes = require("./routes/actividades");
 const actividadesRouter = require("./routes/actividades");
 const registerRouter = require("./routes/register");
-const adminActividadesRouter = require("./routes/adminActividades");
 
 dotenv.config();
 
@@ -57,7 +56,7 @@ app.use("/", userRoutes);
 app.use("/", componentesRoutes);
 app.use("/almacen", almacenRoutes);
 app.use("/transferencias", transferenciasRoutes);
-app.use("/", adminActividadesRouter);
+app.use("/", actividadesRoutes);
 app.use("/actividades", actividadesRouter);
 app.get("/prueba", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "prueba.html"));
