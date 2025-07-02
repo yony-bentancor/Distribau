@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Actividades por Técnico</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f4f6f8;
+      color: #333;
+      padding: 2rem;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .tecnico-card {
+      background: white;
+      border-radius: 10px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      margin-bottom: 2rem;
+    }
+
+    .tecnico-card h2 {
+      margin-top: 0;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 0.5rem;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      margin-bottom: 0.3rem;
+    }
+
+    .actividad {
+      border-left: 4px solid #007acc;
+      margin: 1rem 0;
+      padding-left: 1rem;
+    }
+
+    .actividad ul {
+      margin-top: 0.3rem;
+      padding-left: 1rem;
+    }
+
+    .estado {
+      font-weight: bold;
+      text-transform: capitalize;
+    }
+
+    .realizado { color: green; }
+    .pendiente { color: orange; }
+    .cancelado { color: red; }
+  </style>
+</head>
+<body>
+  <h1>Resumen de Actividades por Técnico</h1>
+
+  <% resultados.forEach(({ usuario, bodega, actividades }) => { %>
+    <div class="tecnico-card">
+      <h2><%= usuario.username %></h2>
+
+      <h3>Bodega actual:</h3>
+      <% if (bodega.length === 0) { %>
+        <p><em>Sin componentes en bodega.</em></p>
+      <% } else { %>
+        <ul>
+          <% bodega.forEach(item => { %>
+            <li><strong><%= item.componente.nombre %></strong>: <%= item.cantidad %> unidades</li>
+          <% }) %>
+        </ul>
+      <% } %>
+
+      <h3>Actividades recientes:</h3>
+      <% if (actividades.length === 0) { %>
+        <p><em>Sin actividades registradas.</em></p>
+      <% } else { %>
+        <% actividades.forEach(act => { %>
+          <div class="actividad">
+            <p><strong>Tipo:</strong> <%= act.tipo %></p>
+            <p><strong>Fecha:</strong> <%= new Date(act.fecha).toLocaleDateString() %></p>
+            <p><strong>Estado:</strong> <span class="estado <%= act.estado %>"><%= act.estado %></span></p>
+            <p><strong>Puntaje total:</strong> <%= act.puntajeTotal %> pts</p>
+
+            <strong>Componentes usados:</strong>
+            <ul>
+              <% act.componentesUsados.forEach(c => { %>
+                <li><%= c.componente.nombre %>: <%= c.cantidad %> unidades</li>
+              <% }) %>
+            </ul>
+
+            <% if (act.km > 0) { %>
+              <p><strong>Kilómetros:</strong> <%= act.km %> km</p>
+            <% } %>
+
+            <% if (act.comentario) { %>
+              <p><strong>Comentario:</strong> <%= act.comentario %></p>
+            <% } %>
+          </div>
+        <% }) %>
+      <% } %>
+    </div>
+  <% }) %>
+</body>
+</html>
