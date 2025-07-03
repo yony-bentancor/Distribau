@@ -5,46 +5,49 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Órdenes de trabajo</title>
   <link rel="stylesheet" href="/css/worders.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 
 <body>
   <header class="top-bar">
     <nav class="nav-buttons">
-      <a href="/workorders" class="activo">📋 BODEGA TECNICOS</a>
+      <a href="/workorders" class="activo">📋 BODEGA TÉCNICOS</a>
       <a href="/admin">🏢 BODEGA DISTRIBAU</a>
-      <a href="/almacen" >📦 PROSEGUR</a>
+      <a href="/almacen">📦 PROSEGUR</a>
     </nav>
   </header>
 
   <main class="grid">
-    <!-- Filtro por técnico -->
-   
-
-    <!-- Panel principal -->
-    <div class="panel">
-      <% resultados.forEach(({ usuario, bodega, actividades }, index) => { %>
-        <section class="<%= index % 4 === 0 ? 'nueva-actividad' : index % 4 === 1 ? 'resumen-actividades' : index % 4 === 2 ? 'bodega-central' : 'tu-bodega' %>" data-user="<%= usuario._id %>">
-          <h2><%= usuario.username %></h2>
+    <!-- Contenedor de tarjetas -->
+    <div class="usuarios-grid">
+      <% resultados.forEach(({ usuario, bodega, actividades }) => { %>
+        <div class="usuario-box">
+          <h2><i class="fas fa-user-circle"></i> <%= usuario.username %></h2>
 
           <div class="bodega">
-            <strong>Bodega:</strong>
+            <h3><i class="fas fa-box-open"></i> Bodega:</h3>
             <% if (bodega.length > 0) { %>
               <ul>
                 <% bodega.forEach(item => { %>
-                  <li><%= item.componente?.nombre || "Componente eliminado" %> - <%= item.cantidad %> u.</li>
+                  <li><%= item.componente?.nombre || "Componente eliminado" %> — <strong><%= item.cantidad %></strong> u.</li>
                 <% }) %>
               </ul>
             <% } else { %>
-              <p class="small">Sin componentes</p>
+              <p class="small">Sin componentes en stock</p>
             <% } %>
           </div>
 
           <div class="actividades" style="margin-top: 1rem;">
-            <strong>Actividades:</strong>
+            <h3><i class="fas fa-tasks"></i> Actividades recientes:</h3>
             <% if (actividades.length > 0) { %>
-              <% actividades.forEach(act => { %>
+              <% actividades.slice(0, 3).forEach(act => { %>
                 <div class="actividad-item">
-                  <div class="small"><strong><%= act.tipo %></strong> — <%= new Date(act.fecha).toLocaleDateString() %> — <%= act.estado %></div>
+                  <div class="small">
+                    <i class="far fa-calendar-alt"></i>
+                    <%= new Date(act.fecha).toLocaleDateString() %> —
+                    <span class="badge badge-<%= act.estado %>"><%= act.estado %></span> —
+                    <strong><%= act.tipo %></strong>
+                  </div>
                   <ul>
                     <% act.componentesUsados.forEach(c => { %>
                       <li><%= c.componente?.nombre || "Componente eliminado" %> — <%= c.cantidad %> u.</li>
@@ -56,7 +59,7 @@
               <p class="small">Sin actividades registradas</p>
             <% } %>
           </div>
-        </section>
+        </div>
       <% }) %>
     </div>
 
@@ -71,8 +74,5 @@
   <!-- Scripts -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script>
-    // ... (todo tu JS igual, ya está bien estructurado)
-  </script>
 </body>
 </html>

@@ -307,4 +307,81 @@ button[type="submit"]:hover {
   input[type="number"] {
     width: 100%;
   }
+}.usuarios-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: space-between;
+  padding: 1rem;
 }
+
+.usuario-box {
+  flex: 1 1 calc(33.33% - 1rem);
+  background: white;
+  padding: 1.2rem;
+  border-radius: 16px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+  min-width: 280px;
+  transition: transform 0.2s ease;
+}
+
+.usuario-box:hover {
+  transform: translateY(-5px);
+}
+
+.usuario-box h2 {
+  font-size: 1.2rem;
+  margin-bottom: 0.8rem;
+  color: #1f2f46;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.usuario-box h3 {
+  font-size: 1rem;
+  margin: 0.6rem 0;
+  color: #444;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.usuario-box li {
+  font-size: 0.95rem;
+  color: #333;
+  line-height: 1.4;
+}
+
+.badge {
+  padding: 0.2rem 0.5rem;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  text-transform: capitalize;
+}
+
+.badge-realizado {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.badge-pendiente {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.badge-cancelado {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+@media (max-width: 768px) {
+  .usuarios-grid {
+    flex-direction: column;
+  }
+
+  .usuario-box {
+    width: 100%;
+  }
+}
+
