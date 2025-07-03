@@ -1,0 +1,173 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    font-family: 'Poppins', 'Inter', 'Segoe UI', sans-serif;
+    background: #f9fafb;
+    color: #212529;
+  }
+  
+  /* GRID PRINCIPAL */
+  .grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 1.5rem;
+    justify-content: center;
+  }
+  
+  .panel {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    width: 100%;
+    max-width: 1600px; /* máximo ancho para que no se estire demasiado */
+    justify-content: space-between;
+  }
+  
+  .panel section {
+    flex: 1 1 calc(25% - 1rem);
+    min-width: 280px;
+    background: white;
+    padding: 1rem;
+    border-radius: 16px;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    min-height: 280px;
+    transition: transform 0.2s ease;
+  }
+  
+  .panel section:hover {
+    transform: translateY(-5px);
+  }
+  
+  /* TÍTULOS */
+  h2 {
+    font-size: 1.3rem;
+    text-align: center;
+    background-color: #6c757d; /* Color de fondo gris elegante */
+    color: white; /* Letra blanca */
+    border-radius: 8px;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  
+  /* COLORES PERSONALIZADOS */
+  .nueva-actividad {
+    background: #e0f7fa; /* celeste muy suave */
+  }
+  
+  .tu-bodega {
+    background: #e8f5e9; /* verde muy claro */
+  }
+  
+  .resumen-actividades {
+    background: #fffde7; /* amarillo pastel */
+  }
+  
+  .bodega-central {
+    background: #f3e5f5; /* violeta pastel */
+  }
+  
+  /* TABLAS */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+  }
+  
+  thead {
+    background-color: #4a90e2;
+    color: white;
+  }
+  
+  th, td {
+    padding: 0.6rem;
+    border-bottom: 1px solid #dee2e6;
+    text-align: left;
+  }
+  
+  /* FORMULARIOS */
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+  
+  input, select, textarea {
+    padding: 0.6rem;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+  }
+  
+  /* BOTONES */
+  button {
+    padding: 0.6rem;
+    background-color: #5dade2; /* celeste pastel bonito */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s;
+    font-size: 0.95rem;
+  }
+  
+  button:hover {
+    background-color: #3498db; /* tono un poco más fuerte al pasar el mouse */
+  }
+  
+  /* RESPONSIVE */
+  @media (max-width: 1000px) {
+    .panel section {
+      flex: 1 1 calc(50% - 1rem);
+    }
+  }
+  
+  @media (max-width: 600px) {
+    .panel {
+      flex-direction: column;
+    }
+  
+    .panel section {
+      flex: 1 1 100%;
+    }
+  }
+  .resumen-filtros {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .resumen-filtros button {
+    padding: 0.5rem 1rem;
+    background-color: #f1f3f5;
+    color: #495057;
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: background-color 0.2s, color 0.2s;
+  }
+  
+  .resumen-filtros button:hover {
+    background-color: #e2e6ea;
+    color: #212529;
+  }
+  
+  /* Botón activo */
+  .resumen-filtros button.active {
+    background-color: #dee2e6;
+    color: #212529;
+    border-color: #adb5bd;
+    font-weight: 600;
+  }
+  
