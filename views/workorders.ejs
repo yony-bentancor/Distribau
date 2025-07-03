@@ -2,78 +2,188 @@
 <html>
 <head>
   <title>Órdenes de trabajo</title>
+  <link rel="stylesheet" href="/css/user.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    body {
-      font-family: sans-serif;
-      padding: 1rem;
-      background: #f5f6fa;
+    .small {
+      font-size: 0.8rem;
+      color: #555;
     }
-    .usuario {
-      background: white;
-      padding: 1rem;
-      margin-bottom: 1.5rem;
-      border-radius: 10px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    }
-    h2 {
-      margin-bottom: 0.5rem;
-    }
-    .bodega, .actividades {
-      margin-top: 1rem;
-    }
-    ul {
-      list-style: none;
-      padding-left: 0;
-    }
-    li {
-      margin-bottom: 0.3rem;
-    }
-    .actividad {
-      border-top: 1px solid #ddd;
-      padding-top: 0.5rem;
+    .actividad-item {
+      background: #f1f3f5;
+      padding: 0.5rem;
+      border-radius: 8px;
       margin-top: 0.5rem;
+    }
+    .actividad-item ul {
+      margin-top: 0.3rem;
     }
   </style>
 </head>
 <body>
-  <h1>Órdenes de trabajo y bodegas</h1>
 
-  <% resultados.forEach(({ usuario, bodega, actividades }) => { %>
-    <div class="usuario">
-      <h2><%= usuario.username %></h2>
+  <main class="grid">
+    <!-- Filtros por técnico -->
+    <div class="resumen-filtros" style="flex-wrap: wrap;">
+      <button class="active" onclick="filtrarUsuarios('todos')">Todos</button>
+      <% resultados.forEach(({ usuario }) => { %>
+        <button onclick="filtrarUsuarios('<%= usuario._id %>')"><%= usuario.username %></button>
+      <% }) %>
+    </div>
 
-      <div class="bodega">
-        <strong>Bodega:</strong>
-        <% if (bodega.length > 0) { %>
-          <ul>
-            <% bodega.forEach(item => { %>
-              <li><%= item.componente?.nombre || "Componente eliminado" %> - Cantidad: <%= item.cantidad %></li>
-            <% }) %>
-          </ul>
-        <% } else { %>
-          <p>Sin componentes</p>
-        <% } %>
-      </div>
+    <!-- Filtro por fechas -->
+    <div class="resumen-filtros" style="flex-wrap: wrap;">
+      <form id="filtro-fechas" onsubmit="return false" style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+        <input type="date" id="desde" />
+        <input type="date" id="hasta" />
+        <button onclick="filtrarPorFecha()">Filtrar fechas</button>
+        <button onclick="resetearFechas()">Limpiar</button>
+      </form>
+    </div>
 
-      <div class="actividades">
-        <strong>Actividades:</strong>
-        <% if (actividades.length > 0) { %>
-          <% actividades.forEach(act => { %>
-            <div class="actividad">
-              <p><strong>Fecha:</strong> <%= new Date(act.fecha).toLocaleDateString() %></p>
-              <p><strong>Tipo:</strong> <%= act.tipo %> | <strong>Estado:</strong> <%= act.estado %></p>
+    <!-- Panel principal -->
+    <div class="panel">
+      <% resultados.forEach(({ usuario, bodega, actividades }, index) => { %>
+        <section class="<%= index % 4 === 0 ? 'nueva-actividad' : index % 4 === 1 ? 'resumen-actividades' : index % 4 === 2 ? 'bodega-central' : 'tu-bodega' %>" data-user="<%= usuario._id %>">
+          <h2><%= usuario.username %></h2>
+
+          <div class="bodega">
+            <strong>Bodega:</strong>
+            <% if (bodega.length > 0) { %>
               <ul>
-                <% act.componentesUsados.forEach(c => { %>
-                  <li><%= c.componente?.nombre || "Componente eliminado" %> - <%= c.cantidad %> unidad/es</li>
+                <% bodega.forEach(item => { %>
+                  <li><%= item.componente?.nombre || "Componente eliminado" %> - <%= item.cantidad %> u.</li>
                 <% }) %>
               </ul>
-            </div>
-          <% }) %>
-        <% } else { %>
-          <p>Sin actividades registradas</p>
-        <% } %>
-      </div>
+            <% } else { %>
+              <p class="small">Sin componentes</p>
+            <% } %>
+          </div>
+
+          <div class="actividades" style="margin-top: 1rem;">
+            <strong>Actividades:</strong>
+            <% if (actividades.length > 0) { %>
+              <% actividades.forEach(act => { %>
+                <div class="actividad-item">
+                  <div class="small"><strong><%= act.tipo %></strong> — <%= new Date(act.fecha).toLocaleDateString() %> — <%= act.estado %></div>
+                  <ul>
+                    <% act.componentesUsados.forEach(c => { %>
+                      <li><%= c.componente?.nombre || "Componente eliminado" %> — <%= c.cantidad %> u.</li>
+                    <% }) %>
+                  </ul>
+                </div>
+              <% }) %>
+            <% } else { %>
+              <p class="small">Sin actividades registradas</p>
+            <% } %>
+          </div>
+        </section>
+      <% }) %>
     </div>
-  <% }) %>
+
+    <!-- Botones exportar/imprimir -->
+    <div class="resumen-filtros" style="justify-content: center; margin-top: 2rem;">
+      <button onclick="exportarExcel()">Exportar Excel</button>
+      <button onclick="exportarPDF()">Exportar PDF</button>
+      <button onclick="window.print()">Imprimir</button>
+    </div>
+  </main>
+
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <script>
+    function filtrarUsuarios(id) {
+      document.querySelectorAll('.resumen-filtros button').forEach(btn => btn.classList.remove('active'));
+      const boton = Array.from(document.querySelectorAll('.resumen-filtros button')).find(b => b.innerText === (id === 'todos' ? 'Todos' : document.querySelector('[data-user="'+id+'"] h2').innerText));
+      if (boton) boton.classList.add('active');
+
+      document.querySelectorAll('.panel section').forEach(section => {
+        if (id === 'todos') {
+          section.style.display = "flex";
+        } else {
+          section.style.display = section.getAttribute("data-user") === id ? "flex" : "none";
+        }
+      });
+    }
+
+    function filtrarPorFecha() {
+      const desde = new Date(document.getElementById("desde").value);
+      const hasta = new Date(document.getElementById("hasta").value);
+      if (isNaN(desde) || isNaN(hasta)) return;
+
+      document.querySelectorAll(".actividad-item").forEach(act => {
+        const fechaTexto = act.querySelector(".small").innerText;
+        const match = fechaTexto.match(/\d{1,2}\/\d{1,2}\/\d{2,4}/);
+        if (!match) return;
+
+        const fecha = new Date(match[0]);
+        act.style.display = (fecha >= desde && fecha <= hasta) ? "block" : "none";
+      });
+    }
+
+    function resetearFechas() {
+      document.getElementById("desde").value = "";
+      document.getElementById("hasta").value = "";
+      document.querySelectorAll(".actividad-item").forEach(act => act.style.display = "block");
+    }
+
+    function exportarExcel() {
+      let data = [["Técnico", "Fecha", "Tipo", "Estado", "Componente", "Cantidad"]];
+      document.querySelectorAll("section").forEach(sec => {
+        const tecnico = sec.querySelector("h2").innerText;
+        sec.querySelectorAll(".actividad-item").forEach(act => {
+          const fecha = act.querySelector(".small").innerText.match(/\d{1,2}\/\d{1,2}\/\d{2,4}/)[0];
+          const tipoEstado = act.querySelector(".small").innerText;
+          const tipo = tipoEstado.split("—")[0].trim();
+          const estado = tipoEstado.split("—")[2]?.trim() || "";
+          act.querySelectorAll("ul li").forEach(comp => {
+            const [componente, cantidad] = comp.innerText.split("—");
+            data.push([tecnico, fecha, tipo, estado, componente.trim(), cantidad.trim()]);
+          });
+        });
+      });
+
+      const wb = XLSX.utils.book_new();
+      const ws = XLSX.utils.aoa_to_sheet(data);
+      XLSX.utils.book_append_sheet(wb, ws, "OrdenesTrabajo");
+      XLSX.writeFile(wb, "ordenes_trabajo.xlsx");
+    }
+
+    async function exportarPDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      let y = 10;
+      doc.setFontSize(12);
+
+      document.querySelectorAll("section").forEach(sec => {
+        const tecnico = sec.querySelector("h2").innerText;
+        doc.setFont(undefined, 'bold');
+        doc.text(`Técnico: ${tecnico}`, 10, y);
+        y += 6;
+
+        sec.querySelectorAll(".actividad-item").forEach(act => {
+          const fecha = act.querySelector(".small").innerText;
+          doc.setFont(undefined, 'normal');
+          doc.text(`  ${fecha}`, 10, y);
+          y += 5;
+          act.querySelectorAll("ul li").forEach(comp => {
+            doc.text(`    - ${comp.innerText}`, 10, y);
+            y += 4;
+            if (y > 280) {
+              doc.addPage();
+              y = 10;
+            }
+          });
+          y += 3;
+        });
+        y += 5;
+      });
+
+      doc.save("ordenes_trabajo.pdf");
+    }
+  </script>
+
 </body>
 </html>
