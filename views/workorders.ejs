@@ -19,49 +19,52 @@
 
   <main class="grid">
     <!-- Contenedor de tarjetas -->
-    <div class="usuarios-grid">
-      <% resultados.forEach(({ usuario, bodega, actividades }) => { %>
-        <div class="usuario-box">
-          <h2><i class="fas fa-user-circle"></i> <%= usuario.username %></h2>
+   <div class="usuarios-grid">
+  <% resultados.forEach(({ usuario, bodega, actividades }) => { %>
+    <% if (usuario.username !== 'admin') { %>
+      <div class="usuario-box">
+        <h2><i class="fas fa-user-circle"></i> <%= usuario.username %></h2>
 
-          <div class="bodega">
-            <h3><i class="fas fa-box-open"></i> Bodega:</h3>
-            <% if (bodega.length > 0) { %>
-              <ul>
-                <% bodega.forEach(item => { %>
-                  <li><%= item.componente?.nombre || "Componente eliminado" %> — <strong><%= item.cantidad %></strong> u.</li>
-                <% }) %>
-              </ul>
-            <% } else { %>
-              <p class="small">Sin componentes en stock</p>
-            <% } %>
-          </div>
-
-          <div class="actividades" style="margin-top: 1rem;">
-            <h3><i class="fas fa-tasks"></i> Actividades recientes:</h3>
-            <% if (actividades.length > 0) { %>
-              <% actividades.slice(0, 3).forEach(act => { %>
-                <div class="actividad-item">
-                  <div class="small">
-                    <i class="far fa-calendar-alt"></i>
-                    <%= new Date(act.fecha).toLocaleDateString() %> —
-                    <span class="badge badge-<%= act.estado %>"><%= act.estado %></span> —
-                    <strong><%= act.tipo %></strong>
-                  </div>
-                  <ul>
-                    <% act.componentesUsados.forEach(c => { %>
-                      <li><%= c.componente?.nombre || "Componente eliminado" %> — <%= c.cantidad %> u.</li>
-                    <% }) %>
-                  </ul>
-                </div>
+        <div class="bodega">
+          <h3><i class="fas fa-box-open"></i> Bodega:</h3>
+          <% if (bodega.length > 0) { %>
+            <ul>
+              <% bodega.forEach(item => { %>
+                <li><%= item.componente?.nombre || "Componente eliminado" %> — <strong><%= item.cantidad %></strong> u.</li>
               <% }) %>
-            <% } else { %>
-              <p class="small">Sin actividades registradas</p>
-            <% } %>
-          </div>
+            </ul>
+          <% } else { %>
+            <p class="small">Sin componentes en stock</p>
+          <% } %>
         </div>
-      <% }) %>
-    </div>
+
+        <div class="actividades" style="margin-top: 1rem;">
+          <h3><i class="fas fa-tasks"></i> Actividades recientes:</h3>
+          <% if (actividades.length > 0) { %>
+            <% actividades.slice(0, 3).forEach(act => { %>
+              <div class="actividad-item">
+                <div class="small">
+                  <i class="far fa-calendar-alt"></i>
+                  <%= new Date(act.fecha).toLocaleDateString() %> —
+                  <span class="badge badge-<%= act.estado %>"><%= act.estado %></span> —
+                  <strong><%= act.tipo %></strong>
+                </div>
+                <ul>
+                  <% act.componentesUsados.forEach(c => { %>
+                    <li><%= c.componente?.nombre || "Componente eliminado" %> — <%= c.cantidad %> u.</li>
+                  <% }) %>
+                </ul>
+              </div>
+            <% }) %>
+          <% } else { %>
+            <p class="small">Sin actividades registradas</p>
+          <% } %>
+        </div>
+      </div>
+    <% } %>
+  <% }) %>
+</div>
+
 
     <!-- Exportar -->
     <div class="resumen-filtros" style="justify-content: center; margin-top: 2rem;">
