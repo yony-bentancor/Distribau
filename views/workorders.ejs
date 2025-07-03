@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Órdenes de trabajo</title>
-  <link rel="stylesheet" href="/css/admin.css">
+  <link rel="stylesheet" href="/css/workorders.css">
 </head>
 
 <body>
@@ -18,22 +18,7 @@
 
   <main class="grid">
     <!-- Filtro por técnico -->
-    <div class="resumen-filtros">
-      <button class="active" onclick="filtrarUsuarios('todos')">Todos</button>
-      <% resultados.forEach(({ usuario }) => { %>
-        <button onclick="filtrarUsuarios('<%= usuario._id %>')"><%= usuario.username %></button>
-      <% }) %>
-    </div>
-
-    <!-- Filtro por fechas -->
-    <div class="resumen-filtros">
-      <form id="filtro-fechas" onsubmit="return false">
-        <input type="date" id="desde" />
-        <input type="date" id="hasta" />
-        <button onclick="filtrarPorFecha()">Filtrar fechas</button>
-        <button onclick="resetearFechas()">Limpiar</button>
-      </form>
-    </div>
+   
 
     <!-- Panel principal -->
     <div class="panel">
