@@ -21,7 +21,7 @@
     <!-- Contenedor de tarjetas -->
    <div class="usuarios-grid">
   <% resultados.forEach(({ usuario, bodega, actividades }) => { %>
-    <% if (usuario.username !== 'admin') { %>
+    <% if (usuario.username !== 'ADMINISTRADOR') { %>
       <div class="usuario-box">
         <h2><i class="fas fa-user-circle"></i> <%= usuario.username %></h2>
 
