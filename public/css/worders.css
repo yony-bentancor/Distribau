@@ -384,4 +384,19 @@ button[type="submit"]:hover {
     width: 100%;
   }
 }
+.usuario-box:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.usuario-box:hover {
+  transform: translateY(-4px);
+}
+
+.badge-light {
+  background-color: #e2e3e5;
+  color: #212529;
+  padding: 0.2rem 0.5rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+}
 
