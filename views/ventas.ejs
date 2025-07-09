@@ -126,15 +126,17 @@
             <tr style="background-color: <%= getColorEstado(v.instalacion) %>">
               <td><%= v.numeroContrato %></td>
               <td><%= v.nombreCliente %></td>
+               <td><%= v.telefono %></td>
               <td><%= v.vendedor %></td>
               <td><%= v.departamento || '-' %></td>
               <td><%= v.localidad || '-' %></td>
               <td><%= v.tecnico || '-' %></td>
               <td><strong><%= v.instalacion %></strong></td>
+              <td><%= v.comentario %></td>
+              <td><%= v.diaHora ? new Date(v.diaHora).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '-' %></td>
               <td><%= v.metodoPago || '-' %></td>
               <td><%= v.canalVenta || '-' %></td>
               <td><%= v.fechaVenta ? v.fechaVenta.toLocaleDateString() : '-' %></td>
-              <td><%= v.diaHora ? new Date(v.diaHora).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '-' %></td>
               <td>
                 <button class="btn-edit" onclick='editarVenta(<%- JSON.stringify(v) %>)' title="Editar">✏️</button>
                 <form action="/ventas/eliminar/<%= v._id %>" method="POST" style="display:inline;">

@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const ventaSchema = new mongoose.Schema({
   numeroContrato: { type: String, required: true },
   nombreCliente: { type: String, required: true },
+  telefono: { type: String }, // 📞 Nuevo campo
   vendedor: { type: String, required: true },
   fechaVenta: { type: Date },
   fechaCarga: { type: Date, default: Date.now },
