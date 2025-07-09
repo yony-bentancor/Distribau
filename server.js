@@ -17,7 +17,7 @@ const actividadesRoutes = require("./routes/actividades");
 const actividadesRouter = require("./routes/actividades");
 const registerRouter = require("./routes/register");
 const workordersRoute = require("./routes/workorders");
-const ventas = require("./ventas"); // o './routes/ventasRouter' según dónde lo pongas
+const ventas = require("./routes/ventas"); // o './routes/ventasRouter' según dónde lo pongas
 
 dotenv.config();
 
