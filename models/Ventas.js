@@ -10,7 +10,7 @@ const ventaSchema = new mongoose.Schema({
   departamento: String,
   localidad: String,
   instalacion: String,
-  diaHora: String,
+  diaHora: { type: Date },
   tecnico: String,
   usuarioCarga: String,
   promo: String,

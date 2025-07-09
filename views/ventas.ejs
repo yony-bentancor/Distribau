@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <title>Gestión de Ventas</title>
   <link rel="stylesheet" href="/css/ventas.css">
+  
 </head>
 <body>
   <div class="ventas-dashboard">
@@ -14,25 +15,81 @@
     <!-- FORMULARIO -->
     <div id="formulario-venta" style="display:none; margin-top: 1rem;">
       <h3 id="form-titulo">Nueva Venta</h3>
-      <form id="form-venta" class="ventas-form">
-        <input type="hidden" name="_id" id="_id">
-        <input name="numeroContrato" id="numeroContrato" placeholder="Contrato" required>
-        <input name="nombreCliente" id="nombreCliente" placeholder="Cliente" required>
-        <input name="vendedor" id="vendedor" placeholder="Vendedor" required>
-        <input type="date" name="fechaVenta" id="fechaVenta">
-        <input name="comentario" id="comentario" placeholder="Comentario">
-        <input name="departamento" id="departamento" placeholder="Departamento">
-        <input name="localidad" id="localidad" placeholder="Localidad">
-        <input name="instalacion" id="instalacion" placeholder="Instalación">
-        <input name="diaHora" id="diaHora" placeholder="Día y Hora">
-        <input name="tecnico" id="tecnico" placeholder="Técnico">
-        <input name="usuarioCarga" id="usuarioCarga" placeholder="Usuario que la cargó">
-        <input name="promo" id="promo" placeholder="Promo">
-        <input name="metodoPago" id="metodoPago" placeholder="Método de pago">
-        <input name="canalVenta" id="canalVenta" placeholder="Canal de venta">
-        <button type="submit">💾 Guardar</button>
-        <button type="button" onclick="ocultarFormulario()">Cancelar</button>
-      </form>
+    <form action="/ventas" method="POST">
+  <label>Contrato: <input type="text" name="numeroContrato" required></label>
+  <label>Cliente: <input type="text" name="nombreCliente" required></label>
+
+  <label>Vendedor:
+    <select name="vendedor" required>
+      <% ['Ana', 'Luis', 'Carlos', 'María', 'Diego', 'Elena', 'Jorge', 'Paula', 'Nico', 'Sofía'].forEach(n => { %>
+        <option value="<%= n %>"><%= n %></option>
+      <% }) %>
+    </select>
+  </label>
+
+  <label>Fecha de Venta: <input type="date" name="fechaVenta"></label>
+
+  <label>Comentario: <textarea name="comentario"></textarea></label>
+
+  <label>Departamento:
+    <select name="departamento">
+      <% ['Artigas','Canelones','Cerro Largo','Colonia','Durazno','Flores','Florida','Lavalleja','Maldonado','Montevideo','Paysandú','Río Negro','Rivera','Rocha','Salto','San José','Soriano','Tacuarembó','Treinta y Tres'].forEach(dep => { %>
+        <option value="<%= dep %>"><%= dep %></option>
+      <% }) %>
+    </select>
+  </label>
+
+  <label>Localidad: <input type="text" name="localidad"></label>
+
+  <label>Estado Instalación:
+    <select name="instalacion">
+      <% ['SIN LLAMADO','PENDIENTE CLIENTE','NO RESPONDE','AGENDADO','REALIZADO','REALIZADO PENDIENTE'].forEach(estado => { %>
+        <option value="<%= estado %>"><%= estado %></option>
+      <% }) %>
+    </select>
+  </label>
+
+  <label>Día y Hora:
+    <input type="datetime-local" name="diaHora">
+  </label>
+
+  <label>Técnico:
+    <select name="tecnico">
+      <% ['Maxi','Gastón','Mario','Marcelo','Gustavo','Camilo','Ismael'].forEach(t => { %>
+        <option value="<%= t %>"><%= t %></option>
+      <% }) %>
+    </select>
+  </label>
+
+  <label>Usuario que carga:
+    <select name="usuarioCarga">
+      <% ['admin','soporte','ventas1'].forEach(u => { %>
+        <option value="<%= u %>"><%= u %></option>
+      <% }) %>
+    </select>
+  </label>
+
+  <label>Promo: <input type="text" name="promo"></label>
+
+  <label>Método de pago:
+    <select name="metodoPago">
+      <% ['Efectivo', 'Transferencia', 'Débito', 'Crédito', 'Financiado'].forEach(m => { %>
+        <option value="<%= m %>"><%= m %></option>
+      <% }) %>
+    </select>
+  </label>
+
+  <label>Canal de venta:
+    <select name="canalVenta">
+      <% ['Web', 'Call Center', 'Redes Sociales', 'Recomendación'].forEach(c => { %>
+        <option value="<%= c %>"><%= c %></option>
+      <% }) %>
+    </select>
+  </label>
+
+  <button type="submit">Guardar Venta</button>
+</form>
+
     </div>
 
     <!-- LISTADO -->
@@ -42,22 +99,44 @@
           <th>Contrato</th><th>Cliente</th><th>Vendedor</th><th>Fecha</th><th>Acciones</th>
         </tr>
       </thead>
-      <tbody id="tabla-ventas">
-        <% ventas.forEach(v => { %>
-          <tr>
-            <td><%= v.numeroContrato %></td>
-            <td><%= v.nombreCliente %></td>
-            <td><%= v.vendedor %></td>
-            <td><%= v.fechaVenta?.toLocaleDateString() %></td>
-            <td>
-              <button onclick='editarVenta(<%- JSON.stringify(v) %>)'>✏️</button>
-              <form action="/ventas/eliminar/<%= v._id %>" method="POST" style="display:inline;">
-                <button type="submit" onclick="return confirm("¿Eliminar venta?")">🗑️</button>
-              </form>
-            </td>
-          </tr>
-        <% }) %>
-      </tbody>
+        <table class="ventas-table">
+      <thead>
+        <tr>
+          <th>Contrato</th><th>Cliente</th><th>Vendedor</th><th>Fecha</th><th>Acciones</th>
+        </tr>
+      </thead><%
+  function getColorEstado(estado) {
+    switch (estado) {
+      case 'REALIZADO': return '#d4edda';
+      case 'AGENDADO': return '#fff3cd';
+      case 'NO RESPONDE': return '#f8d7da';
+      case 'PENDIENTE CLIENTE': return '#d1ecf1';
+      case 'SIN LLAMADO': return '#e2e3e5';
+      case 'REALIZADO PENDIENTE': return '#cce5ff';
+      default: return 'white';
+    }
+  }
+%>
+
+    <tbody id="tabla-ventas">
+
+      
+  <% ventas.forEach(v => { %>
+    <tr style="background-color: <%= getColorEstado(v.instalacion) %>;">
+      <td><%= v.numeroContrato %></td>
+      <td><%= v.nombreCliente %></td>
+      <td><%= v.vendedor %></td>
+      <td><%= v.fechaVenta?.toLocaleDateString() %></td>
+      <td>
+        <button onclick='editarVenta(<%- JSON.stringify(v) %>)'>✏️</button>
+        <form action="/ventas/eliminar/<%= v._id %>" method="POST" style="display:inline;">
+          <button type="submit" onclick="return confirm('¿Eliminar venta?')">🗑️</button>
+        </form>
+      </td>
+    </tr>
+  <% }) %>
+</tbody>
+
     </table>
   </div>
 
