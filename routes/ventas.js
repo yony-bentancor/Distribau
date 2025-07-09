@@ -4,7 +4,7 @@ const Venta = require("../models/Ventas");
 
 // Render de la vista principal
 router.get("/", async (req, res) => {
-  const ventas = await Venta.find().sort({ fechaCarga: -1 });
+  const ventas = await Venta.find().sort({ instalacion: -1 });
   res.render("ventas", { ventas });
 });
 
