@@ -17,6 +17,7 @@ const actividadesRoutes = require("./routes/actividades");
 const actividadesRouter = require("./routes/actividades");
 const registerRouter = require("./routes/register");
 const workordersRoute = require("./routes/workorders");
+const ventas = require("./ventas"); // o './routes/ventasRouter' según dónde lo pongas
 
 dotenv.config();
 
@@ -60,6 +61,7 @@ app.use("/transferencias", transferenciasRoutes);
 app.use("/", actividadesRoutes);
 app.use("/workorders", workordersRoute);
 app.use("/actividades", actividadesRouter);
+app.use("/ventas", ventas);
 app.get("/prueba", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "prueba.html"));
 });

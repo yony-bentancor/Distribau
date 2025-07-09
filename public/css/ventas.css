@@ -1,0 +1,60 @@
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #f5f6fa;
+  padding: 2rem;
+  color: #333;
+}
+
+.ventas-dashboard {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.ventas-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.ventas-form input {
+  flex: 1 1 45%;
+  padding: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.ventas-form button {
+  padding: 0.5rem 1rem;
+  font-size: 0.95rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.ventas-form button:hover {
+  background-color: #0056b3;
+}
+
+.ventas-table {
+  width: 100%;
+  margin-top: 2rem;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.ventas-table th,
+.ventas-table td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+}
+
+.ventas-table th {
+  background-color: #f0f0f0;
+}
+
+.ventas-table tr:hover {
+  background-color: #f9f9f9;
+}
