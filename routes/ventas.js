@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const Venta = require("../models/Venta");
+const Venta = require("../models/Ventas");
 
 // Render de la vista principal
 router.get("/", async (req, res) => {
