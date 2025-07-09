@@ -18,4 +18,4 @@ const ventaSchema = new mongoose.Schema({
   canalVenta: String,
 });
 
-module.exports = mongoose.model("Venta", ventaSchema);
+module.exports = mongoose.model("Ventas", ventaSchema);
