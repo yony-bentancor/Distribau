@@ -135,7 +135,8 @@
               <td><%= v.nombreCliente %></td>
                <td><%= v.telefono %></td>
               <td><%= v.vendedor %></td>
-              <td><%= v.fechaCarga %></td>
+              <td><%= new Date(v.fechaCarga).toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit' }) %></td>
+
               <td><%= v.departamento || '-' %></td>
               <td><%= v.localidad || '-' %></td>
               <td><%= v.tecnico || '-' %></td>
