@@ -6,14 +6,26 @@ const Venta = require("../models/Ventas");
 router.get("/", async (req, res) => {
   const { estadoSeleccionado } = req.query;
 
-  const query = estadoSeleccionado ? { instalacion: estadoSeleccionado } : {};
-  const ventas = await Venta.find(query).sort({ instalacion: -1 });
+  // Traer todas las ventas
+  let ventas = await Venta.find().sort({ fechaCarga: -1 }); // o por fecha, como prefieras
+
+  // Si hay un estado seleccionado, ordenamos manualmente
+  if (estadoSeleccionado) {
+    ventas = ventas.sort((a, b) => {
+      const esASeleccionado = a.instalacion === estadoSeleccionado;
+      const esBSeleccionado = b.instalacion === estadoSeleccionado;
+
+      if (esASeleccionado && !esBSeleccionado) return -1;
+      if (!esASeleccionado && esBSeleccionado) return 1;
+      return 0;
+    });
+  }
 
   const estados = [
     "SIN LLAMADO",
     "PENDIENTE CLIENTE",
     "NO RESPONDE",
-    "AGENDADSA",
+    "AGENDADO",
     "REALIZADO",
     "REALIZADO PENDIENTE",
   ];
