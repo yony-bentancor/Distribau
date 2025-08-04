@@ -7,8 +7,9 @@
   <link rel="stylesheet" href="/css/ventas.css">
 </head>
 <body>
-
-  <div class="panel-totales">
+  <div class="ventas-dashboard">
+    <h2>Gestión de Ventas</h2>
+    <div class="panel-totales">
   <% Object.entries(totalesPorEstado).forEach(([estado, cantidad]) => { %>
     <div class="card-estado" style="background-color: <%= getColorEstado(estado) %>;">
       <strong><%= estado %>:</strong> <%= cantidad %>
@@ -16,8 +17,6 @@
   <% }) %>
 </div>
 
-  <div class="ventas-dashboard">
-    <h2>Gestión de Ventas</h2>
     <button onclick="mostrarFormulario()">➕ Nueva Venta</button>
 
     <!-- FORMULARIO -->

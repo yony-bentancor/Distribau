@@ -1,36 +1,22 @@
 body {
   font-family: 'Segoe UI', sans-serif;
   margin: 0;
-  padding: 1rem;
+  padding: 0.5rem;
   background-color: #f9fafb;
   color: #333;
 }
 
-.panel-totales {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  margin: 1rem 0;
-}
-
-.card-estado {
-  padding: 0.75rem 1.2rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  font-size: 0.95rem;
-  min-width: 150px;
-}
-
-
+/* CONTENEDOR PRINCIPAL */
 .ventas-dashboard {
-  max-width: 1400px;
+  max-width: 1200px;
   margin: auto;
 }
 
+/* BOTONES */
 button {
   cursor: pointer;
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.85rem;
   border: none;
   border-radius: 5px;
 }
@@ -39,7 +25,6 @@ button {
   background-color: #e7f5ff;
   color: #333;
 }
-
 .btn-edit:hover {
   background-color: #bee2fa;
 }
@@ -48,43 +33,63 @@ button {
   background-color: #ffebeb;
   color: #333;
 }
-
 .btn-delete:hover {
   background-color: #f4bcbc;
 }
 
+/* FORMULARIO */
 form label {
   display: block;
-  margin: 0.5rem 0;
+  margin: 0.4rem 0;
+  font-size: 0.85rem;
 }
 
 form input,
 form select,
 form textarea {
   width: 100%;
-  padding: 0.5rem;
-  margin-top: 0.25rem;
+  padding: 0.35rem;
+  margin-top: 0.2rem;
   border: 1px solid #ccc;
   border-radius: 4px;
-  font-size: 0,9rem;
+  font-size: 0.85rem;
 }
 
 form textarea {
   resize: vertical;
 }
 
+/* PANEL DE TOTALES */
+.panel-totales {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0.5rem 0;
+  justify-content: center;
+}
+
+.card-estado {
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  font-size: 0.8rem;
+  min-width: 120px;
+  text-align: center;
+}
+
+/* TABLA */
 .ventas-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 1rem;
+  margin-top: 0.5rem;
 }
 
 .ventas-table th,
 .ventas-table td {
-  padding: 0.6rem 0.8rem;
+  padding: 0.4rem 0.5rem;
   border: 1px solid #ddd;
   text-align: center;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
 }
 
 .ventas-table th {
@@ -98,23 +103,55 @@ form textarea {
   background-color: #eef;
 }
 
+/* RESPONSIVE TABLE WRAPPER */
 .tabla-responsive {
   overflow-x: auto;
+  max-height: 50vh;
+  overflow-y: auto;
+  margin-top: 0.5rem;
 }
 
+/* RESPONSIVE ADAPTACIÓN MÓVIL */
 @media (max-width: 768px) {
+  .ventas-dashboard {
+    padding: 0 0.5rem;
+  }
+
   form label {
-    font-size: 0.95rem;
+    font-size: 0.8rem;
+  }
+
+  form input,
+  form select,
+  form textarea {
+    font-size: 0.8rem;
+    padding: 0.3rem;
   }
 
   .ventas-table th,
   .ventas-table td {
-    font-size: 0.8rem;
-    padding: 0.4rem;
+    font-size: 0.75rem;
+    padding: 0.3rem;
   }
 
   button {
-    font-size: 0.9rem;
-    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+    padding: 0.3rem 0.6rem;
   }
-} 
+
+  .card-estado {
+    font-size: 0.75rem;
+    min-width: 100px;
+    padding: 0.4rem 0.6rem;
+  }
+
+  .panel-totales {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .tabla-responsive {
+    max-height: none;
+    overflow-y: auto;
+  }
+}
