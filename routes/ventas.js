@@ -5,7 +5,24 @@ const Venta = require("../models/Ventas");
 // Render de la vista principal
 router.get("/", async (req, res) => {
   const ventas = await Venta.find().sort({ instalacion: -1 });
-  res.render("ventas", { ventas });
+
+  const estados = [
+    "SIN LLAMADO",
+    "PENDIENTE CLIENTE",
+    "NO RESPONDE",
+    "AGENDADO",
+    "REALIZADO",
+    "REALIZADO PENDIENTE",
+  ];
+
+  const totalesPorEstado = {};
+  estados.forEach((estado) => {
+    totalesPorEstado[estado] = ventas.filter(
+      (v) => v.instalacion === estado
+    ).length;
+  });
+
+  res.render("ventas", { ventas, totalesPorEstado });
 });
 
 // Guardar o editar

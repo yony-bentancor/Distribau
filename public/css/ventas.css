@@ -6,6 +6,22 @@ body {
   color: #333;
 }
 
+.panel-totales {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+
+.card-estado {
+  padding: 0.75rem 1.2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  font-size: 0.95rem;
+  min-width: 150px;
+}
+
+
 .ventas-dashboard {
   max-width: 1200px;
   margin: auto;
