@@ -13,7 +13,7 @@ router.get("/", async (req, res) => {
     "SIN LLAMADO",
     "PENDIENTE CLIENTE",
     "NO RESPONDE",
-    "AGENDADO",
+    "AGENDADSA",
     "REALIZADO",
     "REALIZADO PENDIENTE",
   ];
