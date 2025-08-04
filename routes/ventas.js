@@ -4,7 +4,10 @@ const Venta = require("../models/Ventas");
 
 // Render de la vista principal
 router.get("/", async (req, res) => {
-  const ventas = await Venta.find().sort({ instalacion: -1 });
+  const { estadoSeleccionado } = req.query;
+
+  const query = estadoSeleccionado ? { instalacion: estadoSeleccionado } : {};
+  const ventas = await Venta.find(query).sort({ instalacion: -1 });
 
   const estados = [
     "SIN LLAMADO",
@@ -16,13 +19,13 @@ router.get("/", async (req, res) => {
   ];
 
   const totalesPorEstado = {};
-  estados.forEach((estado) => {
-    totalesPorEstado[estado] = ventas.filter(
-      (v) => v.instalacion === estado
-    ).length;
-  });
+  for (const estado of estados) {
+    totalesPorEstado[estado] = await Venta.countDocuments({
+      instalacion: estado,
+    });
+  }
 
-  res.render("ventas", { ventas, totalesPorEstado });
+  res.render("ventas", { ventas, totalesPorEstado, estadoSeleccionado });
 });
 
 // Guardar o editar
