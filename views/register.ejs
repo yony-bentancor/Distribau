@@ -6,26 +6,30 @@
   <title>Registro</title>
   <link rel="stylesheet" href="/login.css">
   <style>
-   .card {
-  max-width: 1200px;   /* antes 900px */
-  margin: 0 auto;
-  background: #fff;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0,0,0,.06);
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
-  gap: 16px;
-}
-
-
-    .full { grid-column:1/-1; }
+    .card {
+      max-width: 1200px;   /* más ancho */
+      margin: 20px auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,.06);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 16px;
+    }
+    .full { grid-column: 1 / -1; }
     label { display:block; font-weight:600; margin-bottom:6px; }
-    input, select { width:100%; padding:10px; border:1px solid #ddd; border-radius:8px; }
-    .btn { padding:10px 14px; border-radius:10px; display:inline-block; }
+    input, select {
+      width:100%; padding:10px;
+      border:1px solid #ddd; border-radius:8px;
+    }
+    .btn {
+      padding:10px 14px;
+      border-radius:10px;
+      display:inline-block;
+    }
     h2 { margin-top:0; }
   </style>
 </head>
