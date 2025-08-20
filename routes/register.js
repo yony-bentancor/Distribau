@@ -83,67 +83,53 @@ router.post("/register", async (req, res) => {
     }
 
     if ((password || "").length < 6) {
-      return res
-        .status(400)
-        .render("register", {
-          departamentosUy,
-          values: req.body,
-          error: "La contraseña debe tener al menos 6 caracteres",
-        });
+      return res.status(400).render("register", {
+        departamentosUy,
+        values: req.body,
+        error: "La contraseña debe tener al menos 6 caracteres",
+      });
     }
     if (!/^[0-9]{6,12}$/.test(String(cedula))) {
-      return res
-        .status(400)
-        .render("register", {
-          departamentosUy,
-          values: req.body,
-          error: "Cédula inválida (solo dígitos, 6 a 12)",
-        });
+      return res.status(400).render("register", {
+        departamentosUy,
+        values: req.body,
+        error: "Cédula inválida (solo dígitos, 6 a 12)",
+      });
     }
     if (!isDigits(celular, 6, 15)) {
-      return res
-        .status(400)
-        .render("register", {
-          departamentosUy,
-          values: req.body,
-          error: "Celular inválido (solo dígitos, 6 a 15)",
-        });
+      return res.status(400).render("register", {
+        departamentosUy,
+        values: req.body,
+        error: "Celular inválido (solo dígitos, 6 a 15)",
+      });
     }
     if (telefono && !isDigits(telefono, 6, 15)) {
-      return res
-        .status(400)
-        .render("register", {
-          departamentosUy,
-          values: req.body,
-          error: "Teléfono inválido (solo dígitos, 6 a 15)",
-        });
+      return res.status(400).render("register", {
+        departamentosUy,
+        values: req.body,
+        error: "Teléfono inválido (solo dígitos, 6 a 15)",
+      });
     }
     if (whatsapp && !isDigits(whatsapp, 6, 15)) {
-      return res
-        .status(400)
-        .render("register", {
-          departamentosUy,
-          values: req.body,
-          error: "WhatsApp inválido (solo dígitos, 6 a 15)",
-        });
+      return res.status(400).render("register", {
+        departamentosUy,
+        values: req.body,
+        error: "WhatsApp inválido (solo dígitos, 6 a 15)",
+      });
     }
     if (!isEmail(email)) {
-      return res
-        .status(400)
-        .render("register", {
-          departamentosUy,
-          values: req.body,
-          error: "Email inválido",
-        });
+      return res.status(400).render("register", {
+        departamentosUy,
+        values: req.body,
+        error: "Email inválido",
+      });
     }
     if (!departamentosUy.includes(departamento)) {
-      return res
-        .status(400)
-        .render("register", {
-          departamentosUy,
-          values: req.body,
-          error: "Departamento inválido",
-        });
+      return res.status(400).render("register", {
+        departamentosUy,
+        values: req.body,
+        error: "Departamento inválido",
+      });
     }
 
     // Chequeos de duplicados (username/email/cedula) antes de crear
@@ -184,7 +170,7 @@ router.post("/register", async (req, res) => {
     });
 
     // éxito → a login
-    res.redirect("/login");
+    res.redirect("/login.html");
   } catch (err) {
     // Manejo de índices únicos desde Mongo
     if (err?.code === 11000) {
@@ -197,13 +183,11 @@ router.post("/register", async (req, res) => {
         .render("register", { departamentosUy, values: req.body, error: msg });
     }
     console.error(err);
-    return res
-      .status(500)
-      .render("register", {
-        departamentosUy,
-        values: req.body,
-        error: "Error al registrar.",
-      });
+    return res.status(500).render("register", {
+      departamentosUy,
+      values: req.body,
+      error: "Error al registrar.",
+    });
   }
 });
 
