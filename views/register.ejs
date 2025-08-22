@@ -1,70 +1,104 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Registro</title>
-  <link rel="stylesheet" href="/login.css">
-  <style>
-  </style>
+  <!-- Asegúrate de servir este CSS desde /public/register.css -->
+  <link rel="stylesheet" href="/register.css" />
 </head>
 <body>
   <div class="container">
-    <form action="/register" method="POST" id="registerForm" novalidate>
+    <form action="/register" method="POST" id="registerForm" novalidate enctype="multipart/form-data">
       <h2>Crear nuevo usuario</h2>
 
-      <!-- Fila SIEMPRE visible para Usuario y Contraseña -->
+      <!-- Usuario + Contraseña + Avatar -->
       <div class="login-row">
-        <div>
-          <label>Usuario*</label>
-          <input type="text" name="username" required autofocus value="<%= (values && values.username) || '' %>">
+        <!-- Avatar + carga -->
+        <div class="avatar-field">
+          <div
+            id="avatarPreview"
+            class="avatar-preview"
+            style="background-image:url('<%= (values && values.fotoUrl) || "/img/avatar-placeholder.png" %>')"
+            aria-label="Vista previa de foto de perfil"
+            role="img"
+          ></div>
+
+          <div class="avatar-ctrls">
+            <label for="foto" class="help">Foto (JPG/PNG/WEBP, máx. 2MB)</label>
+            <div id="fileDrop" class="file-drop" tabindex="0">
+              Arrastrá la imagen aquí o hacé clic para elegir
+            </div>
+            <input id="foto" type="file" name="foto" accept="image/*" hidden />
+            <button type="button" id="btnQuitarFoto" class="btn"
+              style="display:none;background:#fff;color:var(--danger);border-color:var(--danger);box-shadow:none">
+              Quitar
+            </button>
+          </div>
         </div>
+
+        <!-- Usuario -->
+        <div>
+          <label for="username">Usuario*</label>
+          <input id="username" type="text" name="username" required autofocus
+                 value="<%= (values && values.username) || '' %>" />
+        </div>
+
+        <!-- Contraseña -->
         <div class="password-wrap">
-          <label>Contraseña* (mín. 6)</label>
-          <input id="pass" type="password" name="password" required minlength="6">
+          <label for="pass">Contraseña* (mín. 6)</label>
+          <input id="pass" type="password" name="password" required minlength="6" />
           <button type="button" class="toggle-pass" aria-label="Mostrar/Ocultar" onclick="togglePassword()">👁</button>
         </div>
       </div>
 
+      <!-- Resto de campos -->
       <div class="grid">
         <div class="full">
-          <label>Nombre completo*</label>
-          <input type="text" name="nombreCompleto" required value="<%= (values && values.nombreCompleto) || '' %>">
+          <label for="nombreCompleto">Nombre completo*</label>
+          <input id="nombreCompleto" type="text" name="nombreCompleto" required
+                 value="<%= (values && values.nombreCompleto) || '' %>" />
         </div>
 
         <div>
-          <label>Cédula*</label>
-          <input type="text" name="cedula" required inputmode="numeric" pattern="[0-9]{6,12}" value="<%= (values && values.cedula) || '' %>">
+          <label for="cedula">Cédula*</label>
+          <input id="cedula" type="text" name="cedula" required inputmode="numeric" pattern="[0-9]{6,12}"
+                 value="<%= (values && values.cedula) || '' %>" />
         </div>
 
         <div>
-          <label>Email*</label>
-          <input type="email" name="email" required value="<%= (values && values.email) || '' %>">
+          <label for="email">Email*</label>
+          <input id="email" type="email" name="email" required
+                 value="<%= (values && values.email) || '' %>" />
         </div>
 
         <div>
-          <label>Celular* (solo dígitos)</label>
-          <input type="text" name="celular" required inputmode="numeric" pattern="[0-9]{6,15}" value="<%= (values && values.celular) || '' %>">
+          <label for="celular">Celular* (solo dígitos)</label>
+          <input id="celular" type="text" name="celular" required inputmode="numeric" pattern="[0-9]{6,15}"
+                 value="<%= (values && values.celular) || '' %>" />
         </div>
 
         <div>
-          <label>WhatsApp (opcional)</label>
-          <input type="text" name="whatsapp" inputmode="numeric" pattern="[0-9]{6,15}" value="<%= (values && values.whatsapp) || '' %>">
+          <label for="whatsapp">WhatsApp (opcional)</label>
+          <input id="whatsapp" type="text" name="whatsapp" inputmode="numeric" pattern="[0-9]{6,15}"
+                 value="<%= (values && values.whatsapp) || '' %>" />
         </div>
 
         <div>
-          <label>Teléfono (opcional)</label>
-          <input type="text" name="telefono" inputmode="numeric" pattern="[0-9]{6,15}" value="<%= (values && values.telefono) || '' %>">
+          <label for="telefono">Teléfono (opcional)</label>
+          <input id="telefono" type="text" name="telefono" inputmode="numeric" pattern="[0-9]{6,15}"
+                 value="<%= (values && values.telefono) || '' %>" />
         </div>
 
         <div class="full">
-          <label>Dirección*</label>
-          <input type="text" name="direccion" required value="<%= (values && values.direccion) || '' %>">
+          <label for="direccion">Dirección*</label>
+          <input id="direccion" type="text" name="direccion" required
+                 value="<%= (values && values.direccion) || '' %>" />
         </div>
 
         <div>
-          <label>Departamento*</label>
-          <select name="departamento" required>
+          <label for="departamento">Departamento*</label>
+          <select id="departamento" name="departamento" required>
             <option value="">-- Seleccionar --</option>
             <% const deps = ["Artigas","Canelones","Cerro Largo","Colonia","Durazno","Flores","Florida","Lavalleja","Maldonado","Montevideo","Paysandú","Río Negro","Rivera","Rocha","Salto","San José","Soriano","Tacuarembó","Treinta y Tres"]; %>
             <% deps.forEach(d => { %>
@@ -74,29 +108,31 @@
         </div>
 
         <div>
-          <label>Localidad (opcional)</label>
-          <input type="text" name="localidad" value="<%= (values && values.localidad) || '' %>">
+          <label for="localidad">Localidad (opcional)</label>
+          <input id="localidad" type="text" name="localidad"
+                 value="<%= (values && values.localidad) || '' %>" />
         </div>
 
         <div>
-          <label>Puesto*</label>
-          <input type="text" name="puesto" required placeholder="técnico, vendedor, admin..." value="<%= (values && values.puesto) || '' %>">
+          <label for="puesto">Puesto*</label>
+          <input id="puesto" type="text" name="puesto" required placeholder="técnico, vendedor, admin..."
+                 value="<%= (values && values.puesto) || '' %>" />
         </div>
 
         <div>
-          <label>Rol</label>
-          <select name="rol">
-            <option value="usuario" <%= !values || (values && values.rol==="usuario") ? "selected": "" %>>usuario</option>
-            <option value="tecnico" <%= values && values.rol==="tecnico" ? "selected": "" %>>tecnico</option>
+          <label for="rol">Rol</label>
+          <select id="rol" name="rol">
+            <option value="usuario"  <%= !values || (values && values.rol==="usuario") ? "selected": "" %>>usuario</option>
+            <option value="tecnico"  <%= values && values.rol==="tecnico"  ? "selected": "" %>>tecnico</option>
             <option value="vendedor" <%= values && values.rol==="vendedor" ? "selected": "" %>>vendedor</option>
-            <option value="admin" <%= values && values.rol==="admin" ? "selected": "" %>>admin</option>
+            <option value="admin"    <%= values && values.rol==="admin"    ? "selected": "" %>>admin</option>
           </select>
         </div>
 
         <div>
-          <label>Activo</label>
-          <select name="activo">
-            <option value="true"  <%= !values || values.activo==="true" ? "selected": "" %>>Sí</option>
+          <label for="activo">Activo</label>
+          <select id="activo" name="activo">
+            <option value="true"  <%= !values || values.activo==="true"  ? "selected": "" %>>Sí</option>
             <option value="false" <%= values && values.activo==="false" ? "selected": "" %>>No</option>
           </select>
         </div>
@@ -123,6 +159,55 @@
         if (first) first.focus();
       }
     });
+
+    // === Avatar preview + drag & drop ===
+    const fileInput  = document.getElementById('foto');
+    const fileDrop   = document.getElementById('fileDrop');
+    const avatarPrev = document.getElementById('avatarPreview');
+    const btnQuitar  = document.getElementById('btnQuitarFoto');
+
+    // Abrir selector con clic o Enter/Espacio
+    fileDrop.addEventListener('click', () => fileInput.click());
+    fileDrop.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fileInput.click(); }
+    });
+
+    // Drag styles
+    ['dragenter','dragover'].forEach(evt =>
+      fileDrop.addEventListener(evt, e => { e.preventDefault(); e.stopPropagation(); fileDrop.classList.add('drag'); })
+    );
+    ['dragleave','drop'].forEach(evt =>
+      fileDrop.addEventListener(evt, e => { e.preventDefault(); e.stopPropagation(); fileDrop.classList.remove('drag'); })
+    );
+
+    fileDrop.addEventListener('drop', e => {
+      const file = e.dataTransfer.files && e.dataTransfer.files[0];
+      if (file) handleFile(file);
+    });
+    fileInput.addEventListener('change', () => {
+      const file = fileInput.files && fileInput.files[0];
+      if (file) handleFile(file);
+    });
+
+    btnQuitar.addEventListener('click', () => {
+      fileInput.value = '';
+      avatarPrev.style.backgroundImage = "url('/img/avatar-placeholder.png')";
+      btnQuitar.style.display = 'none';
+    });
+
+    function handleFile(file){
+      const okType = /^image\/(png|jpe?g|webp)$/i.test(file.type);
+      const okSize = file.size <= 2 * 1024 * 1024; // 2MB
+      if (!okType) { alert('Formato no soportado. Usa JPG, PNG o WEBP.'); return; }
+      if (!okSize) { alert('La imagen supera los 2MB.'); return; }
+
+      const reader = new FileReader();
+      reader.onload = e => {
+        avatarPrev.style.backgroundImage = `url('${e.target.result}')`;
+        btnQuitar.style.display = 'inline-block';
+      };
+      reader.readAsDataURL(file);
+    }
   </script>
 </body>
 </html>
