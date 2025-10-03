@@ -224,79 +224,124 @@ td button:last-child {
     flex-direction: column;
   }
 
-  /* Estilos base (escritorio) – los que ya tienes */
-.nav-buttons {
+  /* ====== Diseño moderno neutro y mobile-first ====== */
+:root{
+  --bg: #ffffff;
+  --fg: #111111;
+  --muted: #6b7280;         /* gris texto secundario */
+  --border: rgba(0,0,0,.12);/* bordes sutiles       */
+  --accent: #2563eb;        /* azul sobrio (cámbialo si querés) */
+  --radius: 12px;
+}
+
+/* Base nav */
+.nav-buttons{
   display: flex;
-  justify-content: center;
-  gap: 2rem;
+  gap: .6rem;
+  align-items: center;
+  padding: .6rem 1rem;
+  background: var(--bg);
+  /* Estilo "chips" desplazables en móvil */
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x mandatory;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--border);
 }
 
-.nav-buttons a {
-  padding: 0.6rem 1.2rem;
-  border-radius: 8px;
+/* Ocultar scrollbar (móvil/webkit) */
+.nav-buttons::-webkit-scrollbar{ display:none; }
+
+.nav-buttons a{
+  flex: 0 0 auto;
+  scroll-snap-align: start;
   text-decoration: none;
-  color: #ffffff;
+  color: var(--fg);
   font-weight: 600;
-  font-size: 1rem;
-  border: 1px solid #ffffff33;
-  transition: all 0.3s ease;
-  background-color: transparent;
+  font-size: .95rem;
+  padding: .55rem .9rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;       /* chip/pastilla */
+  background: transparent;
+  transition: background .2s ease, border-color .2s ease, color .2s ease, transform .15s ease;
 }
 
-.nav-buttons a:hover {
-  background-color: #ffffff22;
-  border-color: #ffffff55;
+.nav-buttons a:hover{
+  background: rgba(0,0,0,.04);
+  border-color: rgba(0,0,0,.2);
+  transform: translateY(-1px);
 }
 
-.nav-buttons a.activo {
-  background-color: #ffffff;
-  color: #007bff;
-  font-weight: bold;
+.nav-buttons a.activo{
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, .25);
 }
 
-/* Adaptación smartphone */
-@media (max-width: 768px) {
-  .nav-buttons {
-    flex-direction: column;      /* Botones en columna */
-    align-items: stretch;        /* Que ocupen todo el ancho */
-    gap: 1rem;
-    padding: 1rem;
+/* ====== Variante "tabs" (subrayado minimal) ======
+   Agrega la clase .nav-buttons--tabs al contenedor para usar esta estética.
+   Mantiene los mismos colores, pero sin chip/bordes, con línea activa. */
+.nav-buttons.nav-buttons--tabs{
+  gap: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+.nav-buttons.nav-buttons--tabs a{
+  border: none;
+  border-radius: 0;
+  padding: .7rem .2rem;
+  background: transparent;
+  position: relative;
+}
+.nav-buttons.nav-buttons--tabs a::after{
+  content:"";
+  position: absolute;
+  left: 0; right: 0; bottom: -8px;
+  height: 2px;
+  background: transparent;
+  transition: background .2s ease, transform .2s ease;
+  transform: scaleX(0);
+  transform-origin: left;
+}
+.nav-buttons.nav-buttons--tabs a:hover::after{
+  background: rgba(0,0,0,.25);
+  transform: scaleX(1);
+}
+.nav-buttons.nav-buttons--tabs a.activo{
+  color: var(--accent);
+  font-weight: 700;
+}
+.nav-buttons.nav-buttons--tabs a.activo::after{
+  background: var(--accent);
+  transform: scaleX(1);
+}
+
+/* ====== Responsivo ====== */
+@media (min-width: 769px){
+  /* En desktop se comporta como fila centrada, sin scroll */
+  .nav-buttons{
+    justify-content: center;
+    overflow: visible;
+    white-space: normal;
+    gap: .8rem;
+    padding: .8rem 1rem;
   }
-
-  .nav-buttons a {
+  .nav-buttons a{
     font-size: 1rem;
-    text-align: center;
-    padding: 0.8rem;
-    border-radius: 12px;
-    background: linear-gradient(135deg, #007bff, #00c6ff); /* Efecto moderno */
-    color: #fff;
-    border: none;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-  }
-
-  .nav-buttons a:hover {
-    transform: scale(1.03);  /* Animación suave */
-    background: linear-gradient(135deg, #00c6ff, #007bff);
-  }
-
-  .nav-buttons a.activo {
-    background: #ffffff;
-    color: #007bff;
-    box-shadow: 0 4px 10px rgba(0,123,255,0.3);
+    padding: .6rem 1rem;
   }
 }
 
-/* Extra pequeño (menos de 480px) */
-@media (max-width: 480px) {
-  .nav-buttons {
-    gap: 0.6rem;
-    padding: 0.5rem;
-  }
+/* Teléfonos muy pequeños */
+@media (max-width: 420px){
+  .nav-buttons{ gap: .4rem; padding: .5rem .6rem; }
+  .nav-buttons a{ font-size: .9rem; padding: .5rem .8rem; }
+}
 
-  .nav-buttons a {
-    font-size: 0.9rem;
-    padding: 0.7rem;
-  }
+/* Accesibilidad: menos animaciones si el usuario lo prefiere */
+@media (prefers-reduced-motion: reduce){
+  .nav-buttons a,
+  .nav-buttons.nav-buttons--tabs a::after{ transition: none; }
 }
 
 }
