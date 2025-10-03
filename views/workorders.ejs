@@ -47,34 +47,7 @@
               <% } %>
             </div>
 
-            <div class="actividades" style="margin-top: 1rem;">
-              <h3><i class="fas fa-tasks"></i> Actividades recientes:</h3>
-              <% if (actividades.length > 0) {
-                const actividadesOrdenadas = [...actividades].sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
-              %>
-                <% actividadesOrdenadas.slice(0, 3).forEach(act => { %>
-                  <div class="actividad-item">
-                    <div class="small">
-                      <i class="far fa-calendar-alt"></i> <%= new Date(act.fecha).toLocaleDateString() %><br>
-                      <span class="badge badge-<%= act.estado %>"><%= act.estado %></span> —
-                      <strong><%= act.tipo %></strong><br>
-                      <span class="badge badge-light">WO #<%= act.numero %></span>
-                    </div>
-                    <ul>
-                      <% act.componentesUsados.forEach(c => { %>
-                        <li>
-                          <strong><%= c.componente?.modelo || "?" %></strong> —
-                          <%= c.componente?.nombre || "Componente eliminado" %> — 
-                          <%= c.cantidad %> u.
-                        </li>
-                      <% }) %>
-                    </ul>
-                  </div>
-                <% }) %>
-              <% } else { %>
-                <p class="small">Sin actividades registradas</p>
-              <% } %>
-            </div>
+           
           </div>
         <% } %>
       <% }) %>
