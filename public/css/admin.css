@@ -223,6 +223,82 @@ td button:last-child {
   .secciones {
     flex-direction: column;
   }
+
+  /* Estilos base (escritorio) – los que ya tienes */
+.nav-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.nav-buttons a {
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 1rem;
+  border: 1px solid #ffffff33;
+  transition: all 0.3s ease;
+  background-color: transparent;
+}
+
+.nav-buttons a:hover {
+  background-color: #ffffff22;
+  border-color: #ffffff55;
+}
+
+.nav-buttons a.activo {
+  background-color: #ffffff;
+  color: #007bff;
+  font-weight: bold;
+}
+
+/* Adaptación smartphone */
+@media (max-width: 768px) {
+  .nav-buttons {
+    flex-direction: column;      /* Botones en columna */
+    align-items: stretch;        /* Que ocupen todo el ancho */
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  .nav-buttons a {
+    font-size: 1rem;
+    text-align: center;
+    padding: 0.8rem;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #007bff, #00c6ff); /* Efecto moderno */
+    color: #fff;
+    border: none;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  }
+
+  .nav-buttons a:hover {
+    transform: scale(1.03);  /* Animación suave */
+    background: linear-gradient(135deg, #00c6ff, #007bff);
+  }
+
+  .nav-buttons a.activo {
+    background: #ffffff;
+    color: #007bff;
+    box-shadow: 0 4px 10px rgba(0,123,255,0.3);
+  }
+}
+
+/* Extra pequeño (menos de 480px) */
+@media (max-width: 480px) {
+  .nav-buttons {
+    gap: 0.6rem;
+    padding: 0.5rem;
+  }
+
+  .nav-buttons a {
+    font-size: 0.9rem;
+    padding: 0.7rem;
+  }
+}
+
 }
 
 /* ANIMACIONES */
