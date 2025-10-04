@@ -100,14 +100,24 @@ async function cargarResumen(periodo) {
     totalPuntos += a.puntajeTotal;
     tbody.innerHTML += `
         <tr>
-          <td>${a.numero}</td>
-          <td>${a.tipo}</td>
-          <td>${a.puntajeTotal.toFixed(2)}</td>
-          <td>
-            Componentes: ${a.detalle.componentes.join(", ")}<br>
-            Kilómetros: ${a.detalle.km} (${a.detalle.puntosKm.toFixed(2)} pts)
-          </td>
-        </tr>`;
+    <td>${a.numero}</td>
+    <td>${a.tipo}</td>
+    <td>${a.puntajeTotal.toFixed(2)}</td>
+    <td>
+      <div><strong>Componentes:</strong></div>
+      <ul style="margin:.25rem 0 0 1rem; padding:0;">
+        ${
+          comps.length
+            ? comps.map((c) => `<li>${c}</li>`).join("")
+            : "<li><em>Sin componentes</em></li>"
+        }
+      </ul>
+      <div style="margin-top:.4rem;">
+        <strong>Kilómetros:</strong> ${a.detalle?.km ?? 0}
+        <small>(${(a.detalle?.puntosKm ?? 0).toFixed(2)} pts)</small>
+      </div>
+    </td>
+  </tr>`;
   });
 
   document.getElementById(
