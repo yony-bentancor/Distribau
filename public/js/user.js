@@ -98,30 +98,18 @@ async function cargarResumen(periodo) {
 
   actividades.forEach((a) => {
     totalPuntos += a.puntajeTotal;
-
-    const comps = Array.isArray(a.detalle?.componentes)
-      ? a.detalle.componentes
-      : [];
-    const km = a.detalle?.km ?? 0;
-    const ptsKm = a.detalle?.puntosKm ?? 0;
-
     tbody.innerHTML += `
-    <tr>
-      <td>${a.numero}</td>
-      <td>${a.tipo}</td>
-      <td>${a.puntajeTotal.toFixed(2)}</td>
-       </tr>
-       <tr>
-      <td>
-        <div><strong>Componentes</strong></div>
-        <div>${
-          comps.length ? comps.join(", ") : "<em>Sin componentes</em>"
-        }</div>
-
-        <div style="margin-top:.4rem;"><strong>Kilómetros</strong></div>
-        <div>${km} <small>(${ptsKm.toFixed(2)} pts)</small></div>
-      </td>
-    </tr>`;
+        <tr>
+          <td>${a.numero}</td>
+          <td>${a.tipo}</td>
+          <td>${a.puntajeTotal.toFixed(2)}</td>
+          </tr>
+          <tr>
+          <td>
+            Componentes: ${a.detalle.componentes.join(", ")}<br>
+            Kilómetros: ${a.detalle.km} (${a.detalle.puntosKm.toFixed(2)} pts)
+          </td>
+        </tr>`;
   });
 
   document.getElementById(
