@@ -104,19 +104,12 @@ async function cargarResumen(periodo) {
           <td>${a.tipo}</td>
           <td>${a.puntajeTotal.toFixed(2)}</td>
           </tr>
-           <tr class="detalle-row">
-    <td colspan="${theadCols}">
-      <div><strong>Componentes</strong></div>
-      <div>${
-        (a.detalle?.componentes || []).join(", ") || "<em>Sin componentes</em>"
-      }</div>
-
-      <div style="margin-top:.4rem;"><strong>Kilómetros</strong></div>
-      <div>${a.detalle?.km ?? 0} <small>(${(a.detalle?.puntosKm ?? 0).toFixed(
-      2
-    )} pts)</small></div>
-    </td>
-  </tr>`;
+          <tr>
+          <td>
+            Componentes: ${a.detalle.componentes.join(", ")}
+            Kilómetros: ${a.detalle.km} (${a.detalle.puntosKm.toFixed(2)} pts)
+          </td>
+        </tr>`;
   });
 
   document.getElementById(
