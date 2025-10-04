@@ -224,124 +224,106 @@ td button:last-child {
     flex-direction: column;
   }
 
-  /* ====== Diseño moderno neutro y mobile-first ====== */
-:root{
-  --bg: #ffffff;
-  --fg: #111111;
-  --muted: #6b7280;         /* gris texto secundario */
-  --border: rgba(0,0,0,.12);/* bordes sutiles       */
-  --accent: #2563eb;        /* azul sobrio (cámbialo si querés) */
-  --radius: 12px;
+  :root{
+  --bg:#fff;
+  --fg:#111;
+  --muted:#6b7280;
+  --border:rgba(0,0,0,.12);
+  --hover:rgba(0,0,0,.04);
+  --radius:12px;
 }
 
-/* Base nav */
+/* Barra superior */
+.navbar{
+  position: sticky; top:0; z-index: 50;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:.7rem 1rem; background:var(--bg);
+  border-bottom:1px solid var(--border);
+}
+
+/* Botón hamburguesa */
+.nav-toggle{
+  border:0; background:transparent; padding:.4rem; cursor:pointer;
+}
+.nav-toggle .hamburger,
+.nav-toggle .hamburger::before,
+.nav-toggle .hamburger::after{
+  content:""; display:block; width:24px; height:2px;
+  background:var(--fg); border-radius:2px;
+  transition:transform .25s ease, opacity .2s ease;
+}
+.nav-toggle .hamburger::before{ transform:translateY(-7px); }
+.nav-toggle .hamburger::after{  transform:translateY(5px);  }
+.nav-toggle.is-open .hamburger{ transform:rotate(45deg); }
+.nav-toggle.is-open .hamburger::before{ opacity:0; }
+.nav-toggle.is-open .hamburger::after{ transform:rotate(-90deg); }
+
+/* Menú desplegable (mobile-first) */
 .nav-buttons{
-  display: flex;
-  gap: .6rem;
-  align-items: center;
-  padding: .6rem 1rem;
-  background: var(--bg);
-  /* Estilo "chips" desplazables en móvil */
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  scroll-snap-type: x mandatory;
-  white-space: nowrap;
-  border-bottom: 1px solid var(--border);
+  display:grid; grid-template-rows:0fr; /* colapsado */
+  overflow:hidden; transition:grid-template-rows .3s ease, opacity .2s ease;
+  opacity:0; background:var(--bg);
+  border-bottom:1px solid var(--border);
+  box-shadow: 0 12px 24px rgba(0,0,0,.06);
+}
+.nav-buttons.is-open{ grid-template-rows:1fr; opacity:1; }
+
+.nav-buttons .inner{
+  min-height:0;
+  display:flex; flex-direction:column; gap:.4rem;
+  padding:.6rem 1rem 1rem;
 }
 
-/* Ocultar scrollbar (móvil/webkit) */
-.nav-buttons::-webkit-scrollbar{ display:none; }
-
+/* Links */
 .nav-buttons a{
-  flex: 0 0 auto;
-  scroll-snap-align: start;
-  text-decoration: none;
-  color: var(--fg);
-  font-weight: 600;
-  font-size: .95rem;
-  padding: .55rem .9rem;
-  border: 1px solid var(--border);
-  border-radius: 999px;       /* chip/pastilla */
-  background: transparent;
-  transition: background .2s ease, border-color .2s ease, color .2s ease, transform .15s ease;
+  display:block;
+  text-decoration:none; color:var(--fg);
+  font-weight:600; font-size:.95rem;
+  padding:.8rem 1rem; border-radius:var(--radius);
+  border:1px solid var(--border); background:transparent;
+  transition:background .2s ease, border-color .2s ease, transform .15s ease;
 }
-
 .nav-buttons a:hover{
-  background: rgba(0,0,0,.04);
-  border-color: rgba(0,0,0,.2);
-  transform: translateY(-1px);
+  background:var(--hover);
+  border-color:rgba(0,0,0,.2);
+  transform:translateY(-1px);
 }
-
 .nav-buttons a.activo{
-  background: var(--accent);
-  color: #fff;
-  border-color: var(--accent);
-  box-shadow: 0 4px 12px rgba(37, 99, 235, .25);
+  background:var(--hover);
+  border-color:var(--fg);
+  font-weight:700;
 }
 
-/* ====== Variante "tabs" (subrayado minimal) ======
-   Agrega la clase .nav-buttons--tabs al contenedor para usar esta estética.
-   Mantiene los mismos colores, pero sin chip/bordes, con línea activa. */
-.nav-buttons.nav-buttons--tabs{
-  gap: 1rem;
-  border-bottom: 1px solid var(--border);
-}
-.nav-buttons.nav-buttons--tabs a{
-  border: none;
-  border-radius: 0;
-  padding: .7rem .2rem;
-  background: transparent;
-  position: relative;
-}
-.nav-buttons.nav-buttons--tabs a::after{
-  content:"";
-  position: absolute;
-  left: 0; right: 0; bottom: -8px;
-  height: 2px;
-  background: transparent;
-  transition: background .2s ease, transform .2s ease;
-  transform: scaleX(0);
-  transform-origin: left;
-}
-.nav-buttons.nav-buttons--tabs a:hover::after{
-  background: rgba(0,0,0,.25);
-  transform: scaleX(1);
-}
-.nav-buttons.nav-buttons--tabs a.activo{
-  color: var(--accent);
-  font-weight: 700;
-}
-.nav-buttons.nav-buttons--tabs a.activo::after{
-  background: var(--accent);
-  transform: scaleX(1);
-}
-
-/* ====== Responsivo ====== */
+/* Desktop: fila normal, sin dropdown */
 @media (min-width: 769px){
-  /* En desktop se comporta como fila centrada, sin scroll */
+  .navbar{ justify-content:center; }
+  .nav-toggle{ display:none; }
+
   .nav-buttons{
-    justify-content: center;
-    overflow: visible;
-    white-space: normal;
-    gap: .8rem;
-    padding: .8rem 1rem;
+    opacity:1; grid-template-rows:1fr; overflow:visible; box-shadow:none;
+    border-bottom:0; border-top:0;
+  }
+  .nav-buttons .inner{
+    flex-direction:row; gap:.8rem; padding: .8rem 0 0;
+    justify-content:center;
   }
   .nav-buttons a{
-    font-size: 1rem;
-    padding: .6rem 1rem;
+    border-radius:999px; padding:.6rem 1rem; font-size:1rem;
   }
 }
 
 /* Teléfonos muy pequeños */
-@media (max-width: 420px){
-  .nav-buttons{ gap: .4rem; padding: .5rem .6rem; }
-  .nav-buttons a{ font-size: .9rem; padding: .5rem .8rem; }
+@media (max-width:420px){
+  .nav-buttons .inner{ gap:.3rem; }
+  .nav-buttons a{ font-size:.9rem; padding:.7rem .9rem; }
 }
 
 /* Accesibilidad: menos animaciones si el usuario lo prefiere */
 @media (prefers-reduced-motion: reduce){
-  .nav-buttons a,
-  .nav-buttons.nav-buttons--tabs a::after{ transition: none; }
+  .nav-buttons, .nav-toggle .hamburger,
+  .nav-toggle .hamburger::before, .nav-toggle .hamburger::after{
+    transition:none;
+  }
 }
 
 }
