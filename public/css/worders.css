@@ -181,7 +181,7 @@ button[type="submit"]:hover {
   font-size: 0.9rem;
 }
 
-/* TOP BAR Y NAVEGACIÓN */
+/* TOP BAR Y NAVEGACIÓN — IGUAL A CSS 1 */
 .top-bar {
   background: #1f2f46;
   padding: 1rem 2rem;
@@ -196,7 +196,6 @@ button[type="submit"]:hover {
   display: flex;
   justify-content: center;
   gap: 2rem;
-  flex-wrap: wrap;
 }
 
 .nav-buttons a {
@@ -283,15 +282,9 @@ button[type="submit"]:hover {
     padding: 1rem 0.8rem;
   }
 
-  .nav-buttons {
-    flex-direction: column;
-    gap: 0.8rem;
-  }
-
-  .nav-buttons a {
-    width: 100%;
-    text-align: center;
-  }
+  /* IMPORTANTE: quitamos cambios al menú para que sea igual a CSS 1
+     (no columna, no width 100%, no centrado especial).
+     Por eso NO hay reglas para .nav-buttons ni .nav-buttons a aquí. */
 
   h2 {
     font-size: 1rem;
@@ -307,7 +300,82 @@ button[type="submit"]:hover {
   input[type="number"] {
     width: 100%;
   }
-}.usuarios-grid {
+}
+
+/* ====== MÓVIL (≤768px) — TOP BAR igual que CSS 1 ====== */
+@media (max-width: 768px){
+  .top-bar{
+    padding: calc(.6rem + env(safe-area-inset-top, 0px)) 1rem .6rem 1rem;
+    min-height: 52px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+
+    background: #1f2f46;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    box-shadow: 0 1px 8px rgba(0,0,0,.18);
+  }
+
+  .top-bar h1,
+  .top-bar .title{
+    margin: 0;
+    color: #fff;
+    font-weight: 700;
+    line-height: 1.2;
+    font-size: clamp(1rem, 2.8vw + .4rem, 1.25rem);
+  }
+
+  .top-bar a,
+  .top-bar button{
+    padding: .5rem .75rem;
+    border-radius: 10px;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .top-bar .icon,
+  .top-bar svg{
+    width: 22px; height: 22px;
+  }
+}
+
+/* ====== Teléfonos muy pequeños (≤380px) — TOP BAR ====== */
+@media (max-width: 380px){
+  .top-bar{
+    padding: calc(.5rem + env(safe-area-inset-top, 0px)) .75rem .5rem;
+    min-height: 48px;
+  }
+}
+
+/* ====== Efecto glass opcional — TOP BAR (igual que CSS 1) ====== */
+@supports ((-webkit-backdrop-filter: blur(6px)) or (backdrop-filter: blur(6px))){
+  .top-bar.is-translucent{
+    background: rgba(31,47,70,.85);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+  }
+}
+
+/* ====== Encogido suave al hacer scroll (opcional) — TOP BAR ====== */
+@supports (animation-timeline: scroll()){
+  @keyframes tb-shrink{
+    0%   { padding-top: calc(.9rem + env(safe-area-inset-top,0px)); padding-bottom: .9rem; box-shadow: 0 2px 10px rgba(0,0,0,.18); }
+    100% { padding-top: calc(.4rem + env(safe-area-inset-top,0px)); padding-bottom: .4rem; box-shadow: 0 1px 6px rgba(0,0,0,.12); }
+  }
+  .top-bar.sticky-shrink{
+    animation: tb-shrink linear both;
+    animation-timeline: scroll(root block);
+    animation-range: 0 200px;
+  }
+}
+
+/* USUARIOS */
+.usuarios-grid {
   display: flex;
   flex-wrap: wrap;
   gap: 1.5rem;
@@ -383,8 +451,8 @@ button[type="submit"]:hover {
   .usuario-box {
     width: 100%;
   }
-  
 }
+
 .usuario-box:nth-child(even) {
   background-color: #f9f9f9;
 }
@@ -400,4 +468,3 @@ button[type="submit"]:hover {
   border-radius: 6px;
   font-size: 0.8rem;
 }
-
