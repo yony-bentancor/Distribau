@@ -106,7 +106,7 @@ async function cargarResumen(periodo) {
           </tr>
           <tr>
           <td>
-            Componentes: ${a.detalle.componentes.join(", ")}<br>
+            Componentes: ${a.detalle.componentes.join(", ")}
             Kilómetros: ${a.detalle.km} (${a.detalle.puntosKm.toFixed(2)} pts)
           </td>
         </tr>`;
