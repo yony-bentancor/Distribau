@@ -98,26 +98,28 @@ async function cargarResumen(periodo) {
 
   actividades.forEach((a) => {
     totalPuntos += a.puntajeTotal;
+
+    const comps = Array.isArray(a.detalle?.componentes)
+      ? a.detalle.componentes
+      : [];
+    const km = a.detalle?.km ?? 0;
+    const ptsKm = a.detalle?.puntosKm ?? 0;
+
     tbody.innerHTML += `
-        <tr>
-    <td>${a.numero}</td>
-    <td>${a.tipo}</td>
-    <td>${a.puntajeTotal.toFixed(2)}</td>
-    <td>
-      <div><strong>Componentes:</strong></div>
-      <ul style="margin:.25rem 0 0 1rem; padding:0;">
-        ${
-          comps.length
-            ? comps.map((c) => `<li>${c}</li>`).join("")
-            : "<li><em>Sin componentes</em></li>"
-        }
-      </ul>
-      <div style="margin-top:.4rem;">
-        <strong>Kilómetros:</strong> ${a.detalle?.km ?? 0}
-        <small>(${(a.detalle?.puntosKm ?? 0).toFixed(2)} pts)</small>
-      </div>
-    </td>
-  </tr>`;
+    <tr>
+      <td>${a.numero}</td>
+      <td>${a.tipo}</td>
+      <td>${a.puntajeTotal.toFixed(2)}</td>
+      <td>
+        <div><strong>Componentes</strong></div>
+        <div>${
+          comps.length ? comps.join(", ") : "<em>Sin componentes</em>"
+        }</div>
+
+        <div style="margin-top:.4rem;"><strong>Kilómetros</strong></div>
+        <div>${km} <small>(${ptsKm.toFixed(2)} pts)</small></div>
+      </td>
+    </tr>`;
   });
 
   document.getElementById(
