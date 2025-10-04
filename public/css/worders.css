@@ -273,113 +273,32 @@ button[type="submit"]:hover {
 
 /* RESPONSIVE */
 @media (max-width: 768px) {
-  .layout {
+  .usuarios-grid {
     flex-direction: column;
-    height: auto;
   }
 
-  .panel {
-    width: 30%;
-    padding: 1rem 0.8rem;
-  }
-
-  .nav-buttons {
-    flex-direction: column;
-    gap: 0.8rem;
-  }
-
-  .nav-buttons a {
-    width: 100%;
-    text-align: center;
-  }
-
-  h2 {
-    font-size: 1rem;
-  }
-
-  .modelo-row,
-  .componente-row {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.3rem;
-  }
-
-  input[type="number"] {
+  .usuario-box {
     width: 100%;
   }
-}.usuarios-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.5rem;
-  justify-content: space-between;
-  padding: 1rem;
+  
 }
-
-.usuario-box {
-  flex: 1 1 calc(33.33% - 1rem);
-  background: white;
-  padding: 1.2rem;
-  border-radius: 16px;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
-  min-width: 280px;
-  transition: transform 0.2s ease;
+.usuario-box:nth-child(even) {
+  background-color: #f9f9f9;
 }
 
 .usuario-box:hover {
-  transform: translateY(-5px);
+  transform: translateY(-4px);
 }
 
-.usuario-box h2 {
-  font-size: 1.2rem;
-  margin-bottom: 0.8rem;
-  color: #1f2f46;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.usuario-box h3 {
-  font-size: 1rem;
-  margin: 0.6rem 0;
-  color: #444;
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-}
-
-.usuario-box li {
-  font-size: 0.95rem;
-  color: #333;
-  line-height: 1.4;
-}
-
-.badge {
+.badge-light {
+  background-color: #e2e3e5;
+  color: #212529;
   padding: 0.2rem 0.5rem;
-  border-radius: 8px;
+  border-radius: 6px;
   font-size: 0.8rem;
-  text-transform: capitalize;
 }
 
-.badge-realizado {
-  background-color: #d4edda;
-  color: #155724;
-}
 
-.badge-pendiente {
-  background-color: #fff3cd;
-  color: #856404;
-}
-
-.badge-cancelado {
-  background-color: #f8d7da;
-  color: #721c24;
-}
-
-/* RESPONSIVE */
-@media (max-width: 768px) {
-  .secciones {
-    flex-direction: column;
-  }
 /* ====== Móvil (≤768px) ====== */
 @media (max-width: 768px){
   .top-bar{
@@ -463,21 +382,3 @@ button[type="submit"]:hover {
 
 
   
-}
-
-.usuario-box:nth-child(even) {
-  background-color: #f9f9f9;
-}
-
-.usuario-box:hover {
-  transform: translateY(-4px);
-}
-
-.badge-light {
-  background-color: #e2e3e5;
-  color: #212529;
-  padding: 0.2rem 0.5rem;
-  border-radius: 6px;
-  font-size: 0.8rem;
-}
-
