@@ -13,21 +13,19 @@ router.get("/", async (req, res) => {
     const movimientos = await Movimiento.find({ "origen.tipo": "almacen" })
       .sort({ fecha: -1 })
       .limit(20)
-      .populate("componentes.componente", "nombre modelo") // populamos los campos necesarios
+      .populate("componentes.componente", "nombre modelo")
       .lean();
 
     const historial = movimientos.map((mov) => ({
       fecha: new Date(mov.fecha).toLocaleDateString("es-UY"),
       componentes: mov.componentes.map((c) => ({
-        componente: c.componente, // se conserva el objeto completo para usar modelo y nombre
-        cantidad: c.cantidad,
+        nombre: c.componente?.nombre || "Sin nombre",
+        modelo: c.componente?.modelo || "Sin modelo",
+        cantidad: c.cantidad ?? 0,
       })),
     }));
 
-    res.render("almacen", {
-      componentes,
-      historial,
-    });
+    res.render("almacen", { componentes, historial });
   } catch (err) {
     console.error("❌ Error al cargar /almacen:", err);
     res.status(500).send("Error al mostrar el formulario de almacén");
