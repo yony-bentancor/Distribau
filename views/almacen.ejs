@@ -58,15 +58,17 @@
               <button type="button" class="toggle-componentes">➕</button> 📦 <%= modelo %>
             </div>
             <div class="componentes-container" style="display:none;">
-              <% agrupados[modelo].forEach(c => { %>
-                <div class="componente-row" data-nombre="<%= c.nombre.toLowerCase() %>">
-                  <div><strong><%= c.nombre %></strong><br>
-                    <button type="button" onclick="editarComponente('<%= c._id %>', '<%= c.nombre %>', <%= c.puntosInstalacion %>, <%= c.puntosConexion %>)">✏️</button>
-                    <button type="button" onclick="eliminarComponente('<%= c._id %>', this)">🗑️</button>
-                  </div>
-                  <input type="number" name="<%= c._id %>" min="0" value="0" />
-                </div>
-              <% }) %>
+             <% (agrupados[modelo] || []).forEach(function(c){ 
+     const safeNombre = (c && c.nombre) ? c.nombre : '—';
+     const dataNombre = (c && c.nombre) ? String(c.nombre).toLowerCase() : '';
+%>
+  <div class="componente-row" data-nombre="<%= dataNombre %>">
+    <div><strong><%= safeNombre %></strong><br>
+      <button type="button" onclick="editarComponente('<%= c && c._id ? c._id : '' %>', '<%= safeNombre %>', <%= Number.isFinite(c?.puntosInstalacion) ? c.puntosInstalacion : 0 %>, <%= Number.isFinite(c?.puntosConexion) ? c.puntosConexion : 0 %>)">✏️</button>
+      <button type="button" onclick="eliminarComponente('<%= c && c._id ? c._id : '' %>', this)">🗑️</button>
+    </div>
+  </div>
+<% }) %>
             </div>
           </div>
         <% } %>
