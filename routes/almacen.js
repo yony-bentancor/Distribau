@@ -8,13 +8,12 @@ const ExcelJS = require("exceljs");
 
 router.get("/", async (req, res) => {
   try {
-    // Traer solo los campos que la vista usa y como objetos planos:
+    // 1) Traer componentes y normalizar para que el EJS no rompa
     const crudos = await Componente.find(
       {},
       { nombre: 1, modelo: 1, puntosInstalacion: 1, puntosConexion: 1 }
     ).lean();
 
-    // Normalizar: quitar nulos y completar defaults seguros
     const componentes = (crudos || []).filter(Boolean).map((c) => {
       const nombre =
         typeof c?.nombre === "string" && c.nombre.trim()
@@ -27,7 +26,6 @@ router.get("/", async (req, res) => {
       return {
         _id: c?._id?.toString?.() || "",
         nombre,
-        nombreLower: nombre === "—" ? "" : nombre.toLowerCase(),
         modelo,
         puntosInstalacion: Number.isFinite(c?.puntosInstalacion)
           ? c.puntosInstalacion
@@ -38,16 +36,7 @@ router.get("/", async (req, res) => {
       };
     });
 
-    // Agrupar por modelo para que la vista itere agrupados[modelo]
-    const agrupados = componentes.reduce((acc, item) => {
-      (acc[item.modelo] ||= []).push(item);
-      return acc;
-    }, {});
-
-    // Lista ordenada de modelos para iterar ordenado
-    const modelos = Object.keys(agrupados).sort((a, b) => a.localeCompare(b));
-
-    // HISTORIAL (tal como lo tenías, pero blindando campos)
+    // 2) Historial (tu lógica, con blindaje)
     const movs = await Movimiento.find({ "origen.tipo": "almacen" })
       .sort({ fecha: -1 })
       .limit(20)
@@ -63,8 +52,8 @@ router.get("/", async (req, res) => {
       })),
     }));
 
-    // Enviar a la vista lo que realmente usa
-    res.render("almacen", { modelos, agrupados, historial });
+    // 3) Enviar EXACTAMENTE lo que tu EJS espera
+    res.render("almacen", { componentes, historial });
   } catch (err) {
     console.error("❌ Error al cargar /almacen:", err);
     res.status(500).send("Error al mostrar el formulario de almacén");
