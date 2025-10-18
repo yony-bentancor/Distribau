@@ -8,24 +8,63 @@ const ExcelJS = require("exceljs");
 
 router.get("/", async (req, res) => {
   try {
-    const componentes = await Componente.find().lean();
+    // Traer solo los campos que la vista usa y como objetos planos:
+    const crudos = await Componente.find(
+      {},
+      { nombre: 1, modelo: 1, puntosInstalacion: 1, puntosConexion: 1 }
+    ).lean();
 
-    const movimientos = await Movimiento.find({ "origen.tipo": "almacen" })
+    // Normalizar: quitar nulos y completar defaults seguros
+    const componentes = (crudos || []).filter(Boolean).map((c) => {
+      const nombre =
+        typeof c?.nombre === "string" && c.nombre.trim()
+          ? c.nombre.trim()
+          : "—";
+      const modelo =
+        typeof c?.modelo === "string" && c.modelo.trim()
+          ? c.modelo.trim()
+          : "Sin modelo";
+      return {
+        _id: c?._id?.toString?.() || "",
+        nombre,
+        nombreLower: nombre === "—" ? "" : nombre.toLowerCase(),
+        modelo,
+        puntosInstalacion: Number.isFinite(c?.puntosInstalacion)
+          ? c.puntosInstalacion
+          : 0,
+        puntosConexion: Number.isFinite(c?.puntosConexion)
+          ? c.puntosConexion
+          : 0,
+      };
+    });
+
+    // Agrupar por modelo para que la vista itere agrupados[modelo]
+    const agrupados = componentes.reduce((acc, item) => {
+      (acc[item.modelo] ||= []).push(item);
+      return acc;
+    }, {});
+
+    // Lista ordenada de modelos para iterar ordenado
+    const modelos = Object.keys(agrupados).sort((a, b) => a.localeCompare(b));
+
+    // HISTORIAL (tal como lo tenías, pero blindando campos)
+    const movs = await Movimiento.find({ "origen.tipo": "almacen" })
       .sort({ fecha: -1 })
       .limit(20)
       .populate("componentes.componente", "nombre modelo")
       .lean();
 
-    const historial = movimientos.map((mov) => ({
+    const historial = (movs || []).map((mov) => ({
       fecha: new Date(mov.fecha).toLocaleDateString("es-UY"),
-      componentes: mov.componentes.map((c) => ({
-        nombre: c.componente?.nombre || "Sin nombre",
-        modelo: c.componente?.modelo || "Sin modelo",
-        cantidad: c.cantidad ?? 0,
+      componentes: (mov.componentes || []).map((c) => ({
+        nombre: c?.componente?.nombre || "Sin nombre",
+        modelo: c?.componente?.modelo || "Sin modelo",
+        cantidad: Number.isFinite(c?.cantidad) ? c.cantidad : 0,
       })),
     }));
 
-    res.render("almacen", { componentes, historial });
+    // Enviar a la vista lo que realmente usa
+    res.render("almacen", { modelos, agrupados, historial });
   } catch (err) {
     console.error("❌ Error al cargar /almacen:", err);
     res.status(500).send("Error al mostrar el formulario de almacén");

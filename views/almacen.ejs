@@ -45,79 +45,85 @@
       
      <!--    <input type="search" id="filtro" placeholder="🔍 Buscar por modelo o nombre..." /> -->
         
-        <% 
-          const agrupados = {};
-          componentes.forEach(c => {
-            if (!agrupados[c.modelo]) agrupados[c.modelo] = [];
-            agrupados[c.modelo].push(c);
-          });
-          for (let modelo in agrupados) {
-        %>
-          <div class="modelo-box" data-modelo="<%= modelo.toLowerCase() %>">
-            <div class="modelo-title">
-              <button type="button" class="toggle-componentes">➕</button> 📦 <%= modelo %>
-            </div>
-            <div class="componentes-container" style="display:none;">
-             <% (agrupados[modelo] || []).forEach(function(c){ 
-     const safeNombre = (c && c.nombre) ? c.nombre : '—';
-     const dataNombre = (c && c.nombre) ? String(c.nombre).toLowerCase() : '';
+       <%
+  const agrupados = {};
+  (componentes || []).forEach(c => {
+    const mod = (c && typeof c.modelo === 'string' && c.modelo.trim()) ? c.modelo.trim() : 'Sin modelo';
+    if (!agrupados[mod]) agrupados[mod] = [];
+    agrupados[mod].push(c);
+  });
+  for (let modelo in agrupados) {
 %>
-  <div class="componente-row" data-nombre="<%= dataNombre %>">
-    <div><strong><%= safeNombre %></strong><br>
-      <button type="button" onclick="editarComponente('<%= c && c._id ? c._id : '' %>', '<%= safeNombre %>', <%= Number.isFinite(c?.puntosInstalacion) ? c.puntosInstalacion : 0 %>, <%= Number.isFinite(c?.puntosConexion) ? c.puntosConexion : 0 %>)">✏️</button>
-      <button type="button" onclick="eliminarComponente('<%= c && c._id ? c._id : '' %>', this)">🗑️</button>
+  <div class="modelo-box" data-modelo="<%= String(modelo).toLowerCase() %>">
+    <div class="modelo-title">
+      <button type="button" class="toggle-componentes">➕</button> 📦 <%= modelo %>
+    </div>
+    <div class="componentes-container" style="display:none;">
+      <% (agrupados[modelo] || []).forEach(function(c){ 
+           const safeNombre = (c && c.nombre) ? c.nombre : '—';
+           const dataNombre = (c && c.nombre) ? String(c.nombre).toLowerCase() : '';
+           const puntosI = Number.isFinite(c?.puntosInstalacion) ? c.puntosInstalacion : 0;
+           const puntosC = Number.isFinite(c?.puntosConexion) ? c.puntosConexion : 0;
+           const id = c && c._id ? c._id : '';
+      %>
+        <div class="componente-row" data-nombre="<%= dataNombre %>">
+          <div>
+            <strong><%= safeNombre %></strong><br>
+            <button type="button" onclick="editarComponente('<%= id %>', '<%= safeNombre %>', <%= puntosI %>, <%= puntosC %>)">✏️</button>
+            <button type="button" onclick="eliminarComponente('<%= id %>', this)">🗑️</button>
+          </div>
+        </div>
+      <% }) %>
     </div>
   </div>
-<% }) %>
-            </div>
-          </div>
-        <% } %>
+<% } %>
+
       </form>
       
     </div>
 
     <div class="panel right-panel">
       <h2>📜 Historial de Ingresos</h2>
-      <% if (historial.length === 0) { %>
-        <p style="text-align:center; color:#888;">Aún no hay movimientos registrados.</p>
-      <% } else { %>
-        <ul class="historial-lista">
-          <% historial.forEach((mov, index) => { 
-            const modelos = {};
-            mov.componentes.forEach(c => {
-              const modelo = c.componente.modelo || "Sin modelo";
-              const nombre = c.componente.nombre;
-              if (!modelos[modelo]) modelos[modelo] = [];
-              modelos[modelo].push({ nombre, cantidad: c.cantidad });
-            });
-          %>
-            <li class="historial-item">
-              <button class="toggle-btn" onclick="toggleDetalles(<%= index %>)">
-                📅 <%= mov.fecha %> <span class="arrow">▼</span>
-              </button>
-             
-              
-              
-              <div class="detalles" id="detalles-<%= index %>"> 
-                <form method="GET" action="/almacen/exportar-excel/<%= encodeURIComponent(mov.fecha) %>">
-                  <button type="submit" class="descargar-btn1" title="Descargar Excel">📥</button>
+     <% if (historial.length === 0) { %>
+  <p style="text-align:center; color:#888;">Aún no hay movimientos registrados.</p>
+<% } else { %>
+  <ul class="historial-lista">
+    <% historial.forEach((mov, index) => { 
+         const modelosMap = {};
+         (mov.componentes || []).forEach(c => {
+           const modelo = (c && c.modelo) ? c.modelo : 'Sin modelo';
+           const nombre = (c && c.nombre) ? c.nombre : 'Sin nombre';
+           const cantidad = Number.isFinite(c?.cantidad) ? c.cantidad : 0;
+           if (!modelosMap[modelo]) modelosMap[modelo] = [];
+           modelosMap[modelo].push({ nombre, cantidad });
+         });
+    %>
+      <li class="historial-item">
+        <button class="toggle-btn" onclick="toggleDetalles(<%= index %>)">
+          📅 <%= mov.fecha %> <span class="arrow">▼</span>
+        </button>
 
-              </form>
-                <% for (let modelo in modelos) { %>
-                  <div style="margin-bottom: 1rem;">
-                    <strong>📦 Modelo: <%= modelo %></strong>
-                    <ul style="margin-left: 1rem;">
-                      <% modelos[modelo].forEach(c => { %>
-                        <li>🔧 <%= c.nombre %> (<strong><%= c.cantidad %></strong>)</li>
-                      <% }) %>
-                    </ul>
-                  </div>
-                <% } %>
-              </div>
-            </li>
-          <% }) %>
-        </ul>
-      <% } %>
+        <div class="detalles" id="detalles-<%= index %>">
+          <form method="GET" action="/almacen/exportar-excel/<%= encodeURIComponent(mov.fecha) %>">
+            <button type="submit" class="descargar-btn1" title="Descargar Excel">📥</button>
+          </form>
+
+          <% for (let modelo in modelosMap) { %>
+            <div style="margin-bottom: 1rem;">
+              <strong>📦 Modelo: <%= modelo %></strong>
+              <ul style="margin-left: 1rem;">
+                <% modelosMap[modelo].forEach(c => { %>
+                  <li>🔧 <%= c.nombre %> (<strong><%= c.cantidad %></strong>)</li>
+                <% }) %>
+              </ul>
+            </div>
+          <% } %>
+        </div>
+      </li>
+    <% }) %>
+  </ul>
+<% } %>
+
     </div>
     
     
